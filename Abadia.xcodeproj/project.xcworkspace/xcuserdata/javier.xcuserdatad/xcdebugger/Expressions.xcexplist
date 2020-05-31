@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "Abadia.DefinirModo(Modo:):Abadia.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "ComposeContext">
+            </PersistentString>
+            <PersistentString
+               value = "Pantalla">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Abadia.SetObjects(cCGAController:cImageView:cViewController:):Abadia.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Pantalla">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Abadia.RefrescarPantalla2():Abadia.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "imageView!.frame.size">
+            </PersistentString>
+            <PersistentString
+               value = "Pantalla">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CGAController.drawSomething():CGAController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Modo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

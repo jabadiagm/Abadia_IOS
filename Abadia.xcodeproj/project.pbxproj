@@ -3,10 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B4B585C2426368B00F3A9E3 /* cPruebaSonido.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B585B2426368B00F3A9E3 /* cPruebaSonido.swift */; };
+		3B4F0149241D645300DFDEDF /* StopWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4F0148241D645300DFDEDF /* StopWatch.swift */; };
+		3B4F014B241EC90D00DFDEDF /* ToneOutputUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4F014A241EC90D00DFDEDF /* ToneOutputUnit.swift */; };
+		3BB955302421376300AE2F58 /* cWaveOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9552F2421376300AE2F58 /* cWaveOut.swift */; };
+		3BB95532242137DB00AE2F58 /* pReproducible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB95531242137DB00AE2F58 /* pReproducible.swift */; };
+		3BB9553424213F4200AE2F58 /* cAY8912.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9553324213F4200AE2F58 /* cAY8912.swift */; };
 		AE3233CF1F8972EA0068BA8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3233CE1F8972EA0068BA8F /* AppDelegate.swift */; };
 		AE3233D11F8972EA0068BA8F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3233D01F8972EA0068BA8F /* ViewController.swift */; };
 		AE3233D41F8972EA0068BA8F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE3233D21F8972EA0068BA8F /* Main.storyboard */; };
@@ -18,6 +24,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B4B585B2426368B00F3A9E3 /* cPruebaSonido.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cPruebaSonido.swift; sourceTree = "<group>"; };
+		3B4F0148241D645300DFDEDF /* StopWatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatch.swift; sourceTree = "<group>"; };
+		3B4F014A241EC90D00DFDEDF /* ToneOutputUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToneOutputUnit.swift; sourceTree = "<group>"; };
+		3BB9552F2421376300AE2F58 /* cWaveOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cWaveOut.swift; sourceTree = "<group>"; };
+		3BB95531242137DB00AE2F58 /* pReproducible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pReproducible.swift; sourceTree = "<group>"; };
+		3BB9553324213F4200AE2F58 /* cAY8912.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cAY8912.swift; sourceTree = "<group>"; };
 		AE3233CB1F8972EA0068BA8F /* Abadia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Abadia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE3233CE1F8972EA0068BA8F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE3233D01F8972EA0068BA8F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +72,7 @@
 		AE3233CD1F8972EA0068BA8F /* Abadia */ = {
 			isa = PBXGroup;
 			children = (
+				3B4F0148241D645300DFDEDF /* StopWatch.swift */,
 				AE3233CE1F8972EA0068BA8F /* AppDelegate.swift */,
 				AE3233D01F8972EA0068BA8F /* ViewController.swift */,
 				AE3233E41F8A13910068BA8F /* CGAController.swift */,
@@ -69,6 +82,11 @@
 				AE3233D71F8972EA0068BA8F /* LaunchScreen.storyboard */,
 				AE3233DA1F8972EA0068BA8F /* Info.plist */,
 				AE3233E01F8973E70068BA8F /* Abadia.swift */,
+				3B4F014A241EC90D00DFDEDF /* ToneOutputUnit.swift */,
+				3BB9552F2421376300AE2F58 /* cWaveOut.swift */,
+				3BB95531242137DB00AE2F58 /* pReproducible.swift */,
+				3BB9553324213F4200AE2F58 /* cAY8912.swift */,
+				3B4B585B2426368B00F3A9E3 /* cPruebaSonido.swift */,
 			);
 			path = Abadia;
 			sourceTree = "<group>";
@@ -100,17 +118,18 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Phillip LAcebo";
 				TargetAttributes = {
 					AE3233CA1F8972EA0068BA8F = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 1130;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = AE3233C61F8972EA0068BA8F /* Build configuration list for PBXProject "Abadia" */;
-			compatibilityVersion = "Xcode 8.0";
+			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -148,8 +167,14 @@
 				AE3233E31F8A136C0068BA8F /* InputController.swift in Sources */,
 				AE3233E11F8973E70068BA8F /* Abadia.swift in Sources */,
 				AE3233D11F8972EA0068BA8F /* ViewController.swift in Sources */,
+				3B4F0149241D645300DFDEDF /* StopWatch.swift in Sources */,
+				3B4B585C2426368B00F3A9E3 /* cPruebaSonido.swift in Sources */,
+				3B4F014B241EC90D00DFDEDF /* ToneOutputUnit.swift in Sources */,
+				3BB9553424213F4200AE2F58 /* cAY8912.swift in Sources */,
 				AE3233E51F8A13910068BA8F /* CGAController.swift in Sources */,
 				AE3233CF1F8972EA0068BA8F /* AppDelegate.swift in Sources */,
+				3BB95532242137DB00AE2F58 /* pReproducible.swift in Sources */,
+				3BB955302421376300AE2F58 /* cWaveOut.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +214,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -196,6 +222,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -223,7 +250,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -246,6 +273,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -253,6 +281,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -274,10 +303,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -287,13 +317,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UYNV3WR5EV;
+				DEVELOPMENT_TEAM = E28JP73SVE;
 				INFOPLIST_FILE = Abadia/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = tia.com.Abadia;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = tia.com.Abadia2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -303,13 +336,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UYNV3WR5EV;
+				DEVELOPMENT_TEAM = E28JP73SVE;
 				INFOPLIST_FILE = Abadia/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = tia.com.Abadia;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = tia.com.Abadia2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
