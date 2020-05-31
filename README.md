@@ -1,7 +1,7 @@
 # Abadia_IOS
 La Abadía del Crimen / IOS
 
-![Pantallazo](/Pantallazo.png)
+![Pantallazo](/Pantallazo.PNG)
 
 Migración a IOS en lenguaje Swift de la versión original en ensamblador del juego "La Abadía del Crimen", creado por Paco Menéndez y Juan Delcán para el Amstrad CPC6128. Se ha mantenido la estructura del juego tal cual excepto en algunos puntos que no tienen cabida en programas actuales. La adaptación está hecha pensando en el Iphone, aunque también funciona en el Ipad. Requiere IOS9 o superior, y funciona a partir de Iphone 4s y Ipad Air 1. 
 
