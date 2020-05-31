@@ -8,6 +8,6 @@
 
 import UIKit
 
-class InputController: NSObject {
+class InputController {
 
 }
