@@ -7,6 +7,8 @@ Migración a IOS en lenguaje Swift de la versión original en ensamblador del ju
 
 Para funcionar necesita los bancos de memoria ABADIA0, ABADIA1, ABADIA2, ABADIA3, ABADIA5, ABADIA6, ABADIA7 y ABADIA8 del juego original, propiedad de Opera Soft, en la carpeta "Recursos".
 
+[![](http://img.youtube.com/vi/sF4L0Z7LXoY/0.jpg)](http://www.youtube.com/watch?v=sF4L0Z7LXoY "Prueba en iPhone 6s")
+
 Agradecimientos:
 
 A Manuel Abadía, cuyos comentarios del juego original se han mantenido en este trabajo y han alumbrado mucho más que la lámpara de Adso.
