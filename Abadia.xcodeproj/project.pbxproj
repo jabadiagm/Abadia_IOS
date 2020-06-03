@@ -7,29 +7,91 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3B4B585C2426368B00F3A9E3 /* cPruebaSonido.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B585B2426368B00F3A9E3 /* cPruebaSonido.swift */; };
+		3B47AD63243107BD00FF1147 /* Bitmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47AD62243107BD00FF1147 /* Bitmap.swift */; };
+		3B47AD65243107F500FF1147 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47AD64243107F500FF1147 /* Color.swift */; };
+		3B47AD672431081A00FF1147 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47AD662431081A00FF1147 /* Vector.swift */; };
+		3B47AD692431083400FF1147 /* Rect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47AD682431083400FF1147 /* Rect.swift */; };
+		3B47AD6B243108DE00FF1147 /* UIImage+Bitmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47AD6A243108DE00FF1147 /* UIImage+Bitmap.swift */; };
+		3B47AD6D243396ED00FF1147 /* CGA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47AD6C243396ED00FF1147 /* CGA.swift */; };
+		3B47AD782436322600FF1147 /* Funciones.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B47AD762436322600FF1147 /* Funciones.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3B47AD7B2436322600FF1147 /* Funciones.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B47AD742436322600FF1147 /* Funciones.framework */; };
+		3B47AD7C2436322600FF1147 /* Funciones.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B47AD742436322600FF1147 /* Funciones.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3B47AD822436326100FF1147 /* Funciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47AD812436326100FF1147 /* Funciones.swift */; };
 		3B4F0149241D645300DFDEDF /* StopWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4F0148241D645300DFDEDF /* StopWatch.swift */; };
-		3B4F014B241EC90D00DFDEDF /* ToneOutputUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4F014A241EC90D00DFDEDF /* ToneOutputUnit.swift */; };
-		3BB955302421376300AE2F58 /* cWaveOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9552F2421376300AE2F58 /* cWaveOut.swift */; };
+		3B76A3E22436390D001FF8CB /* Teclado.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47AD842436365500FF1147 /* Teclado.swift */; };
+		3B76A3E424365C96001FF8CB /* Depuracion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B76A3E324365C96001FF8CB /* Depuracion.swift */; };
+		3B76A3E624365E7F001FF8CB /* DoubleBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B76A3E524365E7F001FF8CB /* DoubleBuffer.swift */; };
+		3B76A409243A355D001FF8CB /* ABADIA0.BIN in Resources */ = {isa = PBXBuildFile; fileRef = 3B76A408243A355D001FF8CB /* ABADIA0.BIN */; };
+		3B76A40B243A356E001FF8CB /* ABADIA1.BIN in Resources */ = {isa = PBXBuildFile; fileRef = 3B76A40A243A356E001FF8CB /* ABADIA1.BIN */; };
+		3B76A40D243A3580001FF8CB /* ABADIA2.BIN in Resources */ = {isa = PBXBuildFile; fileRef = 3B76A40C243A3580001FF8CB /* ABADIA2.BIN */; };
+		3B76A40F243A364C001FF8CB /* ABADIA3.BIN in Resources */ = {isa = PBXBuildFile; fileRef = 3B76A40E243A364C001FF8CB /* ABADIA3.BIN */; };
+		3B76A411243A365D001FF8CB /* ABADIA5.BIN in Resources */ = {isa = PBXBuildFile; fileRef = 3B76A410243A365D001FF8CB /* ABADIA5.BIN */; };
+		3B76A413243A366B001FF8CB /* ABADIA6.BIN in Resources */ = {isa = PBXBuildFile; fileRef = 3B76A412243A366B001FF8CB /* ABADIA6.BIN */; };
+		3B76A415243A3673001FF8CB /* ABADIA7.BIN in Resources */ = {isa = PBXBuildFile; fileRef = 3B76A414243A3673001FF8CB /* ABADIA7.BIN */; };
+		3B76A417243A367B001FF8CB /* ABADIA8.BIN in Resources */ = {isa = PBXBuildFile; fileRef = 3B76A416243A367B001FF8CB /* ABADIA8.BIN */; };
+		3B8A5B3F243BB0F200C0F425 /* BugDejarObjeto.bin in Resources */ = {isa = PBXBuildFile; fileRef = 3B8A5B3E243BB0F100C0F425 /* BugDejarObjeto.bin */; };
+		3BB955302421376300AE2F58 /* WaveOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9552F2421376300AE2F58 /* WaveOut.swift */; };
 		3BB95532242137DB00AE2F58 /* pReproducible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB95531242137DB00AE2F58 /* pReproducible.swift */; };
-		3BB9553424213F4200AE2F58 /* cAY8912.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9553324213F4200AE2F58 /* cAY8912.swift */; };
+		3BB9553424213F4200AE2F58 /* AY8912.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB9553324213F4200AE2F58 /* AY8912.swift */; };
 		AE3233CF1F8972EA0068BA8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3233CE1F8972EA0068BA8F /* AppDelegate.swift */; };
 		AE3233D11F8972EA0068BA8F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3233D01F8972EA0068BA8F /* ViewController.swift */; };
 		AE3233D41F8972EA0068BA8F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE3233D21F8972EA0068BA8F /* Main.storyboard */; };
 		AE3233D61F8972EA0068BA8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE3233D51F8972EA0068BA8F /* Assets.xcassets */; };
 		AE3233D91F8972EA0068BA8F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE3233D71F8972EA0068BA8F /* LaunchScreen.storyboard */; };
 		AE3233E11F8973E70068BA8F /* Abadia.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3233E01F8973E70068BA8F /* Abadia.swift */; };
-		AE3233E31F8A136C0068BA8F /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3233E21F8A136C0068BA8F /* InputController.swift */; };
-		AE3233E51F8A13910068BA8F /* CGAController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3233E41F8A13910068BA8F /* CGAController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3B47AD792436322600FF1147 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE3233C31F8972EA0068BA8F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3B47AD732436322600FF1147;
+			remoteInfo = Funciones;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3B47AD7D2436322600FF1147 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3B47AD7C2436322600FF1147 /* Funciones.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		3B4B585B2426368B00F3A9E3 /* cPruebaSonido.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cPruebaSonido.swift; sourceTree = "<group>"; };
+		3B47AD62243107BD00FF1147 /* Bitmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bitmap.swift; sourceTree = "<group>"; };
+		3B47AD64243107F500FF1147 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		3B47AD662431081A00FF1147 /* Vector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
+		3B47AD682431083400FF1147 /* Rect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rect.swift; sourceTree = "<group>"; };
+		3B47AD6A243108DE00FF1147 /* UIImage+Bitmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Bitmap.swift"; sourceTree = "<group>"; };
+		3B47AD6C243396ED00FF1147 /* CGA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGA.swift; sourceTree = "<group>"; };
+		3B47AD742436322600FF1147 /* Funciones.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Funciones.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B47AD762436322600FF1147 /* Funciones.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Funciones.h; sourceTree = "<group>"; };
+		3B47AD772436322600FF1147 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3B47AD812436326100FF1147 /* Funciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones.swift; sourceTree = "<group>"; };
+		3B47AD842436365500FF1147 /* Teclado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teclado.swift; sourceTree = "<group>"; };
 		3B4F0148241D645300DFDEDF /* StopWatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatch.swift; sourceTree = "<group>"; };
-		3B4F014A241EC90D00DFDEDF /* ToneOutputUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToneOutputUnit.swift; sourceTree = "<group>"; };
-		3BB9552F2421376300AE2F58 /* cWaveOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cWaveOut.swift; sourceTree = "<group>"; };
+		3B76A3E324365C96001FF8CB /* Depuracion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Depuracion.swift; sourceTree = "<group>"; };
+		3B76A3E524365E7F001FF8CB /* DoubleBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleBuffer.swift; sourceTree = "<group>"; };
+		3B76A408243A355D001FF8CB /* ABADIA0.BIN */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ABADIA0.BIN; sourceTree = "<group>"; };
+		3B76A40A243A356E001FF8CB /* ABADIA1.BIN */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ABADIA1.BIN; sourceTree = "<group>"; };
+		3B76A40C243A3580001FF8CB /* ABADIA2.BIN */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ABADIA2.BIN; sourceTree = "<group>"; };
+		3B76A40E243A364C001FF8CB /* ABADIA3.BIN */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ABADIA3.BIN; sourceTree = "<group>"; };
+		3B76A410243A365D001FF8CB /* ABADIA5.BIN */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ABADIA5.BIN; sourceTree = "<group>"; };
+		3B76A412243A366B001FF8CB /* ABADIA6.BIN */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ABADIA6.BIN; sourceTree = "<group>"; };
+		3B76A414243A3673001FF8CB /* ABADIA7.BIN */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ABADIA7.BIN; sourceTree = "<group>"; };
+		3B76A416243A367B001FF8CB /* ABADIA8.BIN */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ABADIA8.BIN; sourceTree = "<group>"; };
+		3B8A5B3E243BB0F100C0F425 /* BugDejarObjeto.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = BugDejarObjeto.bin; sourceTree = "<group>"; };
+		3BB9552F2421376300AE2F58 /* WaveOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveOut.swift; sourceTree = "<group>"; };
 		3BB95531242137DB00AE2F58 /* pReproducible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pReproducible.swift; sourceTree = "<group>"; };
-		3BB9553324213F4200AE2F58 /* cAY8912.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cAY8912.swift; sourceTree = "<group>"; };
+		3BB9553324213F4200AE2F58 /* AY8912.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AY8912.swift; sourceTree = "<group>"; };
 		AE3233CB1F8972EA0068BA8F /* Abadia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Abadia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE3233CE1F8972EA0068BA8F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE3233D01F8972EA0068BA8F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -38,25 +100,94 @@
 		AE3233D81F8972EA0068BA8F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AE3233DA1F8972EA0068BA8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE3233E01F8973E70068BA8F /* Abadia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Abadia.swift; sourceTree = "<group>"; };
-		AE3233E21F8A136C0068BA8F /* InputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
-		AE3233E41F8A13910068BA8F /* CGAController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		AE3233C81F8972EA0068BA8F /* Frameworks */ = {
+		3B47AD712436322600FF1147 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AE3233C81F8972EA0068BA8F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B47AD7B2436322600FF1147 /* Funciones.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B47AD61243106DB00FF1147 /* MotorGrafico */ = {
+			isa = PBXGroup;
+			children = (
+				3B47AD62243107BD00FF1147 /* Bitmap.swift */,
+				3B47AD64243107F500FF1147 /* Color.swift */,
+				3B47AD662431081A00FF1147 /* Vector.swift */,
+				3B47AD682431083400FF1147 /* Rect.swift */,
+				3B47AD6A243108DE00FF1147 /* UIImage+Bitmap.swift */,
+				3B47AD6C243396ED00FF1147 /* CGA.swift */,
+			);
+			path = MotorGrafico;
+			sourceTree = "<group>";
+		};
+		3B47AD6E2434EE0F00FF1147 /* Sonido */ = {
+			isa = PBXGroup;
+			children = (
+				3BB9553324213F4200AE2F58 /* AY8912.swift */,
+				3BB95531242137DB00AE2F58 /* pReproducible.swift */,
+				3BB9552F2421376300AE2F58 /* WaveOut.swift */,
+				3B76A3E524365E7F001FF8CB /* DoubleBuffer.swift */,
+			);
+			path = Sonido;
+			sourceTree = "<group>";
+		};
+		3B47AD752436322600FF1147 /* Funciones */ = {
+			isa = PBXGroup;
+			children = (
+				3B47AD762436322600FF1147 /* Funciones.h */,
+				3B47AD772436322600FF1147 /* Info.plist */,
+				3B47AD812436326100FF1147 /* Funciones.swift */,
+			);
+			path = Funciones;
+			sourceTree = "<group>";
+		};
+		3B47AD83243635E800FF1147 /* Entrada */ = {
+			isa = PBXGroup;
+			children = (
+				3B47AD842436365500FF1147 /* Teclado.swift */,
+			);
+			path = Entrada;
+			sourceTree = "<group>";
+		};
+		3B76A407243A3541001FF8CB /* Recursos */ = {
+			isa = PBXGroup;
+			children = (
+				3B76A408243A355D001FF8CB /* ABADIA0.BIN */,
+				3B76A40A243A356E001FF8CB /* ABADIA1.BIN */,
+				3B76A40C243A3580001FF8CB /* ABADIA2.BIN */,
+				3B76A40E243A364C001FF8CB /* ABADIA3.BIN */,
+				3B76A410243A365D001FF8CB /* ABADIA5.BIN */,
+				3B76A412243A366B001FF8CB /* ABADIA6.BIN */,
+				3B76A414243A3673001FF8CB /* ABADIA7.BIN */,
+				3B76A416243A367B001FF8CB /* ABADIA8.BIN */,
+				3B8A5B3E243BB0F100C0F425 /* BugDejarObjeto.bin */,
+			);
+			path = Recursos;
+			sourceTree = "<group>";
+		};
 		AE3233C21F8972EA0068BA8F = {
 			isa = PBXGroup;
 			children = (
 				AE3233CD1F8972EA0068BA8F /* Abadia */,
+				3B47AD61243106DB00FF1147 /* MotorGrafico */,
+				3B47AD6E2434EE0F00FF1147 /* Sonido */,
+				3B47AD83243635E800FF1147 /* Entrada */,
+				3B47AD752436322600FF1147 /* Funciones */,
+				3B76A407243A3541001FF8CB /* Recursos */,
 				AE3233CC1F8972EA0068BA8F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				AE3233CB1F8972EA0068BA8F /* Abadia.app */,
+				3B47AD742436322600FF1147 /* Funciones.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,28 +204,51 @@
 		AE3233CD1F8972EA0068BA8F /* Abadia */ = {
 			isa = PBXGroup;
 			children = (
-				3B4F0148241D645300DFDEDF /* StopWatch.swift */,
+				AE3233E01F8973E70068BA8F /* Abadia.swift */,
 				AE3233CE1F8972EA0068BA8F /* AppDelegate.swift */,
 				AE3233D01F8972EA0068BA8F /* ViewController.swift */,
-				AE3233E41F8A13910068BA8F /* CGAController.swift */,
+				3B4F0148241D645300DFDEDF /* StopWatch.swift */,
 				AE3233D21F8972EA0068BA8F /* Main.storyboard */,
-				AE3233E21F8A136C0068BA8F /* InputController.swift */,
 				AE3233D51F8972EA0068BA8F /* Assets.xcassets */,
 				AE3233D71F8972EA0068BA8F /* LaunchScreen.storyboard */,
 				AE3233DA1F8972EA0068BA8F /* Info.plist */,
-				AE3233E01F8973E70068BA8F /* Abadia.swift */,
-				3B4F014A241EC90D00DFDEDF /* ToneOutputUnit.swift */,
-				3BB9552F2421376300AE2F58 /* cWaveOut.swift */,
-				3BB95531242137DB00AE2F58 /* pReproducible.swift */,
-				3BB9553324213F4200AE2F58 /* cAY8912.swift */,
-				3B4B585B2426368B00F3A9E3 /* cPruebaSonido.swift */,
+				3B76A3E324365C96001FF8CB /* Depuracion.swift */,
 			);
 			path = Abadia;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		3B47AD6F2436322600FF1147 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B47AD782436322600FF1147 /* Funciones.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		3B47AD732436322600FF1147 /* Funciones */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B47AD802436322600FF1147 /* Build configuration list for PBXNativeTarget "Funciones" */;
+			buildPhases = (
+				3B47AD6F2436322600FF1147 /* Headers */,
+				3B47AD702436322600FF1147 /* Sources */,
+				3B47AD712436322600FF1147 /* Frameworks */,
+				3B47AD722436322600FF1147 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Funciones;
+			productName = Funciones;
+			productReference = 3B47AD742436322600FF1147 /* Funciones.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		AE3233CA1F8972EA0068BA8F /* Abadia */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = AE3233DD1F8972EA0068BA8F /* Build configuration list for PBXNativeTarget "Abadia" */;
@@ -101,10 +256,12 @@
 				AE3233C71F8972EA0068BA8F /* Sources */,
 				AE3233C81F8972EA0068BA8F /* Frameworks */,
 				AE3233C91F8972EA0068BA8F /* Resources */,
+				3B47AD7D2436322600FF1147 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3B47AD7A2436322600FF1147 /* PBXTargetDependency */,
 			);
 			name = Abadia;
 			productName = Abadia;
@@ -121,6 +278,10 @@
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Phillip LAcebo";
 				TargetAttributes = {
+					3B47AD732436322600FF1147 = {
+						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
+					};
 					AE3233CA1F8972EA0068BA8F = {
 						CreatedOnToolsVersion = 9.0;
 						LastSwiftMigration = 1130;
@@ -142,43 +303,81 @@
 			projectRoot = "";
 			targets = (
 				AE3233CA1F8972EA0068BA8F /* Abadia */,
+				3B47AD732436322600FF1147 /* Funciones */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3B47AD722436322600FF1147 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AE3233C91F8972EA0068BA8F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B76A40D243A3580001FF8CB /* ABADIA2.BIN in Resources */,
+				3B76A411243A365D001FF8CB /* ABADIA5.BIN in Resources */,
+				3B76A417243A367B001FF8CB /* ABADIA8.BIN in Resources */,
+				3B76A409243A355D001FF8CB /* ABADIA0.BIN in Resources */,
+				3B76A415243A3673001FF8CB /* ABADIA7.BIN in Resources */,
+				3B76A413243A366B001FF8CB /* ABADIA6.BIN in Resources */,
+				3B76A40F243A364C001FF8CB /* ABADIA3.BIN in Resources */,
 				AE3233D91F8972EA0068BA8F /* LaunchScreen.storyboard in Resources */,
+				3B8A5B3F243BB0F200C0F425 /* BugDejarObjeto.bin in Resources */,
 				AE3233D61F8972EA0068BA8F /* Assets.xcassets in Resources */,
 				AE3233D41F8972EA0068BA8F /* Main.storyboard in Resources */,
+				3B76A40B243A356E001FF8CB /* ABADIA1.BIN in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3B47AD702436322600FF1147 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B47AD822436326100FF1147 /* Funciones.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AE3233C71F8972EA0068BA8F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE3233E31F8A136C0068BA8F /* InputController.swift in Sources */,
 				AE3233E11F8973E70068BA8F /* Abadia.swift in Sources */,
+				3B47AD6D243396ED00FF1147 /* CGA.swift in Sources */,
+				3B76A3E624365E7F001FF8CB /* DoubleBuffer.swift in Sources */,
+				3B47AD65243107F500FF1147 /* Color.swift in Sources */,
 				AE3233D11F8972EA0068BA8F /* ViewController.swift in Sources */,
+				3B47AD6B243108DE00FF1147 /* UIImage+Bitmap.swift in Sources */,
 				3B4F0149241D645300DFDEDF /* StopWatch.swift in Sources */,
-				3B4B585C2426368B00F3A9E3 /* cPruebaSonido.swift in Sources */,
-				3B4F014B241EC90D00DFDEDF /* ToneOutputUnit.swift in Sources */,
-				3BB9553424213F4200AE2F58 /* cAY8912.swift in Sources */,
-				AE3233E51F8A13910068BA8F /* CGAController.swift in Sources */,
+				3B47AD63243107BD00FF1147 /* Bitmap.swift in Sources */,
+				3BB9553424213F4200AE2F58 /* AY8912.swift in Sources */,
 				AE3233CF1F8972EA0068BA8F /* AppDelegate.swift in Sources */,
+				3B76A3E22436390D001FF8CB /* Teclado.swift in Sources */,
 				3BB95532242137DB00AE2F58 /* pReproducible.swift in Sources */,
-				3BB955302421376300AE2F58 /* cWaveOut.swift in Sources */,
+				3B47AD672431081A00FF1147 /* Vector.swift in Sources */,
+				3B76A3E424365C96001FF8CB /* Depuracion.swift in Sources */,
+				3B47AD692431083400FF1147 /* Rect.swift in Sources */,
+				3BB955302421376300AE2F58 /* WaveOut.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3B47AD7A2436322600FF1147 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3B47AD732436322600FF1147 /* Funciones */;
+			targetProxy = 3B47AD792436322600FF1147 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		AE3233D21F8972EA0068BA8F /* Main.storyboard */ = {
@@ -200,6 +399,70 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3B47AD7E2436322600FF1147 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = E28JP73SVE;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Funciones/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = tia.Funciones;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		3B47AD7F2436322600FF1147 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = E28JP73SVE;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Funciones/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = tia.Funciones;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		AE3233DB1F8972EA0068BA8F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -315,6 +578,7 @@
 		AE3233DE1F8972EA0068BA8F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = E28JP73SVE;
@@ -334,6 +598,7 @@
 		AE3233DF1F8972EA0068BA8F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = E28JP73SVE;
@@ -353,6 +618,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3B47AD802436322600FF1147 /* Build configuration list for PBXNativeTarget "Funciones" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B47AD7E2436322600FF1147 /* Debug */,
+				3B47AD7F2436322600FF1147 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		AE3233C61F8972EA0068BA8F /* Build configuration list for PBXProject "Abadia" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

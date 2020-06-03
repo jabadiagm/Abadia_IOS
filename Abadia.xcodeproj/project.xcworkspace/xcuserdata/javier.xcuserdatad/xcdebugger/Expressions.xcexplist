@@ -3,15 +3,34 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "Abadia.DefinirModo(Modo:):Abadia.swift">
+         contextName = "Abadia.CalcularFPS():Abadia.swift">
          <PersistentStrings>
             <PersistentString
-               value = "ComposeContext">
+               value = "RelojFPS">
             </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Abadia.CargarDatos():Abadia.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ViewController.DefinirModo(Modo:):ViewController.swift">
+         <PersistentStrings>
             <PersistentString
                value = "Pantalla">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Abadia.Tick():Abadia.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "SiguienteTickTiempoms">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Abadia.CargarArchivo(NombreArchivo:Archivo:):Abadia.swift">
       </ContextState>
       <ContextState
          contextName = "Abadia.SetObjects(cCGAController:cImageView:cViewController:):Abadia.swift">
@@ -26,6 +45,17 @@
          <PersistentStrings>
             <PersistentString
                value = "imageView!.frame.size">
+            </PersistentString>
+            <PersistentString
+               value = "Pantalla">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Abadia.DefinirModo(Modo:):Abadia.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "ComposeContext">
             </PersistentString>
             <PersistentString
                value = "Pantalla">

@@ -53,4 +53,9 @@ class StopWatch
         return ElapsedTime/1000
     }
     
+    func EllapsedMilliseconds() -> UInt32 {
+        let Milliseconds=EllapsedMicroseconds()/1000
+        return UInt32(Milliseconds)
+    }
+    
 }
