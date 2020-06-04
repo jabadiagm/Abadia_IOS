@@ -3,7 +3,7 @@
 //  Funciones
 //
 //  Created by javier on 02/04/2020.
-//  Copyright © 2020 Phillip LAcebo. All rights reserved.
+//  Copyright © 2020 javier abadía. All rights reserved.
 //
 
 import Foundation

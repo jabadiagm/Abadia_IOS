@@ -2,8 +2,8 @@
 //  Abadia.swift
 //  Abadia
 //
-//  Created by Phillip LAcebo on 07/10/2017.
-//  Copyright © 2017 Phillip LAcebo. All rights reserved.
+//  Created by javier abadía on 07/10/2017.
+//  Copyright © 2017 javier abadía. All rights reserved.
 //
 
 import UIKit
