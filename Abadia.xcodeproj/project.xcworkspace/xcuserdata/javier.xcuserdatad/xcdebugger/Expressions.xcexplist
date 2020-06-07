@@ -3,6 +3,9 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "Abadia.CargarArchivo(NombreArchivo:Archivo:):Abadia.swift">
+      </ContextState>
+      <ContextState
          contextName = "Abadia.CalcularFPS():Abadia.swift">
          <PersistentStrings>
             <PersistentString
@@ -11,26 +14,109 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Abadia.CargarDatos():Abadia.swift">
+         contextName = "DoubleBuffer.Append(Value:):DoubleBuffer.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Pointer">
+            </PersistentString>
+            <PersistentString
+               value = "Buffer">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ViewController.DefinirModo(Modo:):ViewController.swift">
+         contextName = "Abadia.ActualizarSonidos_1060():Abadia.swift">
          <PersistentStrings>
+            <PersistentString
+               value = "TempoMusica_1086">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Abadia.RefrescarPantalla2():Abadia.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "imageView!.frame.size">
+            </PersistentString>
             <PersistentString
                value = "Pantalla">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Abadia.Tick():Abadia.swift">
+         contextName = "AY8912.AYWriteReg(r:v:):AY8912.swift">
          <PersistentStrings>
             <PersistentString
-               value = "SiguienteTickTiempoms">
+               value = "AYPSG">
+            </PersistentString>
+            <PersistentString
+               value = "AYPSG.Regs">
+            </PersistentString>
+            <PersistentString
+               value = "AYPSG.UpdateStep">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Abadia.CargarArchivo(NombreArchivo:Archivo:):Abadia.swift">
+         contextName = "WaveOut.init(Sonido:):WaveOut.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "NChannels">
+            </PersistentString>
+            <PersistentString
+               value = "BytesPorTic">
+            </PersistentString>
+            <PersistentString
+               value = "WAVE_FREQ">
+            </PersistentString>
+            <PersistentString
+               value = "WAVE_BUFFER_SIZE">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Abadia.CargarDatos():Abadia.swift">
+      </ContextState>
+      <ContextState
+         contextName = "Senoidal.SenoidalF():Senoidal.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Intervalo">
+            </PersistentString>
+            <PersistentString
+               value = "Tiempo">
+            </PersistentString>
+            <PersistentString
+               value = "Amplitud">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WaveOut.handler():WaveOut.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Estado">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WaveOut.Tarea():WaveOut.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Abierto">
+            </PersistentString>
+            <PersistentString
+               value = "WaveBuffer">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AY8912.AY8912_set_clock(clock:):AY8912.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "AYPSG.UpdateStep">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "Abadia.SetObjects(cCGAController:cImageView:cViewController:):Abadia.swift">
@@ -41,11 +127,22 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Abadia.RefrescarPantalla2():Abadia.swift">
+         contextName = "WaveOut.Parar():WaveOut.swift">
          <PersistentStrings>
             <PersistentString
-               value = "imageView!.frame.size">
+               value = "Reproduciendo">
             </PersistentString>
+            <PersistentString
+               value = "chivato">
+            </PersistentString>
+            <PersistentString
+               value = "TareaActiva">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ViewController.DefinirModo(Modo:):ViewController.swift">
+         <PersistentStrings>
             <PersistentString
                value = "Pantalla">
             </PersistentString>
@@ -67,6 +164,28 @@
          <PersistentStrings>
             <PersistentString
                value = "Modo">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Abadia.Tick():Abadia.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "SiguienteTickTiempoms">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AY8912.AY8912InitVolumeTable():AY8912.swift">
+      </ContextState>
+      <ContextState
+         contextName = "WaveOut.Tics2Bytes(Tics:):WaveOut.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "BytesPorTic">
+            </PersistentString>
+            <PersistentString
+               value = "WaveBuffer">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

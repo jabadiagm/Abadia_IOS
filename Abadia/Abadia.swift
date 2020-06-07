@@ -17,11 +17,13 @@ class Abadia {
     var teclado:Teclado?
     
     //variables públicas del módulo
-    public var FPS:UInt32=0
+    public var FPS:Int = 0 //fotogramas por segundo
+    public var FPSSonido:Int = 0 //número de ciclos por segundo de la tarea de sonido
 
     //variables y objetos privados del módulo
     private let Reloj:StopWatch=StopWatch()
     private let RelojFPS:StopWatch=StopWatch()
+    private let RelojSonido:StopWatch=StopWatch()
     private var SiguienteTickTiempoms:Int32 = 100
     private var SiguienteTickNombreFuncion:String = "Iniciar"
     private var CancelarTareaSonido:Bool=false
@@ -256,22 +258,16 @@ class Abadia {
         }
     }
     
-    public func CargarArchivo(NombreArchivo:String, Archivo: inout [UInt8]) { //OK
-        let inputStream = InputStream(fileAtPath: NombreArchivo)!
-        inputStream.open()
-        inputStream.read(&Archivo, maxLength: Archivo.count)
-        inputStream.close()
-    }
-    
+
     public func CargarDatos() {
         var Ruta:String=""
-        var Abadia0=[UInt8](repeating: 0, count: 16384)
-        var Abadia1=[UInt8](repeating: 0, count: 16384)
-        var Abadia2=[UInt8](repeating: 0, count: 16384)
-        var Abadia3=[UInt8](repeating: 0, count: 16384)
-        var Abadia7=[UInt8](repeating: 0, count: 16384)
-        var Abadia8=[UInt8](repeating: 0, count: 16384)
-        var BugDejarObjeto=[UInt8](repeating: 0, count: 256)
+        var Abadia0:[UInt8]=[] //(repeating: 0, count: 16384)
+        var Abadia1:[UInt8]=[] //(repeating: 0, count: 16384)
+        var Abadia2:[UInt8]=[] //(repeating: 0, count: 16384)
+        var Abadia3:[UInt8]=[] //(repeating: 0, count: 16384)
+        var Abadia7:[UInt8]=[] //(repeating: 0, count: 16384)
+        var Abadia8:[UInt8]=[] //(repeating: 0, count: 16384)
+        var BugDejarObjeto:[UInt8]=[] //(repeating: 0, count: 256)
 
         //BugDejarObjeto.bin
         Ruta=Bundle.main.path(forResource: "BugDejarObjeto", ofType: "bin")!
@@ -357,12 +353,12 @@ class Abadia {
         CargarTablaArchivo(&Abadia8, &DatosMarcador_6328, 0x2328) //datos del marcador (de 0x6328 a 0x6b27)
         CargarTablaArchivo(&Abadia8, &TablaDatosPergaminoFinal_8000, 0x2B28) //música y texto del pergamino final
     }
-    
-    func Tick() {
+
+ func Tick() {
         if !RelojFPS.Active {
             RelojFPS.Start()
         }
-        LeerBitArray()
+        //LeerBitArray()
         if cga?.modo==1 {
             for contadorY in 0...50 {
                 for contadorX in 0...50 {
@@ -437,6 +433,27 @@ class Abadia {
     func Iniciar() {
         CargarDatos()
         SiguienteTick(Tiempoms: 10, NombreFuncion: "BuclePrincipal_25B7")
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3.0) {
+            self.TempoMusica_1086 = 11
+            self.ReproducirSonidoPergamino()
+            
+            //self.TempoMusica_1086 = 6
+            //self.ReproducirSonidoMelodia_1007()
+            //self.ReproducirSonidoPuertaSeverino_102A()
+            //self.ReproducirSonidoAbrir_101B()
+            //self.ReproducirSonidoCerrar_1016()
+            //self.ReproducirSonidoCampanas_100C()
+            //self.ReproducirSonidoCampanillas_1011()
+            //self.ReproducirSonidoCoger_1025()
+            //self.ReproducirPasos_1002()
+
+            //self.TempoMusica_1086 = 8
+            //self.ReproducirSonidoPergaminoFinal()
+            
+            print("Foreground Reproduciendo")
+        }
+        
         ArrancarTareaSonido()
     }
     
@@ -448,7 +465,7 @@ class Abadia {
     
     @objc func TareaSonido() { //ok
         struct estatico {
-            static var contador:UInt32=0
+            static var contador:Int = 0
         }
         let reloj=StopWatch()
         reloj.Start()
@@ -465,7 +482,8 @@ class Abadia {
             estatico.contador+=1
             if reloj.EllapsedMilliseconds() >= 1000 {
                 reloj.Start()
-                print ("Sonidos:\(estatico.contador)")
+                FPSSonido=estatico.contador
+                print ("Sonidos:\(FPSSonido)")
                 estatico.contador = 0
             }
             
@@ -521,14 +539,14 @@ class Abadia {
         //cada vez que se pasa por el buble principal se incrementa el contador de fotogramas
         //cuando haya pasado un segundo desde el anterior ciclo, el valor del contador son los FPS
         struct Estatico {
-            static var Contador:UInt32=0
+            static var Contador:Int = 0
         }
         Estatico.Contador+=1
         if RelojFPS.EllapsedMilliseconds() >= 1000 {
             RelojFPS.Start()
             FPS = Estatico.Contador
             Estatico.Contador = 0
-            print ("FPS:\(FPS)")
+            //print ("FPS:\(FPS)")
         }
     }
     
@@ -570,19 +588,696 @@ class Abadia {
     func BuclePrincipal() {
         
     }
+
+    //tercia-------------------------------------------------------------------------------------
     
-    func ActualizarSonidos_1060() {
-        
+    //funciones relacionadas con el sonido
+    
+
+    public func EscribirRegistroValorPSG_134E( _ RegistroA:UInt8, _ ValorC:UInt8) {
+        //; escribe al registro número 'a' del PSG el valor 'c'
+        //; a = número de registro
+        //; c = valor a escribir
+        ay8910!.EscribirRegistro(NumeroRegistro: Int(RegistroA), ValorRegistro: Int(ValorC))
     }
-    
-    
-    //byref = inout
-    func swapTwoInts(_ a: inout Int, _ b: inout Int) {
-        let temporaryA = a
-        a = b
-        b = temporaryA
+
+public func EscribirDatosSonido_10D0( _ PunteroDatosSonidosIX:Int) {
+        //escribe los datos del canal apuntado por ix en el PSG
+        //estructura de TablaDatosSonidos_0F96:
+        //0x0f96 máscara que indica en qué canales están activos los tonos y el generador de ruido
+        //0x0f97 copia de la máscara que indica en qué canales están activos los tonos y el generador de ruido
+
+        //0x0f98 contador que se va decrementando y al llegar a 0 actualiza las notas
+
+        //0x0f99 periodo de la envolvente (byte bajo) relacionado con lo leido en 0x0a-0x0b + 0x0c
+        //0x0f9a periodo de la envolvente (byte alto) relacionado con lo leido en 0x0a-0x0b + 0x0c
+        //0x0f9b tipo de envolvente relacionado con lo leido en 0x0a-0x0b + 0x0c (solo guarda 4 lsb)
+
+        //0x0f9c periodo del generador de ruido (solo se usan los últimos 5 bits)
+
+        //0x0f9d-0x0fe4 tabla con los datos de generación de cada canal de sonido (registros de PSG + entrada del canal). estructura de una entrada:
+        //    0x00-0x01: dirección de la nota musical actual
+        //        primer Byte
+        //            bits 0 - 3: nota(si es 0x0f es un caso especial)
+        //        bits 4 - 6: octava
+        //        bit 7: indica si se activa el generador de ruido
+        //        segundo Byte: duración de la nota
+        //    0x02: duración de la nota
+        //    0x03-0x04: tono de la nota
+        //    0x05-0x06: dirección con los datos del tono base de las notas
+        //        si encuentra 0x7f: contadores al maximo y no cambia el tono de las notas (entrada de 1 byte)
+        //        si encuentra 0x80: reinicia el índice en la tabla y sigue procesando (entrada de 1 byte)
+        //        si el bit más significativo está activo: actualiza el tipo de envolvente, su periodo y el nuevo contador (entrada de 4 bytes)
+        //        en otro caso: actualiza los contadores y el tono base (entrada de 3 bytes)
+        //    0x07: volumen de la nota actual
+        //    0x08: segundo contador que se va decrementando sólo cuando 0x11 es 0, y cuando llega a 0 se pueden producir cambios en frecuencia base de las notas generadas
+        //    0x09: indice en tabla 0x05-0x06
+        //    0x0a-0x0b: dirección con los datos que producen cambios en el volumen y el generador de envolventes
+        //        si encuentra 0x7f: contadores al maximo y no cambia el volumen de las notas (entrada de 1 byte)
+        //        si encuentra 0x80: reinicia el índice en la tabla y sigue procesando (entrada de 1 byte)
+        //        en otro caso: actualiza los contadores y el volumen base (entrada de 3 bytes)
+        //    0x0c: indice en tabla 0x0a-0x0b
+        //    0x0d: segundo contador que se va decrementando sólo cuando 0x12 es 0, y cuando llega a 0 se pueden producir cambios en el volumen y el generador de envolventes
+        //    0x0e: registro principal de control
+        //                bit 0 = si es 1 indica que el canal de música está activo y hay que procesarlo
+        //                bit 1 = si es 0 no se activa el generador de ruido
+        //                bit 2 = si es 1 no entra a la sección de actualización de envolventes y modificación del tono de las notas
+        //                bit 3 = si es 1, hay que actualizar el periodo del generador de ruido
+        //                bit 4 = si vale 0 se usa el volumen de 0x07, en otro caso se deja en manos del generador de envolventes
+        //                bit 5 = cuando vale 1 hay que fijar el volumen o las envolventes
+        //                bit 6 = si vale 1 indica si se actualiza la frecuencia de la nota en el PSG
+        //                bit 7 = si vale 1 indica q se leyo 0x0f y no una nota?
+        //    0x0f: valor al que poner el contador 0x11 cuando llega a 0
+        //    0x10: valor al que poner el contador 0x12 cuando llega a 0
+        //    0x11: contador que se va decrementando y al llegar a 0 se pueden producir cambios en la frecuencia base de las notas generadas
+        //    0x12: contador que se va decrementando y al llegar a 0 se pueden producir cambios en el volumen y el generador de envolventes
+        //    0x13: valor para el cambio del tono de las notas
+        //    0x14: incremento de volumen
+        //    0x15: registro
+        //0x16: no usado???
+        //    0x17: no usado???
+
+        var RegistroControlL:UInt8
+        var FrecuenciaC:UInt8=0
+        var AmplitudC:UInt8=0
+        var EnvolventeC:UInt8=0
+        var MezcladorC:UInt8=0
+        var RegistroA:UInt8=0
+
+        //lee el registro de control
+        RegistroControlL = TablaDatosSonidos_0F96[PunteroDatosSonidosIX + 0x0E - 0x0F96]
+        //si el canal no está activo, sale
+    if !LeerBitByte(RegistroControlL, 0) { return }
+        //si no hay que actualizar las notas ni las envolventes, sale
+        if LeerBitByte(RegistroControlL, 2) { return }
+        if LeerBitByte(RegistroControlL, 7) { return }
+        //10DC
+        if LeerBitByte(RegistroControlL, 6) {
+            //10E0
+            //si el bit 6 = 1, escribir frecuencia de la nota en el PSG
+            //lee la frecuencia de la nota (parte inferior)
+            FrecuenciaC = TablaDatosSonidos_0F96[PunteroDatosSonidosIX + 0x03 - 0x0F96]
+            //lee el registro del PSG a escribir (frecuencia del canal (8 bits inferiores))
+            RegistroA = TablaDatosSonidos_0F96[PunteroDatosSonidosIX - 0x03 - 0x0F96]
+            //escribe al registro número 'a' del PSG el valor 'c'
+            EscribirRegistroValorPSG_134E(RegistroA, FrecuenciaC)
+            //10E9
+            //lee la frecuencia de la nota (parte superior)
+            FrecuenciaC = TablaDatosSonidos_0F96[PunteroDatosSonidosIX + 0x04 - 0x0F96]
+            //registro del PSG a escribir (frecuencia del canal (4 bits superiores))
+            RegistroA = RegistroA + 1
+            EscribirRegistroValorPSG_134E(RegistroA, FrecuenciaC)
+        }
+        //10F3
+        if LeerBitByte(RegistroControlL, 5) {
+            //si el bit 5 = 1, escribir volumen o envolvente deseada
+            //10F7
+            if LeerBitByte(RegistroControlL, 4) == false {
+                //si el bit 4 vale 0 se usa el volumen de 0x07
+                //10FB
+                //lee el registro del PSG a escribir (amplitud))
+                RegistroA = TablaDatosSonidos_0F96[PunteroDatosSonidosIX - 0x02 - 0x0F96]
+                //lee el volumen
+                AmplitudC = TablaDatosSonidos_0F96[PunteroDatosSonidosIX + 0x07 - 0x0F96]
+                //escribe en el PSG el nuevo volumen
+                EscribirRegistroValorPSG_134E(RegistroA, AmplitudC)
+            } else {
+                //si el bit 4 != 0, se generan envolventes para el volumen
+                //1106
+                //lee el byte bajo del periodo de la envolvente
+                FrecuenciaC = TablaDatosSonidos_0F96[0x0F99 - 0x0F96]
+                //registro PSG del control de envolventes
+                RegistroA = 0x0B
+                EscribirRegistroValorPSG_134E(RegistroA, FrecuenciaC)
+                //110F
+                //lee el byte alto del periodo de la envolvente
+                FrecuenciaC = TablaDatosSonidos_0F96[0x0F9A - 0x0F96]
+                RegistroA = 0x0C
+                //escribe el nuevo periodo de la envolvente (en unidades de 128 microsegundos)
+                EscribirRegistroValorPSG_134E(RegistroA, FrecuenciaC)
+                //1118
+                //lee el tipo de envolvente y lo escribe en el PSG
+                EnvolventeC = TablaDatosSonidos_0F96[0x0F9B - 0x0F96]
+                RegistroA = 0x0D
+                EscribirRegistroValorPSG_134E(RegistroA, FrecuenciaC)
+                //1121
+                //lee el registro del PSG a escribir (amplitud))
+                RegistroA = TablaDatosSonidos_0F96[PunteroDatosSonidosIX - 0x02 - 0x0F96]
+                //deja el volumen en manos del generador de envolventes
+                AmplitudC = 0x10
+                EscribirRegistroValorPSG_134E(RegistroA, AmplitudC)
+            }
+        }
+        //1129
+        MezcladorC = 7
+        if LeerBitByte(RegistroControlL, 1) != false {
+            //si el bit 1 de 0x0e es 1, activa el generador de ruido
+            //112F
+            MezcladorC = 0x3F
+            if LeerBitByte(RegistroControlL, 3) != false {
+                //si el bit 3 de 0x0e es 1 actualizar el periodo del generador de ruido
+                //1135
+                //fija el periodo del generador de ruido
+                FrecuenciaC = TablaDatosSonidos_0F96[0x0F9C - 0x0F96]
+                RegistroA = 6
+                EscribirRegistroValorPSG_134E(RegistroA, FrecuenciaC)
+            }
+        }
+        //1140
+        //se hace un AND con los bits que representan al canal
+        MezcladorC = MezcladorC & TablaDatosSonidos_0F96[PunteroDatosSonidosIX - 0x01 - 0x0F96]
+        //actualiza la configuración del generador de ruido
+        TablaDatosSonidos_0F96[0x0F96 - 0x0F96] = TablaDatosSonidos_0F96[0x0F96 - 0x0F96] ^ MezcladorC
+    }
+
+    public func IniciarCanal_104F( _ PunteroCanalIX:Int, _ PunteroDatosSonidoHL:Int) {
+        //rellena parte de la entrada seleccionada
+        //activa el sonido
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x0E - 0x0F96] = 5
+        //guarda la dirección de los datos de la música
+        Escribir16(&TablaDatosSonidos_0F96, PunteroCanalIX + 0 - 0x0F96, PunteroDatosSonidoHL)
+        //fija la duración de la nota
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x02 - 0x0F96] = 1
+    }
+
+
+    public func LeerByteTablaSonidos( _ PunteroHL:Int) -> UInt8 {
+        if PunteroHL < 0x8000 { //tabla de sonidos
+            return TablaTonosNotasVoces_1388[PunteroHL - 0x1388]
+        } else { //tabla de melodía del pergamino
+            return TablaMusicaPergamino_8000[PunteroHL - 0x8000]
+        }
+    }
+
+    public func LeerEnvolventeVolumen_129B( _ PunteroCanalIX:Int) {
+        //lee valores de la tabla de envolventes y volumen base y actualiza los registros
+        var PunteroSonidoHL:Int = 0
+        var ValorA:UInt8=0
+        while true {
+            PunteroSonidoHL = Leer16(TablaDatosSonidos_0F96, PunteroCanalIX + 0x0A - 0x0F96) + Int(TablaDatosSonidos_0F96[PunteroCanalIX + 0x0C - 0x0F96])
+            ValorA = LeerByteTablaSonidos(PunteroSonidoHL)
+            if ValorA == 0x7F {
+                //12AC
+                //contadores al máximo y sin modificar el volumen de las notas
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x12 - 0x0F96] = 0xFF
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x10 - 0x0F96] = 0xFF
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x0D - 0x0F96] = 0xFF
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x14 - 0x0F96] = 0
+                return
+            }
+            //12BC
+            if ValorA != 0x80 { break }
+            //12C0
+            //reinicia el índice en la tabla y sigue procesando
+            TablaDatosSonidos_0F96[PunteroCanalIX + 0x0C - 0x0F96] = 0
+        }
+        //12C6
+        if LeerBitByte(ValorA, 7) != false {
+            //actualiza el periodo y tipo de envolvente
+            //12CA
+            ValorA = ValorA & 0x0F
+            //actualiza el tipo de envolvente
+            TablaDatosSonidos_0F96[0x0F9B - 0x0F96] = ValorA
+            PunteroSonidoHL = PunteroSonidoHL + 1
+            ValorA = LeerByteTablaSonidos(PunteroSonidoHL)
+            //actualiza el periodo de la envolvente
+            TablaDatosSonidos_0F96[0x0F99 - 0x0F96] = ValorA
+            //12D4
+            PunteroSonidoHL = PunteroSonidoHL + 1
+            ValorA = LeerByteTablaSonidos(PunteroSonidoHL)
+            TablaDatosSonidos_0F96[0x0F9A - 0x0F96] = ValorA
+            //12D9
+            PunteroSonidoHL = PunteroSonidoHL + 1
+            //lee el nuevo contador
+            ValorA = LeerByteTablaSonidos(PunteroSonidoHL)
+            TablaDatosSonidos_0F96[PunteroCanalIX + 0x12 - 0x0F96] = ValorA
+            TablaDatosSonidos_0F96[PunteroCanalIX + 0x0D - 0x0F96] = 1
+            //deja el volumen en manos del generador de envolventes
+            SetBitArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x0E, 4)
+            //avanza el índice de la tabla en 4
+            ValorA = TablaDatosSonidos_0F96[PunteroCanalIX + 0x0C - 0x0F96] + 4
+        } else {
+            //12ED
+            //actualiza el segundo contador
+            TablaDatosSonidos_0F96[PunteroCanalIX + 0x0D - 0x0F96] = ValorA
+            PunteroSonidoHL = PunteroSonidoHL + 1
+            ValorA = LeerByteTablaSonidos(PunteroSonidoHL)
+            //actualiza el volumen base
+            TablaDatosSonidos_0F96[PunteroCanalIX + 0x14 - 0x0F96] = ValorA
+            PunteroSonidoHL = PunteroSonidoHL + 1
+            ValorA = LeerByteTablaSonidos(PunteroSonidoHL)
+            //actualiza el primer contador y su límite
+            TablaDatosSonidos_0F96[PunteroCanalIX + 0x10 - 0x0F96] = ValorA
+            TablaDatosSonidos_0F96[PunteroCanalIX + 0x12 - 0x0F96] = ValorA
+            //avanza el índice de la tabla en 3
+            ValorA = TablaDatosSonidos_0F96[PunteroCanalIX + 0x0C - 0x0F96] + 3
+        }
+        //1302
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x0C - 0x0F96] = ValorA
+    }
+
+    public func ActualizarEnvolventeVolumen_1275( _ PunteroCanalIX:Int) {
+        //comprueba si hay que actualizar la generación de envolventes y el volumen
+        var VolumenA:UInt8=0
+        DecByteArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x12 - 0x0F96)
+        if TablaDatosSonidos_0F96[PunteroCanalIX + 0x12 - 0x0F96] != 0 { return }
+        DecByteArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x0D - 0x0F96)
+        if TablaDatosSonidos_0F96[PunteroCanalIX + 0x0D - 0x0F96] == 0 {
+            //actualiza unos registros de envolventes y el volumen
+            LeerEnvolventeVolumen_129B(PunteroCanalIX)
+        }
+        //127F
+        //indica que hay que fijar las envolventes y el volumen
+        SetBitArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x0E - 0x0F96, 5)
+        //vuelve a cargar el contador para la generación de envolventes y modificación de volumen
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x12 - 0x0F96] = TablaDatosSonidos_0F96[PunteroCanalIX + 0x10 - 0x0F96]
+        //si se está usando el generador de envolventes, sale
+        if LeerBitArray(TablaDatosSonidos_0F96, PunteroCanalIX + 0x0E - 0x0F96, 4) != false { return }
+        //128E
+        //lee el volumen de la nota
+        VolumenA = TablaDatosSonidos_0F96[PunteroCanalIX + 0x07 - 0x0F96]
+        //le suma el incremento de volumen
+        if TablaDatosSonidos_0F96[PunteroCanalIX + 0x14 - 0x0F96] != 0xFF {
+            VolumenA = VolumenA + TablaDatosSonidos_0F96[PunteroCanalIX + 0x14 - 0x0F96]
+        } else {
+            VolumenA = VolumenA - 1
+        }
+
+        //limita al máximo valor posible
+        VolumenA = VolumenA & 0x0F
+        //actualiza el volumen de la nota
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x07 - 0x0F96] = VolumenA
+    }
+
+    public func ActualizarTono_1231( _ PunteroCanalIX:Int) {
+        //comprueba si hay que actualizar el tono base de las notas
+        var PunteroSonidoHL:Int = 0
+        var ValorA:UInt8=0
+        //lee el índice de la tabla y la dirección de los datos
+        while true {
+            PunteroSonidoHL = Leer16(TablaDatosSonidos_0F96, PunteroCanalIX + 0x05 - 0x0F96) + Int(TablaDatosSonidos_0F96[PunteroCanalIX + 0x09 - 0x0F96])
+            ValorA = LeerByteTablaSonidos(PunteroSonidoHL)
+            if ValorA == 0x7F {
+                //1242
+                //contadores al máximo
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x11 - 0x0F96] = 0xFF
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x0F - 0x0F96] = 0xFF
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x08 - 0x0F96] = 0xFF
+                //no se modifica el tono de las notas
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x13 - 0x0F96] = 0
+                return
+            }
+            //1252
+            if ValorA != 0x80 { break }
+            //1256
+            //limpia el índice de la tabla y vuelve a procesar los datos a partir de esa dirección
+            TablaDatosSonidos_0F96[PunteroCanalIX + 0x09 - 0x0F96] = 0
+        }
+        //125C
+        //en otro caso actualiza los valores
+        //actualiza el contador de cambios
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x08 - 0x0F96] = ValorA
+        PunteroSonidoHL = PunteroSonidoHL + 1
+        ValorA = LeerByteTablaSonidos(PunteroSonidoHL)
+        //actualiza la modificación de tono
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x13 - 0x0F96] = ValorA
+        PunteroSonidoHL = PunteroSonidoHL + 1
+        ValorA = LeerByteTablaSonidos(PunteroSonidoHL)
+        //inicia el contador principal y su límite
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x0F - 0x0F96] = ValorA
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x11 - 0x0F96] = ValorA
+        //apunta a la siguiente entrada de la tabla
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x09 - 0x0F96] = TablaDatosSonidos_0F96[PunteroCanalIX + 0x09 - 0x0F96] + 3
+    }
+
+    public func GuardarNotaCanal2_131B( _ PunteroSonidoBC:Int) {
+        //graba una nueva dirección de notas en el canal 2 y la activa
+        //graba una nueva dirección de notas en el canal 2
+        Escribir16(&TablaDatosSonidos_0F96, 0x0FB8 - 0x0F96, PunteroSonidoBC)
+        //+ 0x0e = 5
+        TablaDatosSonidos_0F96[0x0FC6 - 0x0F96] = 5
+        //pone una duración de nota de 1 unidad
+        TablaDatosSonidos_0F96[0x0FBA - 0x0F96] = 1
+    }
+
+    public func GuardarNotaCanal3_132A( _ PunteroSonidoBC:Int) {
+        //graba una nueva dirección de notas en el canal 3 y la activa
+        //graba una nueva dirección de notas en el canal 3
+        Escribir16(&TablaDatosSonidos_0F96, 0x0FD0 - 0x0F96, PunteroSonidoBC)
+        //y activa el canal 3
+        TablaDatosSonidos_0F96[0x0FDE - 0x0F96] = 5
+        //pone una duración de nota de 1 unidad
+        TablaDatosSonidos_0F96[0x0FD2 - 0x0F96] = 1
+    }
+
+    public func GuardarTono_1339( _ PunteroSonidoBC:Int, _ PunteroCanalIX:Int) {
+        //graba una nueva dirección de tono base de las notas
+        //guarda lo leido en la tabla de cambios del tono base
+        Escribir16(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x05 - 0x0F96, PunteroSonidoBC)
+    }
+
+    public func HacerNadaSonido_1347() {
+        //no hace nada
+    }
+
+    public func GuardarVolumen_1340( _ PunteroSonidoBC:Int, _ PunteroCanalIX:Int) {
+        //graba una nueva dirección de cambios en el volumen y el generador de envolventes
+        //guarda lo leido en la tabla de cambios en el volumen y el generador de envolventes
+        Escribir16(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x0A - 0x0F96, PunteroSonidoBC)
+    }
+
+public func CambiarDireccionMusica_1318( _ PunteroSonidoDE: inout Int, _ PunteroSonidoBC:Int) {
+        //cambia de por bc (cambia a otra posición de la tabla de música)
+        PunteroSonidoDE = PunteroSonidoBC
+    }
+
+public func ProcesarCanalSonido_114C( _ PunteroCanalIX:Int) {
+        //procesa un canal de sonido
+        var ValorA:UInt8=0
+        var ValorB:UInt8=0
+        var ValorC:UInt8=0
+        var NotaC:UInt8=0
+        var ValorBC:Int = 0
+        var ValorAInt:Int = 0
+        var PunteroSonidoDE:Int = 0
+        var PunteroSonidoHL:Int = 0
+        ValorA = TablaDatosSonidos_0F96[PunteroCanalIX + 0x0E - 0x0F96]
+        //comprueba si la entrada esta activa
+        //si no es así sale
+        if LeerBitByte(ValorA, 0) == false { return }
+        //(10000111) ignora los bits que no interesan y actualiza el valor
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x0E - 0x0F96] = ValorA & 0x87
+        //carga el tempo. si es igual a 0 procesa la parte de actualización de tonos
+        if TablaDatosSonidos_0F96[0x0F98 - 0x0F96] == 0 {
+            //115E
+            //decrementa la duración de la nota actual
+            TablaDatosSonidos_0F96[PunteroCanalIX + 0x02 - 0x0F96] = TablaDatosSonidos_0F96[PunteroCanalIX + 0x02 - 0x0F96] - 1
+            if TablaDatosSonidos_0F96[PunteroCanalIX + 0x02 - 0x0F96] == 0 {
+                //1164
+                //si ha concluido
+                //marca entrada para ser procesada
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x0E - 0x0F96] = 1
+                //carga en de la dirección de la última nota
+                PunteroSonidoDE = Leer16(TablaDatosSonidos_0F96, PunteroCanalIX + 0x00 - 0x0F96)
+                //1173
+                //compara el byte leido con los comandos posibles
+                bucle: while true {
+                    ValorA = LeerByteTablaSonidos(PunteroSonidoDE)
+                    if ValorA == 0xFE || ValorA == 0xFD || ValorA == 0xFB || ValorA == 0xFC || ValorA == 0xFA || ValorA == 0xF9 {
+                        //1180
+                        ValorC = LeerByteTablaSonidos(PunteroSonidoDE + 1)
+                        ValorB = LeerByteTablaSonidos(PunteroSonidoDE + 2)
+                        PunteroSonidoDE = PunteroSonidoDE + 3
+                        ValorBC = Nibbles2Integer(HighNibble: ValorB, LowNibble: ValorC)
+                    }
+                    //; tabla de 6 entradas(relacionada con 0x114c y tablas 0x0fac)
+                    //; formato
+                    //    Byte 1: patron a buscar
+                    //    bytes 2 y 3: dirección a la que saltar si se encuentra el patrón
+                    //1306:           FE 131B -> graba una nueva dirección de notas en el canal 2 y la activa
+                    //        FD 132A -> graba una nueva dirección de notas en el canal 3 y la activa
+                    //        FB 1339 -> graba una nueva dirección de tono base de las notas
+                    //        FC 1347 -> no hace nada
+                    //        FA 1340 -> graba una nueva dirección de cambios en el volumen y el generador de envolventes
+                    //        F9 1318 -> cambia de por bc (cambia a otra posición de la tabla de música)
+                    switch ValorA {
+                        case 0xFE:
+                            GuardarNotaCanal2_131B(ValorBC)
+                        case 0xFD:
+                            GuardarNotaCanal3_132A(ValorBC)
+                        case 0xFB:
+                            GuardarTono_1339(ValorBC, PunteroCanalIX)
+                        case 0xFC:
+                            HacerNadaSonido_1347()
+                        case 0xFA:
+                            GuardarVolumen_1340(ValorBC, PunteroCanalIX)
+                        case 0xF9:
+                            CambiarDireccionMusica_1318(&PunteroSonidoDE, ValorBC)
+                        default:
+                            break bucle
+                    }
+                }
+                //118d
+                //aquí llega después de procesar los comandos
+                if ValorA == 0xFF {
+                    //118F
+                    //si a = 0xff, terminan las notas
+                    //marca el canal como no activo
+                    TablaDatosSonidos_0F96[PunteroCanalIX + 0x0E - 0x0F96] = 0
+                    return
+                }
+                //1196
+                //sigue procesando la entrada
+                PunteroSonidoHL = PunteroSonidoDE
+                //pone valores para que se produzcan cambios en la generación de envolventes, el volumen y en la frecuencia base
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x11 - 0x0F96] = 1
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x08 - 0x0F96] = 1
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x12 - 0x0F96] = 1
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x0D - 0x0F96] = 1
+                //inicia los índices en las tablas de generación de envolventes y de frecuencia base
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x0C - 0x0F96] = 0
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x09 - 0x0F96] = 0
+                //lee el primer byte de los datos (nota + octava)
+                NotaC = LeerByteTablaSonidos(PunteroSonidoHL)
+                //guarda el segundo byte de los datos (duración de la nota)
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x02 - 0x0F96] = LeerByteTablaSonidos(PunteroSonidoHL + 1)
+                PunteroSonidoHL = PunteroSonidoHL + 2
+                if LeerBitByte(NotaC, 7) == true {
+                    //11B7
+                    //si el bit 7 del primer byte = 1, se activa el generador de ruido
+                    //se lee el periodo del generador de ruido y se guarda
+                    TablaDatosSonidos_0F96[0xF9C - 0x0F96] = LeerByteTablaSonidos(PunteroSonidoHL)
+                    //activa los bits 1 y 3 (generador de ruido y actualización de periodo de ruido)
+                    SetBitArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x0E - 0x0F96, 1)
+                    SetBitArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x0E - 0x0F96, 3)
+                    PunteroSonidoHL = PunteroSonidoHL + 1
+                }
+                //11C4
+                //pone el volumen del canal a 0
+                TablaDatosSonidos_0F96[PunteroCanalIX + 0x07 - 0x0F96] = 0
+                //guarda la dirección actual de notas
+                Escribir16(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x00 - 0x0F96, PunteroSonidoHL)
+                //activa el bit 7 por si se el byte uno no contiene una nota
+                SetBitArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x0E - 0x0F96, 7)
+                //11D2
+                //si el byte leido & 0x0f = 0x0f, sale
+                ValorA = NotaC & 0x0F
+                if ValorA == 0x0F { return }
+                //11D8
+                //desactiva el bit 7 de 0x0e
+                ClearBitArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x0E - 0x0F96, 7)
+                //11DC
+                //si se llega hasta aquí, en a hay una nota de la escala cromática
+                //ajusta entrada en tabla de tonos de las notas
+                //de = tono de la nota
+                PunteroSonidoDE = Leer16(TablaDatosSonidos_0F96, 0x0FE5 + 2 * Int(ValorA) - 0x0F96)
+                //se queda con los 4 bits más significativos del primer byte leido
+                ValorA = NotaC >> 4
+                //obtiene la octava de la nota
+                ValorA = ValorA & 0x07
+                //hl = hl / (2 ^ a) (ajusta el tono de la octava)
+                PunteroSonidoHL = PunteroSonidoDE >> ValorA
+                //11F1
+                //guarda el resultado
+                Escribir16(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x03 - 0x0F96, PunteroSonidoHL)
+            }
+        }
+        //11F7
+        //sale si lo que leyó no era una nota
+        if LeerBitArray(TablaDatosSonidos_0F96, PunteroCanalIX + 0x0E - 0x0F96, 7) != false { return }
+        //sale si no hay que actualizar envolventes ni el volumen
+        if LeerBitArray(TablaDatosSonidos_0F96, PunteroCanalIX + 0x0E - 0x0F96, 2) != false { return }
+        //1201
+        //actualiza unos registros (comprueba si hay que actualizar la generación de envolventes y el volumen)
+        ActualizarEnvolventeVolumen_1275(PunteroCanalIX)
+        //decrementa el contador y si no es 0, sale
+        DecByteArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x11 - 0x0F96)
+        if TablaDatosSonidos_0F96[PunteroCanalIX + 0x11 - 0x0F96] != 0 { return }
+        //1208
+        DecByteArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x08 - 0x0F96)
+        if TablaDatosSonidos_0F96[PunteroCanalIX + 0x08 - 0x0F96] == 0 {
+            //actualiza unos registros (comprueba si hay que actualizar el tono base de las notas)
+            ActualizarTono_1231(PunteroCanalIX)
+        }
+        //120E
+        //reinicia  los contadores
+        TablaDatosSonidos_0F96[PunteroCanalIX + 0x11 - 0x0F96] = TablaDatosSonidos_0F96[PunteroCanalIX + 0x0F - 0x0F96]
+        //obtiene la modificación del tono
+        ValorA = TablaDatosSonidos_0F96[PunteroCanalIX + 0x13 - 0x0F96]
+        ValorAInt = SignedByte2Int(ValorA)
+        //hl = frecuencia de la nota
+        PunteroSonidoHL = Leer16(TablaDatosSonidos_0F96, PunteroCanalIX + 0x03 - 0x0F96)
+        PunteroSonidoHL = PunteroSonidoHL + ValorAInt
+        //actualiza la frecuencia de la nota
+        Escribir16(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x03 - 0x0F96, PunteroSonidoHL)
+        //indica que hay que cambiar la frecuencia del PSG
+        SetBitArray(&TablaDatosSonidos_0F96, PunteroCanalIX + 0x0E - 0x0F96, 6)
+    }
+
+    public func ActualizarSonidos_1060() {
+        //actualiza la música si fuera necesario
+        var ValorA:UInt8=0
+        var Limite:Float
+        //si ninguna de las 3 entradas tenían activo el bit 0, finaliza la interrupcion
+        if ((TablaDatosSonidos_0F96[0x0FAE - 0x0F96] | TablaDatosSonidos_0F96[0x0FC6 - 0x0F96] | TablaDatosSonidos_0F96[0x0FDE - 0x0F96]) & 0x01) == 0 {
+            RelojSonido.Stop()
+            return
+        }
+        if RelojSonido.Active == false { RelojSonido.Start()}
+        Limite = Float(TempoMusica_1086) * 3.45  //ms
+        if Float(RelojSonido.EllapsedMicroseconds()/1000) > Limite {
+            ValorA = 0
+            RelojSonido.Start()
+        } else {
+            ValorA = TempoMusica_1086 //- TempoMusica_1086 * RelojSonido.ElapsedMilliseconds / Limite + 1
+        }
+        //1079
+        //rutina que actualiza la música (según valga 0x0f98, el tempo es mayor o menor)
+        //ValorA = TablaDatosSonidos_0F96[&H0F98 - &H0F96)
+        //decrementa el tempo de la música, pero lo mantiene entre 0 y [0x1086]
+        if ValorA == 0 {
+            //ValorA = TempoMusica_1086
+        } else {
+            //ValorA = ValorA - 1
+        }
+
+        TablaDatosSonidos_0F96[0x0F98 - 0x0F96] = ValorA
+        //108A
+        //activa los tonos y el generador de ruido para todos los canales
+        TablaDatosSonidos_0F96[0x0F96 - 0x0F96] = 0x3F
+        //procesa la primera entrada de sonido
+        ProcesarCanalSonido_114C(0x0FA0)
+        //procesa la segunda entrada de sonido
+        ProcesarCanalSonido_114C(0x0FB8)
+        //procesa la tercera entrada de sonido
+        ProcesarCanalSonido_114C(0x0FD0)
+        //10A4
+        //escribe los datos del canal 0 en el PSG
+        EscribirDatosSonido_10D0(0x0FA0)
+        //escribe los datos del canal 1 en el PSG
+        EscribirDatosSonido_10D0(0x0FB8)
+        //escribe los datos del canal 2 en el PSG
+        EscribirDatosSonido_10D0(0x0FD0)
+        //10B9
+        //si la máscara no ha cambiado, sale
+        if TablaDatosSonidos_0F96[0x0F96 - 0x0F96] == TablaDatosSonidos_0F96[0x0F97 - 0x0F96] { return }
+        //10C0
+        //si la máscara ha cambiado, fija el estado de los canales
+        //copia la máscara para evitar fijar el estado si no hay modificaciones
+        TablaDatosSonidos_0F96[0x0F97 - 0x0F96] = TablaDatosSonidos_0F96[0x0F96 - 0x0F96]
+        //escribe en el PSG en qué canales están activos los tonos y el generador de ruido
+        EscribirRegistroValorPSG_134E(7, TablaDatosSonidos_0F96[0x0F96 - 0x0F96])
+    }
+
+    public func Interrupcion_2D48() {
+        //no usar.sustituida por tm_tick
+    }
+
+    public func ReproducirSonidoMelodia_1007() {
+        //apunta al registro de control del canal 3
+        if TablaDatosSonidos_0F96[0x0FD0 + 0x0E - 0x0F96] != 0 { return }
+        IniciarCanal_104F(0x0FD0, 0x13FE)
+    }
+
+
+    public func ReproducirSonidoPuertaSeverino_102A() {
+        IniciarCanal_104F(0x0FB8, 0x1550)
+    }
+
+    public func ReproducirSonidoAbrir_101B() {
+        //sonido ??? por el canal 2
+        //apunta a la entrada 2
+        IniciarCanal_104F(0x0FB8, 0x14E7)
+    }
+
+    public func ReproducirSonidoCerrar_1016() {
+        //sonido ??? por el canal 2
+        //apunta a la entrada 2
+        IniciarCanal_104F(0x0FB8, 0x1560)
+    }
+
+    public func ReproducirSonidoCampanas_100C() {
+        //sonido ??? por el canal 1
+        IniciarCanal_104F(0x0FA0, 0x14F3)
+    }
+
+    public func ReproducirSonidoCampanillas_1011() {
+        //sonido de campanas después de la espiral cuadrada por el canal 1
+        IniciarCanal_104F(0x0FA0, 0x14BA)
+    }
+
+    public func ReproducirSonidoCoger_1025() {
+        IniciarCanal_104F(0x0FB8, 0x149F)
+    }
+
+    public func ReproducirSonidoDejar_102F() {
+        IniciarCanal_104F(0x0FB8, 0x14A8)
+    }
+
+    public func ReproducirSonidoCogerDejar_5088(ObjetosAntesA:UInt8, ObjetosDespuesC:UInt8) {
+        if ((ObjetosAntesA ^ ObjetosDespuesC) & ObjetosDespuesC) == 0 {
+            //se ha dejado un objeto
+            ReproducirSonidoDejar_102F()
+        } else {
+            //se ha cogido un objeto
+            ReproducirSonidoCoger_1025()
+        }
+    }
+
+    public func ReproducirPasos_1002() {
+        //sonido de guillermo moviéndose por el canal 3
+        IniciarCanal_104F(0x0FD0, 0x1496)
+    }
+
+    public func ReproducirSonidoAbrirEspejoCanal1_0FFD() {
+        //sonido ??? por el canal 1
+        IniciarCanal_104F(0x0FA0, 0x1480)
+    }
+
+    public func ReproducirSonidoVoz_1020() {
+        //apunta a los datos de inicialización y al canal 3
+        IniciarCanal_104F(0x0FD0, 0x14B1)
+    }
+
+    public func ReproducirSonidoPergamino() {
+        IniciarCanal_104F(0x0FA0, 0x8000) // inicializa la tabla del sonido y habilita las interrupciones
+    }
+
+    public func ReproducirSonidoPergaminoFinal() {
+        //los datos del pergamino inicial y final tienen la misma dirección pero están en
+        //distintos bancos de memoria. Como del manuscrito final no se va a ningún otro
+        //sitio, se sobreescriben los datos del manuscrito inicial
+        var Contador:Int = 0
+        for Contador in 0x000...0x2FF {
+            TablaMusicaPergamino_8000[Contador] = TablaDatosPergaminoFinal_8000[Contador]
+        }
+        IniciarCanal_104F(0x0FA0, 0x8000)
+    }
+
+
+    public func ApagarSonido_1376() {
+        //para la generación de sonido
+        TablaDatosSonidos_0F96[0x0FAE - 0x0F96] = 0x84
+        TablaDatosSonidos_0F96[0x0FC6 - 0x0F96] = 0x84
+        TablaDatosSonidos_0F96[0x0FDE - 0x0F96] = 0x84
+        //0011 1111 (apaga los 3 canales de sonido), registro 7 (PSG enable)
+        EscribirRegistroValorPSG_134E(7, 0x3F)
+    }
+
+    public func PararTareaSonido() {
+        CancelarTareaSonido = true
+        while true {
+            usleep(1000)
+            if TareaSonidoActiva == false { break }
+            usleep(1000)
+        }
     }
 
     
+    
+    
+    
+
+    //tercia-------------------------------------------------------------------------------------
 }
 

@@ -18,6 +18,7 @@
 		3B47AD7C2436322600FF1147 /* Funciones.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3B47AD742436322600FF1147 /* Funciones.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3B47AD822436326100FF1147 /* Funciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47AD812436326100FF1147 /* Funciones.swift */; };
 		3B4F0149241D645300DFDEDF /* StopWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4F0148241D645300DFDEDF /* StopWatch.swift */; };
+		3B5100A9244B0C7F005AE9E6 /* Senoidal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5100A8244B0C7F005AE9E6 /* Senoidal.swift */; };
 		3B76A3E22436390D001FF8CB /* Teclado.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B47AD842436365500FF1147 /* Teclado.swift */; };
 		3B76A3E424365C96001FF8CB /* Depuracion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B76A3E324365C96001FF8CB /* Depuracion.swift */; };
 		3B76A3E624365E7F001FF8CB /* DoubleBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B76A3E524365E7F001FF8CB /* DoubleBuffer.swift */; };
@@ -78,6 +79,7 @@
 		3B47AD812436326100FF1147 /* Funciones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Funciones.swift; sourceTree = "<group>"; };
 		3B47AD842436365500FF1147 /* Teclado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teclado.swift; sourceTree = "<group>"; };
 		3B4F0148241D645300DFDEDF /* StopWatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopWatch.swift; sourceTree = "<group>"; };
+		3B5100A8244B0C7F005AE9E6 /* Senoidal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Senoidal.swift; sourceTree = "<group>"; };
 		3B76A3E324365C96001FF8CB /* Depuracion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Depuracion.swift; sourceTree = "<group>"; };
 		3B76A3E524365E7F001FF8CB /* DoubleBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleBuffer.swift; sourceTree = "<group>"; };
 		3B76A408243A355D001FF8CB /* ABADIA0.BIN */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ABADIA0.BIN; sourceTree = "<group>"; };
@@ -138,9 +140,10 @@
 			isa = PBXGroup;
 			children = (
 				3BB9553324213F4200AE2F58 /* AY8912.swift */,
-				3BB95531242137DB00AE2F58 /* pReproducible.swift */,
-				3BB9552F2421376300AE2F58 /* WaveOut.swift */,
 				3B76A3E524365E7F001FF8CB /* DoubleBuffer.swift */,
+				3BB95531242137DB00AE2F58 /* pReproducible.swift */,
+				3B5100A8244B0C7F005AE9E6 /* Senoidal.swift */,
+				3BB9552F2421376300AE2F58 /* WaveOut.swift */,
 			);
 			path = Sonido;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				AE3233E11F8973E70068BA8F /* Abadia.swift in Sources */,
 				3B47AD6D243396ED00FF1147 /* CGA.swift in Sources */,
 				3B76A3E624365E7F001FF8CB /* DoubleBuffer.swift in Sources */,
+				3B5100A9244B0C7F005AE9E6 /* Senoidal.swift in Sources */,
 				3B47AD65243107F500FF1147 /* Color.swift in Sources */,
 				AE3233D11F8972EA0068BA8F /* ViewController.swift in Sources */,
 				3B47AD6B243108DE00FF1147 /* UIImage+Bitmap.swift in Sources */,

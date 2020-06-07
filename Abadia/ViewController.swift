@@ -7,13 +7,18 @@
 //
 
 import UIKit
+import AVFoundation
+import Funciones
 
 
 class ViewController: UIViewController {
     let cga:CGA=CGA()
-    let ay8910=AY8912(FMuestreo: 44100)
+    
     let teclado=Teclado()
-    let waveOut=WaveOut()
+    let senoidal:Senoidal=Senoidal()
+    let ay8910=AY8912(FMuestreo: WaveOut.WAVE_FREQ)
+    //lazy var waveOut=WaveOut(Sonido: senoidal)
+    lazy var waveOut=WaveOut(Sonido: ay8910)
     let abadia=Abadia()
 
     let reloj:StopWatch=StopWatch()
@@ -53,6 +58,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //evita el apagado de pantalla
+        UIApplication.shared.isIdleTimerDisabled = true
         //fija la orientación
         let value = UIInterfaceOrientation.landscapeRight.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
@@ -68,17 +75,143 @@ class ViewController: UIViewController {
         let displayLink = CADisplayLink(target: self, selector: #selector(Tick))
         displayLink.add(to: .current, forMode: .common)
         //inicializa el sonido
-        waveOut.Init(Sonido: ay8910)
+        senoidal.DefinirSenoidal(Ampli: 0.5, Interv: 1/Float(WaveOut.WAVE_FREQ), Frec: 1000)
+        //waveOut.Init(Sonido: ay8910)
         //comienza a reproducir el sonido
-        waveOut.Reproducir()
+        waveOut.Abrir()
         
-        var archivo=[UInt8](repeating: 1, count:10)
-        archivo[9]=66
-        var tabla=[UInt8](repeating: 0, count: 5)
-        abadia.CargarTablaArchivo(&archivo, &tabla, 5)
+        
+        let seconds = 2.0//Time To Delay
+        let when = DispatchTime.now() + seconds
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.waveOut.Reproducir()
+        }
+        
+        /*
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4.0) {
+            self.waveOut.Parar()
+            print("Parado")
+        }
+  
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 6.0) {
+            self.waveOut.Reproducir()
+            print("Reproduciendo")
+        }
+
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 8.0) {
+          self.waveOut.Parar()
+          print("Parado")
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 10.0) {
+          self.waveOut.Reproducir()
+          print("Reproduciendo")
+        }
+ */
+        
+        //detecta la activación/desactivación para activar/desactivar el sonido
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(audioRouteChangeListener), name: AVAudioSession.routeChangeNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(audioConfigurationChangeListener), name: NSNotification.Name.AVAudioEngineConfigurationChange, object: nil)
+        
+        var array1:[UInt8]=[0x30, 0x30, 0x30, 0x30, 0x30]
+        var array2:[UInt8]=[0x31, 0x31, 0x31, 0x31, 0x31]
+        let rgb=BGR2RGB(BGR: 0x112233)
+        /*
+        for _ in 0...20 {
+            let nose=Int(round(Float.random(in: 0...1)))
+            print(nose)
+        }*/
+
+        /*
+        ay8910.EscribirRegistro(NumeroRegistro: 0, ValorRegistro: 168)
+        //ay8910.EscribirRegistro(NumeroRegistro: 1, ValorRegistro: 0)
+        //ay8910.EscribirRegistro(NumeroRegistro: 2, ValorRegistro: 0x10)
+        //ay8910.EscribirRegistro(NumeroRegistro: 4, ValorRegistro: 0x4)
+        //AY38910.EscribirRegistro(6, 16)
+        ay8910.EscribirRegistro(NumeroRegistro: 7, ValorRegistro: 0)
+        ay8910.EscribirRegistro(NumeroRegistro: 8, ValorRegistro: 16)
+        //ay8910.EscribirRegistro(NumeroRegistro: 9, ValorRegistro: 15)
+        ay8910.EscribirRegistro(NumeroRegistro: 11, ValorRegistro: 25)
+        ay8910.EscribirRegistro(NumeroRegistro: 12, ValorRegistro: 8)
+        ay8910.EscribirRegistro(NumeroRegistro: 13, ValorRegistro: 8)
+        ay8910.EscribirRegistro(NumeroRegistro: 14, ValorRegistro: 6)
+ */
+        var Contador:Int=0
+        var nose2:UInt8=0
+        /*
+        while true {
+            nose2=UInt8(256*ay8910.Reproducir())
+            Contador+=1
+            if nose2 != 0 {
+                print("777")
+            }
+        }
+        */
+        
         
     }
     
+    
+    @objc func appMovedToBackground() {
+        waveOut.Parar()
+        print ("Parado Background")
+        //waveOut.Cerrar()
+        
+    }
+    
+    @objc func appMovedToForeground() {
+        //waveOut.Reconectar()
+        //waveOut.Abrir()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
+            self.waveOut.Reproducir()
+            print("Foreground Reproduciendo")
+        }
+        
+    }
+    
+    @objc func audioRouteChangeListener() {
+        print("Auriculares")
+        //waveOut.Parar()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
+            self.waveOut.Reproducir()
+            print("Reproduciendo")
+        }
+
+    }
+    
+    @objc func audioConfigurationChangeListener() {
+        
+        /*
+        print("AVAudioEngineChange")
+        sleep(1)
+        waveOut.Pausar()
+        print("Pausado")
+        sleep(1)
+        waveOut.Parar()
+        print("Parado")
+        
+
+
+        sleep(1)
+        
+        waveOut.Reconectar()
+        print("Reconectar")
+        waveOut.Abrir()
+        //waveOut.Reproducir()
+         */
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+            self.waveOut.Reproducir()
+            print("Reproduciendo")
+        }
+        
+    }
 
     //oculta la barra superior del teléfono
     override var prefersStatusBarHidden: Bool {
@@ -92,6 +225,13 @@ class ViewController: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         definirModo(modo: 1)
+        if waveOut.Reproduciendo {
+            waveOut.Parar()
+            print("Touch: Parado")
+        } else {
+            print("Touch: Reproduciendo")
+            waveOut.Reproducir()
+        }
     }
     
     func definirModo(modo: UInt8) {
@@ -191,10 +331,12 @@ class ViewController: UIViewController {
             //reloj.Start()
             //cgaController.LLenarPantalla()
             //reloj.Stop()
-             print (reloj.EllapsedMicroseconds()/1000)
+            //print (reloj.EllapsedMicroseconds()/1000)
             contador=0
         }
     }
-    
+ 
   
 }
+
+
