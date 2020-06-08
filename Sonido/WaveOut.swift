@@ -10,8 +10,8 @@ import Foundation
 import AVFoundation
 
 class WaveOut {
-    public static var WAVE_FREQ:Int=16000 //frecuencia de muestreo
-    private let WAVE_BUFFER_SIZE:Int = 4000
+    public static var WAVE_FREQ:Int=6000 //frecuencia de muestreo
+    private let WAVE_BUFFER_SIZE:Int = 2000
     private var AudioEngine:AVAudioEngine
     private var Player:AVAudioPlayerNode
     private var Mixer:AVAudioMixerNode

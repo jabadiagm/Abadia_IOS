@@ -3,6 +3,17 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "CGA.CopiarBitmapFirmware():CGA.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "BitmapNcolorModo1">
+            </PersistentString>
+            <PersistentString
+               value = "cColores">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "Abadia.CargarArchivo(NombreArchivo:Archivo:):Abadia.swift">
       </ContextState>
       <ContextState
@@ -58,6 +69,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "Teclado.KeyUp(_:):Teclado.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "TeclasFlanco">
+            </PersistentString>
+            <PersistentString
+               value = "TeclasNivel">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "WaveOut.init(Sonido:):WaveOut.swift">
          <PersistentStrings>
             <PersistentString
@@ -71,6 +93,14 @@
             </PersistentString>
             <PersistentString
                value = "WAVE_BUFFER_SIZE">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CGA.DibujarRectangulo(_:_:_:_:_:):CGA.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "cColores">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -96,6 +126,14 @@
          <PersistentStrings>
             <PersistentString
                value = "Estado">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ViewController.touchesBegan(_:with:):ViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "abadia.NumeroHabitacion">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -160,23 +198,26 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "CGAController.drawSomething():CGAController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "Modo">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "AY8912.AY8912InitVolumeTable():AY8912.swift">
       </ContextState>
       <ContextState
          contextName = "Abadia.Tick():Abadia.swift">
          <PersistentStrings>
+            <PersistentString
+               value = "SiguienteTickNombreFuncion">
+            </PersistentString>
             <PersistentString
                value = "SiguienteTickTiempoms">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "AY8912.AY8912InitVolumeTable():AY8912.swift">
+         contextName = "CGAController.drawSomething():CGAController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Modo">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "WaveOut.Tics2Bytes(Tics:):WaveOut.swift">

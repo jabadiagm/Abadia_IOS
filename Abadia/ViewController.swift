@@ -26,6 +26,8 @@ class ViewController: UIViewController {
     var contador:UInt32=0
     var contador2:UInt32=0
     var fps2:UInt8=0
+    
+    private let joystickRadius: Double = 60
 
     
     var bitmapMarco:Bitmap=Bitmap(width: 141, height: 640, color: .black)
@@ -33,6 +35,9 @@ class ViewController: UIViewController {
     private let cgaImageView = UIImageView()
     private let marco1ImageView = UIImageView()
     private let marco2ImageView = UIImageView()
+    
+    private let panGesture = UIPanGestureRecognizer()
+    private let tapGesture = UITapGestureRecognizer()
     
     struct TipoPantalla {
         var Ancho:Int //ancho todal de la pantalla, en píxeles
@@ -71,9 +76,19 @@ class ViewController: UIViewController {
         definirModo(modo: 0)
         //suministra a la abadía los objetos necesarios
         abadia.Init(cga: cga, viewController: self, ay8910: ay8910, teclado: teclado)
+
         //sincroniza el bucle principal del juego con el refresco de pantalla
         let displayLink = CADisplayLink(target: self, selector: #selector(Tick))
         displayLink.add(to: .current, forMode: .common)
+        
+        //gestores de eventos
+        view.addGestureRecognizer(panGesture)
+        panGesture.delegate = self
+
+        //view.addGestureRecognizer(tapGesture)
+        //tapGesture.addTarget(self, action: #selector(procesadorToques))
+        //tapGesture.delegate = self
+        
         //inicializa el sonido
         senoidal.DefinirSenoidal(Ampli: 0.5, Interv: 1/Float(WaveOut.WAVE_FREQ), Frec: 1000)
         //waveOut.Init(Sonido: ay8910)
@@ -224,7 +239,16 @@ class ViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        definirModo(modo: 1)
+        print("touch begin")
+        for touch in touches {
+            let tecla = pixeles2Area(coordenadas2Pixeles(touch.location(in: view)))
+            teclado.KeyDown(tecla)
+        }
+        abadia.CambioPantalla_2DB8 = true
+        abadia.PunteroPantallaActual_156A = abadia.BuscarHabitacionProvisional(NumeroPantalla: abadia.NumeroHabitacion)
+        abadia.HabitacionOscura_156C = false
+        abadia.NumeroHabitacion+=1
+        return
         if waveOut.Reproduciendo {
             waveOut.Parar()
             print("Touch: Parado")
@@ -232,6 +256,104 @@ class ViewController: UIViewController {
             print("Touch: Reproduciendo")
             waveOut.Reproducir()
         }
+    }
+    
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        teclado.ToquesTerminados()
+        print("touch cancel")
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let tecla = pixeles2Area(coordenadas2Pixeles(touch.location(in: view)))
+            print (tecla)
+            teclado.KeyUp(tecla)
+        }
+    }
+    
+    func coordenadas2Pixeles( _ posicion: CGPoint) -> CGPoint {
+        var scale:CGFloat
+        var pixelY:CGFloat
+        var pixelX:CGFloat
+        scale = 192 / view.frame.size.width
+        pixelX = (view.frame.size.height / 2 - posicion.y) * scale
+        pixelY = posicion.x * scale
+        return CGPoint(x: pixelX, y: pixelY)
+    }
+    
+    func pixeles2Area ( _ posicion: CGPoint) -> EnumAreaTecla {
+        if posicion.x > 118  && posicion.y < 20 {
+            return .AreaDepuracion
+        } else if posicion.y >= 160 && posicion.y <= 172{
+            if posicion.x > 0 && posicion.x < 32 {
+                return .AreaTextosDerecha
+            } else if posicion.x < 0 && -posicion.x < 32 {
+                return .AreaTextosIzquierda
+            } else {
+                return .AreaEscenario
+            }
+        } else {
+            return .AreaEscenario
+        }
+    }
+    
+    private var inputVector: Vector {
+        switch panGesture.state {
+        case .began, .changed:
+            let translation = panGesture.translation(in: view)
+            var vector = Vector(x: -Double(translation.y), y: -Double(translation.x))
+            vector /= max(joystickRadius, vector.length)
+            panGesture.setTranslation(CGPoint(
+                x: -vector.y * joystickRadius,
+                y: -vector.x * joystickRadius
+            ), in: view)
+            return vector
+        default:
+            return Vector(x: 0, y: 0)
+        }
+    }
+    
+    func joystick2Teclas() -> [EnumAreaTecla] {
+        let limite: Double = 0.3
+        var resultado:[EnumAreaTecla]=[]
+        if inputVector.y > limite {
+            resultado.append(EnumAreaTecla.TeclaArriba)
+        }
+        if inputVector.x > limite {
+            resultado.append(EnumAreaTecla.TeclaDerecha)
+        }
+        if inputVector.x < -limite {
+            resultado.append(EnumAreaTecla.TeclaIzquierda)
+        }
+        if inputVector.y < -limite {
+            resultado.append(EnumAreaTecla.TeclaAbajo)
+        }
+        return resultado
+    }
+    
+    func procesarJoystick() {
+        struct Estatico {
+            static var anterior: [Bool]=[false, false, false, false]
+            static let cursores: [EnumAreaTecla] = [.TeclaArriba, .TeclaAbajo, .TeclaIzquierda, .TeclaDerecha]
+        }
+        var actual: [Bool] = []
+        let cursoresPulsados: [EnumAreaTecla] = joystick2Teclas()
+        for tecla in Estatico.cursores {
+            if cursoresPulsados.contains(tecla) {
+                actual.append(true)
+            } else {
+                actual.append(false)
+            }
+        }
+        for contador in 0..<actual.count {
+            if Estatico.anterior[contador] == false && actual[contador] == true {
+                teclado.KeyDown(Estatico.cursores[contador])
+            } else  if Estatico.anterior[contador] == true && actual[contador] == false {
+                  teclado.KeyUp(Estatico.cursores[contador])
+              }
+        }
+        Estatico.anterior = actual
     }
     
     func definirModo(modo: UInt8) {
@@ -250,6 +372,7 @@ class ViewController: UIViewController {
         //
         //para Apple, el teléfono está en vertical, por lo que heigh es el valor largo
         //la pantalla está compuesta por un UIPictureView que ocupa todo el espacio
+        self.view.backgroundColor = .black
         cga.definirModo(modo: modo)
         //define las medidas principales de la pantalla
         Pantalla=TipoPantalla(Ancho: 0, Alto: 0, Modo: 0, Factor:0, AnchoCGA:0, AltoCGA:0, AnchoLateral: 0, DibujarMarcos: false, PixelsPorPunto: 0, MarcoGrande: false)
@@ -285,16 +408,16 @@ class ViewController: UIViewController {
         }
         //compone las uiimageview
         cgaImageView.frame = CGRect(x: CGFloat(0), y: CGFloat(Pantalla!.AnchoLateral) / CGFloat(Pantalla!.PixelsPorPunto), width: CGFloat(Pantalla!.Alto)/CGFloat(Pantalla!.PixelsPorPunto), height: CGFloat(Pantalla!.AnchoCGA) / CGFloat(Pantalla!.PixelsPorPunto))
-        cgaImageView.backgroundColor = .red
+        cgaImageView.backgroundColor = .black
         cgaImageView.isHidden=false
         cgaImageView.layer.magnificationFilter = .nearest
         if Pantalla!.DibujarMarcos == true {
             //cga en el centro, con proporción a 256x192, y marcos laterales
             marco2ImageView.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(Pantalla!.Alto)/CGFloat(Pantalla!.PixelsPorPunto), height: CGFloat(Pantalla!.AnchoLateral) / CGFloat(Pantalla!.PixelsPorPunto))
-            marco2ImageView.backgroundColor = .blue
+            marco2ImageView.backgroundColor = .black
             marco2ImageView.isHidden=false
             marco1ImageView.frame = CGRect(x: 0, y: CGFloat(Pantalla!.AnchoLateral) / CGFloat(Pantalla!.PixelsPorPunto)+CGFloat(Pantalla!.AnchoCGA) / CGFloat(Pantalla!.PixelsPorPunto), width: CGFloat(Pantalla!.Alto)/CGFloat(Pantalla!.PixelsPorPunto), height: CGFloat(Pantalla!.AnchoLateral) / CGFloat(Pantalla!.PixelsPorPunto))
-            marco1ImageView.backgroundColor = .blue
+            marco1ImageView.backgroundColor = .black
             marco1ImageView.isHidden=false
             //coloca la imagen del marco
             let marco=UIImage(imageLiteralResourceName: "Marco.png")
@@ -312,7 +435,9 @@ class ViewController: UIViewController {
     
     
     @objc func Tick() {
-        reloj.Start()
+        if !reloj.Active {
+            reloj.Start()
+        }
         abadia.Tick()
         //coloca el bitmap del modo gráfico actual
         if Pantalla!.Modo==0 {
@@ -324,7 +449,13 @@ class ViewController: UIViewController {
         if (contador%2)==1 {
 
         }
-        reloj.Stop()
+        if reloj.EllapsedMilliseconds() > 1000 {
+            reloj.Start()
+            //print(inputVector)
+            let teclas=joystick2Teclas()
+            if teclas.count > 0 { print (teclas) }
+            procesarJoystick()
+        }
        
         contador+=1
         if contador>59 {
@@ -339,4 +470,11 @@ class ViewController: UIViewController {
   
 }
 
-
+extension ViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        return true
+    }
+}

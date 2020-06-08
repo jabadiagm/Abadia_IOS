@@ -29,9 +29,11 @@ public func ror8(Value :Int, Shift:UInt8) -> Int {
     //var Contador :Int
     var ror8:Int
     ror8 = Value
-    for _ in 1...Shift {
-        Bit0 = (ror8 & 0x01) << 7
-        ror8 = ((ror8 >> 1) & 0xFF) | Bit0
+    if Shift > 0 {
+        for _ in 1...Shift {
+            Bit0 = (ror8 & 0x01) << 7
+            ror8 = ((ror8 >> 1) & 0xFF) | Bit0
+        }
     }
     return ror8
 }
@@ -74,7 +76,7 @@ public func Escribir16(_ Bytes: inout [UInt8], _ Posicion:Int, _ Valor:Int) {
     Bytes[Posicion + 1] = UInt8((Valor & 0xFF00) >> 8)
 }
 
-public func Bytes2AsciiHex(Entrada: [UInt8]) -> String {
+public func Bytes2AsciiHex( _ Entrada: [UInt8]) -> String {
     //convierte una serie de bytes en una cadena hexadecimal
     //var Contador:Int
     var Cadena:String = ""
@@ -145,7 +147,7 @@ public func CargarArchivo(RutaArchivo:URL, Archivo: inout [UInt8]) { //OK
 }
 
 
-public func GuardarArchivo(NombreArchivo:String, Archivo: [UInt8]) {
+public func GuardarArchivo( _ NombreArchivo:String, _ Archivo: [UInt8]) {
     let outputStream = OutputStream(toFileAtPath: NombreArchivo, append: false)!
     outputStream.open()
     let Escritos=outputStream.write( Archivo, maxLength: Archivo.count)

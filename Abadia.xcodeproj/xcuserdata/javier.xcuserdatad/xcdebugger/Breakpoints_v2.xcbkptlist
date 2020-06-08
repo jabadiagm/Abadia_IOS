@@ -62,8 +62,8 @@
             filePath = "Abadia/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
             landmarkName = "appMovedToBackground()"
             landmarkType = "7">
          </BreakpointContent>
@@ -78,8 +78,8 @@
             filePath = "Abadia/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -94,8 +94,8 @@
             filePath = "Abadia/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,8 +142,8 @@
             filePath = "Abadia/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -158,8 +158,8 @@
             filePath = "Abadia/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -190,8 +190,8 @@
             filePath = "Abadia/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
             landmarkName = "audioRouteChangeListener()"
             landmarkType = "7">
          </BreakpointContent>
@@ -257,22 +257,6 @@
             startingLineNumber = "142"
             endingLineNumber = "142"
             landmarkName = "handler()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EF186480-3273-4D79-BA25-CD3A39B9E27A"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Abadia/ViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
-            landmarkName = "touchesBegan(_:with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -430,8 +414,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1122"
-            endingLineNumber = "1122"
+            startingLineNumber = "1183"
+            endingLineNumber = "1183"
             landmarkName = "ActualizarSonidos_1060()"
             landmarkType = "7">
          </BreakpointContent>
@@ -446,8 +430,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "471"
-            endingLineNumber = "471"
+            startingLineNumber = "503"
+            endingLineNumber = "503"
             landmarkName = "TareaSonido()"
             landmarkType = "7">
          </BreakpointContent>
@@ -462,8 +446,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "601"
-            endingLineNumber = "601"
+            startingLineNumber = "662"
+            endingLineNumber = "662"
             landmarkName = "EscribirRegistroValorPSG_134E(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -478,8 +462,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1144"
-            endingLineNumber = "1144"
+            startingLineNumber = "1205"
+            endingLineNumber = "1205"
             landmarkName = "ActualizarSonidos_1060()"
             landmarkType = "7">
          </BreakpointContent>
@@ -494,8 +478,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1156"
-            endingLineNumber = "1156"
+            startingLineNumber = "1217"
+            endingLineNumber = "1217"
             landmarkName = "ActualizarSonidos_1060()"
             landmarkType = "7">
          </BreakpointContent>
@@ -510,8 +494,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "474"
-            endingLineNumber = "474"
+            startingLineNumber = "506"
+            endingLineNumber = "506"
             landmarkName = "TareaSonido()"
             landmarkType = "7">
          </BreakpointContent>
@@ -526,8 +510,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "491"
-            endingLineNumber = "491"
+            startingLineNumber = "523"
+            endingLineNumber = "523"
             landmarkName = "TareaSonido()"
             landmarkType = "7">
          </BreakpointContent>
@@ -542,8 +526,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "479"
-            endingLineNumber = "479"
+            startingLineNumber = "511"
+            endingLineNumber = "511"
             landmarkName = "TareaSonido()"
             landmarkType = "7">
          </BreakpointContent>
@@ -558,8 +542,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "777"
-            endingLineNumber = "777"
+            startingLineNumber = "838"
+            endingLineNumber = "838"
             landmarkName = "LeerEnvolventeVolumen_129B(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -574,8 +558,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "878"
-            endingLineNumber = "878"
+            startingLineNumber = "939"
+            endingLineNumber = "939"
             landmarkName = "ActualizarTono_1231(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -590,8 +574,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "985"
-            endingLineNumber = "985"
+            startingLineNumber = "1046"
+            endingLineNumber = "1046"
             landmarkName = "ProcesarCanalSonido_114C(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -606,8 +590,8 @@
             filePath = "Abadia/Abadia.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1017"
-            endingLineNumber = "1017"
+            startingLineNumber = "1078"
+            endingLineNumber = "1078"
             landmarkName = "ProcesarCanalSonido_114C(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -625,6 +609,877 @@
             startingLineNumber = "239"
             endingLineNumber = "239"
             landmarkName = "Tarea()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0B14631C-0AD8-454D-B0C9-B8D786B44331"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1351"
+            endingLineNumber = "1351"
+            landmarkName = "DibujarPresentacion()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "0B14631C-0AD8-454D-B0C9-B8D786B44331 - d70b224ba8cb5658"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.DibujarPresentacion() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1292"
+                  endingLineNumber = "1292"
+                  offsetFromSymbolStart = "50">
+               </Location>
+               <Location
+                  uuid = "0B14631C-0AD8-454D-B0C9-B8D786B44331 - d70b224ba8cb5658"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.DibujarPresentacion() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1292"
+                  endingLineNumber = "1292"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  uuid = "0B14631C-0AD8-454D-B0C9-B8D786B44331 - d70b224ba8cb5658"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.DibujarPresentacion() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1292"
+                  endingLineNumber = "1292"
+                  offsetFromSymbolStart = "888">
+               </Location>
+               <Location
+                  uuid = "0B14631C-0AD8-454D-B0C9-B8D786B44331 - d70b224ba8cb5658"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.DibujarPresentacion() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1292"
+                  endingLineNumber = "1292"
+                  offsetFromSymbolStart = "1361">
+               </Location>
+               <Location
+                  uuid = "0B14631C-0AD8-454D-B0C9-B8D786B44331 - d70b224ba8cb5658"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.DibujarPresentacion() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1292"
+                  endingLineNumber = "1292"
+                  offsetFromSymbolStart = "1878">
+               </Location>
+               <Location
+                  uuid = "0B14631C-0AD8-454D-B0C9-B8D786B44331 - d70b224ba8cb5658"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.DibujarPresentacion() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1292"
+                  endingLineNumber = "1292"
+                  offsetFromSymbolStart = "2034">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "93000427-FA54-40FE-A07E-BBE3BC6EA99E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1396"
+            endingLineNumber = "1396"
+            landmarkName = "DibujarBancoPresentacion(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "387"
+            endingLineNumber = "387"
+            landmarkName = "Tick()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "731">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "818">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "1051">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "1284">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "1521">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "1754">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "1993">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "2226">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "2459">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "2692">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "2925">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "3158">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "3391">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "3624">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "3876">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "4109">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "4342">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "4577">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "4812">
+               </Location>
+               <Location
+                  uuid = "288B70A3-0EEB-411F-A514-C36B8FFCE3B8 - c4255751ea5c8308"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.Abadia.Tick() -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/Abadia/Abadia.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "387"
+                  endingLineNumber = "387"
+                  offsetFromSymbolStart = "5045">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A123A5EA-2382-48FA-A04A-E7A023C77D04"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MotorGrafico/CGA.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
+            landmarkName = "DibujarPunto(_:_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "20BD026B-454C-4306-B249-BDAC9C542D86"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MotorGrafico/CGA.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
+            landmarkName = "DibujarPunto(_:_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E6E51869-C78A-4B66-A559-23386FAB0CFF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MotorGrafico/CGA.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
+            landmarkName = "DibujarPunto(_:_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D67EFC6F-5C8B-4BF2-ADAB-454036F6773D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MotorGrafico/CGA.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
+            landmarkName = "PantallaCGA2PC(PunteroPantalla:Color:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8F0F01DD-3508-45F4-90D0-C8F0E3967133"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MotorGrafico/CGA.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "SeleccionarPaleta(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8F0F01DD-3508-45F4-90D0-C8F0E3967133 - 516ded8ce67365ef"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.CGA.SeleccionarPaleta(Swift.Int) -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/MotorGrafico/CGA.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "127">
+               </Location>
+               <Location
+                  uuid = "8F0F01DD-3508-45F4-90D0-C8F0E3967133 - 516ded8ce67365ef"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.CGA.SeleccionarPaleta(Swift.Int) -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/MotorGrafico/CGA.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "1380">
+               </Location>
+               <Location
+                  uuid = "8F0F01DD-3508-45F4-90D0-C8F0E3967133 - 516ded8ce67365ef"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.CGA.SeleccionarPaleta(Swift.Int) -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/MotorGrafico/CGA.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "2644">
+               </Location>
+               <Location
+                  uuid = "8F0F01DD-3508-45F4-90D0-C8F0E3967133 - 516ded8ce67365ef"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.CGA.SeleccionarPaleta(Swift.Int) -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/MotorGrafico/CGA.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "3843">
+               </Location>
+               <Location
+                  uuid = "8F0F01DD-3508-45F4-90D0-C8F0E3967133 - 516ded8ce67365ef"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Abadia.CGA.SeleccionarPaleta(Swift.Int) -&gt; ()"
+                  moduleName = "Abadia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javier/Documents/xcode/Abadia7/MotorGrafico/CGA.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "5107">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D34C9E45-E2EA-490F-B645-B7C46A99D16D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "444"
+            endingLineNumber = "444"
+            landmarkName = "Iniciar()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "320C4AEC-B888-495F-B68B-1D26379ACF21"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "446"
+            endingLineNumber = "446"
+            landmarkName = "Tick()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "97E44D2F-70E9-4C32-99D6-04BF64915A5D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "376"
+            endingLineNumber = "376"
+            landmarkName = "definirModo(modo:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D4F6C97A-428A-4CA0-98C0-EB1BC19485DB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1497"
+            endingLineNumber = "1497"
+            landmarkName = "InicializarJuego_249A_c()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A6B3FF60-6ACA-4CC8-90DC-087516A97E80"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1512"
+            endingLineNumber = "1512"
+            landmarkName = "InicializarPartida_2509()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6C321D3A-7565-45F4-848E-F8ED5EFF71F1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1518"
+            endingLineNumber = "1518"
+            landmarkName = "InicializarPartida_2509_b_anterior()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F095774C-949F-48AD-A506-A29C9781441E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1524"
+            endingLineNumber = "1524"
+            landmarkName = "InicializarPartida_2509_b_anterior()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "13B27D2F-E9B1-4040-A010-AB7FC82160E1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
+            landmarkName = "pixeles2Area(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3CE7AA02-37F2-48C1-ABF9-A921D1F5C1F9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "351"
+            endingLineNumber = "351"
+            landmarkName = "procesarJoystick()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4892BC90-ED96-4D14-8451-5542947B4F53"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "352"
+            endingLineNumber = "352"
+            landmarkName = "procesarJoystick()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "946E087F-FDCA-4737-905E-99D952962F94"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "353"
+            endingLineNumber = "353"
+            landmarkName = "procesarJoystick()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FA1B70CF-786F-4586-88E2-B9F0AF7CC379"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "355"
+            endingLineNumber = "355"
+            landmarkName = "procesarJoystick()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CDA28B2A-BDE9-43C9-82BC-04F732CB44A2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Entrada/Teclado.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "KeyUp(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BC3B67FA-59D2-483A-8966-D427EE7F8995"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3309"
+            endingLineNumber = "3309"
+            landmarkName = "BuclePrincipal_25B7()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "947FE31E-7FAD-4EF6-B053-78AFE5DD4038"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1563"
+            endingLineNumber = "1563"
+            landmarkName = "InicializarPartida_2509_b()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "161B5176-344A-47B8-BDAB-177CD31A21F0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/Abadia.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3259"
+            endingLineNumber = "3259"
+            landmarkName = "Estatico"
+            landmarkType = "14">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8383D5FD-56E3-4DC3-980B-5E1B55A5EC41"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Abadia/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
+            landmarkName = "touchesBegan(_:with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
