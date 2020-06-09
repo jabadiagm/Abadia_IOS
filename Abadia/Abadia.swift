@@ -69,7 +69,7 @@ class Abadia {
     public var BufferAuxiliar_2D68:[UInt8] = [0x01, 0x23, 0x3E, 0x20, 0x12, 0x13, 0x78, 0x04, 0xB9, 0x38] //buffer auxiliar con copia de los datos del personaje
     public var TablaVariablesEspejo_2D8D=[UInt8](repeating: 0, count: 10) //variables auxiliares para hacer el efecto espejo
     private var TablaVariablesAuxiliares_2D8D=[UInt8](repeating: 0, count: 0x38) //2d8d-2dd8. variables auxiliares de algunas rutinas
-    public var BufferAuxiliar_2DC5=[Int16](repeating: 0, count: 0x10) //buffer auxiliar para el cálculo de las alturas a los movimientos usado en 27cb
+    public var BufferAuxiliar_2DC5=[Int](repeating: 0, count: 0x10) //buffer auxiliar para el cálculo de las alturas a los movimientos usado en 27cb
     private var TablaPermisosPuertas_2DD9=[UInt8](repeating: 0, count: 19) //copiado en 0x122-0x131. puertas a las que pueden entrar los personajes
     private var CopiaTablaPermisosPuertas_2DD9=[UInt8](repeating: 0, count: 19)
     public var TablaObjetosPersonajes_2DEC=[UInt8](repeating: 0, count: 0x2b) //2dec-2e16. RAM. copiado en 0x132-0x154. objetos de los personajes
@@ -578,13 +578,6 @@ class Abadia {
         
     }
     
-   
-    func InicializarPartida() {
-        
-    }
-    func BuclePrincipal() {
-        
-    }
     
     func ComprobarQREspejo_3311() {
         
@@ -618,15 +611,7 @@ class Abadia {
         
     }
     
-    func ActualizarDatosPersonaje_291D( _ Dato:Int) {
-        
-    }
-    
     func EjecutarComportamientoPersonajes_2664() {
-        
-    }
-    
-    func ModificarCaracteristicasSpriteLuz_26A3() {
         
     }
     
@@ -642,11 +627,7 @@ class Abadia {
         
     }
     
-    func ComprobarCambioPantalla_2355() {
-        
-    }
-    
-    func DibujarSprites_2674() {
+    func EjecutarComportamientoPersonaje_2C3A( _ dato1:Int, _ dato2:Int ) {
         
     }
 
@@ -1696,14 +1677,11 @@ public func ProcesarCanalSonido_114C( _ PunteroCanalIX:Int) {
         var Valor1:Int
         var Valor2:Int
         var Valor3:Int
-        //Valor1 = ModFunciones.shr(X, 2) 'l / 4 (cada 4 pixels = 1 byte)
         Valor1 = X >> 2 //l / 4 (cada 4 pixels = 1 byte)
         Valor2 = Y & 0xF8 //obtiene el valor para calcular el desplazamiento dentro del banco de VRAM
         Valor2 = Valor2 * 10 //dentro de cada banco, la línea a la que se quiera ir puede calcularse como (y & 0xf8)*10
         Valor3 = Y & 7 //3 bits menos significativos en y (para calcular al banco de VRAM al que va)
-        //Valor3 = shl(Valor3, 3)
         Valor3 = Valor3 << 3
-        //Valor3 = shl(Valor3, 8) Or Valor2 'completa el cálculo del banco
         Valor3 = (Valor3 << 8) | Valor2 //completa el cálculo del banco
         Valor3 = Valor3 + Valor1 //suma el desplazamiento en x
         return Valor3 + 8 //ajusta para que salga 32 pixels más a la derecha
@@ -2108,7 +2086,6 @@ public func ProcesarCanalSonido_114C( _ PunteroCanalIX:Int) {
             return
         }
         AvanceX = Valor & 0xF //avanza la posición x según los 4 bits menos significativos del byte leido de dibujo del caracter
-        //AvanceY = ModFunciones.shr(Valor, 4) And &HF& 'avanza la posición y según los 4 bits más significativos del byte leido de dibujo del caracter
         AvanceY = (Valor >> 4) & 0xF //avanza la posición y según los 4 bits más significativos del byte leido de dibujo del caracter
         PunteroPantalla = CalcularDesplazamientoPantalla_68C7(PosicionPergaminoX_680B + AvanceX, PosicionPergaminoY_680A + AvanceY) //calcula el desplazamiento de las coordenadas en pantalla
         Pixel = UInt8((PosicionPergaminoX_680B + AvanceX) & 0x3)        //se queda con los 2 bits menos significativos de la posición para saber que pixel pintar
@@ -2230,14 +2207,12 @@ public func ProcesarCanalSonido_114C( _ PunteroCanalIX:Int) {
             //1A24
             X = Byte1 & 0x1F //pos en x del elemento (sistema de coordenadas del buffer de tiles)
             //1A28
-            //nX = ModFunciones.shr(Byte1, 5) And &H7 'longitud del elemento en x
             nX = (Byte1 >> 5) & 0x7 //longitud del elemento en x
             //1A2F
             Byte2 = DatosHabitaciones_4000[PunteroPantallaGlobal + 2]
             //1A32
             Y = Byte2 & 0x1F //pos en y del elemento (sistema de coordenadas del buffer de tiles)
             //1A36
-            //nY = ModFunciones.shr(Byte2, 5) And &H7 'longitud del elemento en y
             nY = (Byte2 >> 5) & 0x7 //longitud del elemento en y
             //1A3D
             VariablesBloques_1FCD[0x1FDE - 0x1FCD] = 0 //inicia a (0, 0) la posición del bloque en la rejilla (sistema de coordenadas local de la rejilla)
@@ -3261,16 +3236,16 @@ public func ProcesarCanalSonido_114C( _ PunteroCanalIX:Int) {
         //el bucle principal del juego empieza aquí
         if !Estatico.Inicializado {
             //el abad una posición a la derecha para dejar paso
-            //TablaCaracteristicasPersonajes_3036(&H3063 + 2 - &H3036) = &H89
+            //TablaCaracteristicasPersonajes_3036(0x3063 + 2 - 0x3036) = 0x89
             //guillermo en el espejo
-            //TablaCaracteristicasPersonajes_3036(&H3036 + 1 - &H3036) = &H02
-            //TablaCaracteristicasPersonajes_3036(&H3036 + 2 - &H3036) = &H26
-            //TablaCaracteristicasPersonajes_3036(&H3036 + 3 - &H3036) = &H69
-            //TablaCaracteristicasPersonajes_3036(&H3036 + 4 - &H3036) = &H18
+            //TablaCaracteristicasPersonajes_3036[0x3036 + 1 - 0x3036] = 0x02
+            //TablaCaracteristicasPersonajes_3036[0x3036 + 2 - 0x3036] = 0x26
+            //TablaCaracteristicasPersonajes_3036[0x3036 + 3 - 0x3036] = 0x69
+            //TablaCaracteristicasPersonajes_3036[0x3036 + 4 - 0x3036] = 0x18
             //adso
-            //TablaCaracteristicasPersonajes_3036(&H3045 + 2 - &H3036) = &H8D
-            //TablaCaracteristicasPersonajes_3036(&H3045 + 3 - &H3036) = &H85
-            //TablaCaracteristicasPersonajes_3036(&H3045 + 4 - &H3036) = &H2
+            //TablaCaracteristicasPersonajes_3036(0x3045 + 2 - 0x3036) = 0x8D
+            //TablaCaracteristicasPersonajes_3036(0x3045 + 3 - 0x3036) = 0x85
+            //TablaCaracteristicasPersonajes_3036(0x3045 + 4 - 0x3036) = 0x2
             Estatico.Inicializado = true
         }
 
@@ -4078,7 +4053,2414 @@ public func ProcesarCanalSonido_114C( _ PunteroCanalIX:Int) {
         //o lo que es lo mismo, (y >> 3)*0x50
         PunteroPantalla = 10 * PunteroPantalla //PunteroPantalla = desplazamiento dentro del banco
         ValorLong = Int(Y & 0x7) //3 bits menos significativos en y (para calcular al banco de VRAM al que va)
-        //ValorLong = shl(ValorLong, 11) 'ajusta los 3 bits
+        ValorLong = ValorLong << 11 //ajusta los 3 bits
+        PunteroPantalla = PunteroPantalla | ValorLong //completa el cálculo del banco
+        PunteroPantalla = PunteroPantalla | 0xC000
+        PunteroPantalla = PunteroPantalla + Int(X) //suma el desplazamiento en x
+        PunteroPantalla = PunteroPantalla + 8 //ajusta para que salga 32 pixels más a la derecha
+        return PunteroPantalla
+    }
+    
+//sexta--------------------------------------------------------------------------------------
+
+//nona--------------------------------------------------------------------------------------
+
+     public func ComprobarCambioPantalla_2355() {
+
+         //comprueba si el personaje que se muestra ha cambiado de pantalla y si es así, obtiene los datos de alturas de la nueva pantalla,
+         //modifica los valores de las posiciones del motor ajustados para la nueva pantalla, inicia los sprites de las puertas y de los objetos
+         //del juego con la orientación de la pantalla actual y modifica los sprites de los personajes según la orientación de pantalla
+         var Cambios:UInt8=0 //inicialmente no ha habido cambios
+         var PosicionX:UInt8
+         var PosicionY:UInt8
+         var PosicionZ:UInt8
+         var AlturaBase:UInt8
+         var PosX:UInt8 //parte alta de la posición en X del personaje actual (en los 4 bits inferiores)
+         var PosY:UInt8 //parte alta de la posición en Y del personaje actual (en los 4 bits inferiores)
+         var PunteroHabitacion:Int
+         var PantallaActual:UInt8
+         var PunteroDatosPersonajesHL:Int
+         var PunteroSpritePersonajeIX:Int //dirección del sprite asociado al personaje
+         var PunteroDatosPersonajeIY:Int //dirección a los datos de posición del personaje asociado al sprite
+         var ValorBufferAlturas:UInt8 //valor a poner en las posiciones que ocupa el personaje en el buffer de alturas
+         //cambio de cámara para depuración
+         if depuracion.CamaraManual { //hay que ajustar manualmente la cámara al personaje indicado
+             TablaVariablesLogica_3C85[PersonajeSeguidoPorCamara_3C8F - 0x3C85] = depuracion.CamaraPersonaje
+             PunteroDatosPersonajeActual_2D88 = 0x3036 + 0x0F * Int(depuracion.CamaraPersonaje)
+         }
+
+         PosicionX = TablaCaracteristicasPersonajes_3036[PunteroDatosPersonajeActual_2D88 + 2 - 0x3036] //lee la posición en X del personaje actual
+         //2361
+         PosicionX = PosicionX & 0xF0
+         if PosicionX != PosicionXPersonajeActual_2D75 { //posición X ha cambiado
+             //2366
+             Cambios = Cambios + 1 //indica el cambio
+             PosicionXPersonajeActual_2D75 = PosicionX //actualiza la posición de la pantalla actual
+             LimiteInferiorVisibleX_2AE1 = PosicionX - 12 //limite inferior visible de X
+         }
+         PosicionY = TablaCaracteristicasPersonajes_3036[PunteroDatosPersonajeActual_2D88 + 3 - 0x3036] //lee la posición en Y del personaje actual
+         PosicionY = PosicionY & 0xF0
+         if PosicionY != PosicionYPersonajeActual_2D76 { //posición Y ha cambiado
+             //2376
+             Cambios = Cambios + 1 //indica el cambio
+             PosicionYPersonajeActual_2D76 = PosicionY //actualiza la posición de la pantalla actual
+             LimiteInferiorVisibleY_2AEB = PosicionY - 12 //limite inferior visible de y
+         }
+         //237D
+         PosicionZ = TablaCaracteristicasPersonajes_3036[PunteroDatosPersonajeActual_2D88 + 4 - 0x3036] //lee la posición en Z del personaje actual
+         //2381
+         AlturaBase = LeerAlturaBasePlanta_2473(PosicionZ) //dependiendo de la altura, devuelve la altura base de la planta
+         //2384
+         if AlturaBase != PosicionZPersonajeActual_2D77 { //altura Z ha cambiado
+             //2388
+             AlturaBasePlantaActual_2AF9 = AlturaBase //altura base de la planta
+             //238B
+             PosicionZPersonajeActual_2D77 = AlturaBase
+             //238C
+             Cambios = Cambios + 1 //indica el cambio
+             switch AlturaBase {
+                 case 0:
+                     PunteroPlantaActual_23EF = 0x2255 //apunta a los datos de la planta baja
+                 case 0xB:
+                     PunteroPlantaActual_23EF = 0x22E5 //apunta a los datos de la primera planta
+                 default:
+                     PunteroPlantaActual_23EF = 0x22ED //apunta a los datos de la segunda planta
+             }
+         }
+         //23A0
+         if Cambios == 0 { return } // si no ha habido ningún cambio de pantalla, sale
+         //23A3
+         CambioPantalla_2DB8 = true //indica que ha habido un cambio de pantalla
+         //23A6
+         //averigua si es una habitación iluminada o no
+         HabitacionOscura_156C = false
+         if PosicionZPersonajeActual_2D77 == 0x16 { //si está en la segunda planta
+             //en la segunda planta las habitaciones iluminadas son la 67, 73 y 72
+             if PosicionXPersonajeActual_2D75 >= 0x20 { //67 y 73 tienen x<0x20
+                 if PosicionYPersonajeActual_2D76 != 0x60 { //60 tiene Y=0x60
+                     HabitacionOscura_156C = true //la pantalla no está iluminada
+                 }
+             }
+         }
+         if depuracion.Luz == EnumTipoLuz.EnumTipoLuz_ON {
+             HabitacionOscura_156C = false //###depuración
+         } else if depuracion.Luz == EnumTipoLuz.EnumTipoLuz_Off {
+             HabitacionOscura_156C = true //###depuración
+         }
+         //23C9
+         //aquí se llega con HabitacionIluminada_156C a true o false
+         TablaSprites_2E17[0x2FCF - 0x2E17] = 0xFE //marca el sprite de la luz como no visible
+         //23CE
+         PosX = (PosicionXPersonajeActual_2D75 & 0xF0) >> 4 //pone en los 4 bits menos significativos de Valor los 4 bits más significativos de PosicionX
+         PosY = (PosicionYPersonajeActual_2D76 & 0xF0) >> 4 //pone en los 4 bits menos significativos de Valor los 4 bits más significativos de PosicionY
+         OrientacionPantalla_2481 = (((PosY & 0x1) ^ (PosX & 0x1)) | ((PosX & 0x1) * 2))
+         PunteroHabitacion = ((Int(PosicionYPersonajeActual_2D76) & 0xF0) | Int(PosX)) + PunteroPlantaActual_23EF //(Y, X) (desplazamiento dentro del mapa de la planta)
+         //23F2
+         PantallaActual = TablaHabitaciones_2255[PunteroHabitacion - 0x2255] //lee la pantalla actual
+         //FrmPrincipal.TxNumeroHabitacion.Text = "0x" + String(format: "%02X", (PantallaActual)
+         //23F3
+         GuardarDireccionPantalla_2D00(PantallaActual) //guarda en 0x156a-0x156b la dirección de los datos de la pantalla actual
+         //23F6
+         RellenarBufferAlturas_2D22(PunteroDatosPersonajeActual_2D88) //rellena el buffer de alturas con los datos leidos de la abadia y recortados para la pantalla actual
+         //23F9
+         PunteroTablaDesplazamientoAnimacion_2D84 = Int(OrientacionPantalla_2481) << 6 //coloca la orientación en los 2 bits superiores para indexar en la tabla (cada entrada son 64 bytes)
+         PunteroTablaDesplazamientoAnimacion_2D84 = PunteroTablaDesplazamientoAnimacion_2D84 + 0x309F //apunta a la tabla para el cálculo del desplazamiento según la animación de una entidad del juego
+         //tabla de rutinas a llamar en 0x2add según la orientación de la cámara
+         //225D:
+         //    248A 2485 248B 2494
+         switch OrientacionPantalla_2481 {
+             case 0:
+                 RutinaCambioCoordenadas_2B01 = 0x248A
+             case 1:
+                 RutinaCambioCoordenadas_2B01 = 0x2485
+             case 2:
+                 RutinaCambioCoordenadas_2B01 = 0x248B
+             case 3:
+                 RutinaCambioCoordenadas_2B01 = 0x2494
+            default:
+                break
+         }
+         //241A
+         InicializarSpritesPuertas_0D30() //inicia los sprites de las puertas del juego para la habitación actual
+         //241D
+         InicializarObjetos_0D23() //inicia los sprites de los objetos del juego para la habitación actual
+         //2420
+         PunteroDatosPersonajesHL = 0x2BAE //apunta a la tabla con datos para los sprites de los personajes
+         var DE:String
+         var HL:String
+         while true {
+             //2423
+             PunteroSpritePersonajeIX = Leer16(TablaPunterosPersonajes_2BAE, PunteroDatosPersonajesHL - 0x2BAE) //dirección del sprite asociado al personaje
+             DE = String(format: "%02X", PunteroSpritePersonajeIX)
+             if PunteroSpritePersonajeIX == 0xFFFF  { return }
+             //mientras no lea 0xff, continúa
+             //242a
+             PunteroDatosPersonajeIY = Leer16(TablaPunterosPersonajes_2BAE, PunteroDatosPersonajesHL + 2 - 0x2BAE) //dirección a los datos de posición del personaje asociado al sprite
+             HL = String(format: "%02X", PunteroDatosPersonajesHL + 2)
+             DE = String(format: "%02X", PunteroDatosPersonajeIY)
+             //242f
+             //la rutina de script no se usa
+             //PunteroRutinaScriptPersonaje = Leer16(TablaDatosPersonajes_2BAE, PunteroDatosPersonajesHL + 4 - 0x2BAE) //dirección de la rutina en la que el personaje piensa
+             //HL = Hex$(PunteroDatosPersonajesHL + 4)
+             //DE = Hex$(PunteroRutinaScriptPersonaje)
+             //2436
+             PunteroRutinaFlipPersonaje_2A59 = Leer16(TablaPunterosPersonajes_2BAE, PunteroDatosPersonajesHL + 6 - 0x2BAE) //rutina a la que llamar si hay que flipear los gráficos
+             HL = String(format: "%02X", PunteroDatosPersonajesHL + 6)
+             DE = String(format: "%02X", PunteroRutinaFlipPersonaje_2A59)
+             //2441
+             PunteroTablaAnimacionesPersonaje_2A84 = Leer16(TablaPunterosPersonajes_2BAE, PunteroDatosPersonajesHL + 8 - 0x2BAE) //dirección de la tabla de animaciones para el personaje
+             HL = String(format: "%02X", PunteroDatosPersonajesHL + 8)
+             DE = String(format: "%02X", PunteroTablaAnimacionesPersonaje_2A84)
+             //2449
+             ProcesarPersonaje_2468(PunteroSpritePersonajeIX, PunteroDatosPersonajeIY, PunteroDatosPersonajesHL + 0xA) //procesa los datos del personaje para cambiar la animación y posición del sprite e indicar si es visible o no
+             //2455
+             ValorBufferAlturas = TablaCaracteristicasPersonajes_3036[PunteroDatosPersonajeIY + 0xE - 0x3036] //valor a poner en las posiciones que ocupa el personaje en el buffer de alturas
+             //2458
+             RellenarBufferAlturasPersonaje_28EF(PunteroDatosPersonajeIY, ValorBufferAlturas)
+             //245B
+             PunteroDatosPersonajesHL = PunteroDatosPersonajesHL + 10 //pasa al siguiente personaje
+         }
+     }
+
+     public func LeerAlturaBasePlanta_2473( _ PosicionZ:UInt8) -> UInt8 {
+         //dependiendo de la altura indicada, devuelve la altura base de la planta
+        var LeerAlturaBasePlanta_2473:UInt8
+         if PosicionZ < 13 {
+             LeerAlturaBasePlanta_2473 = 0 //si la altura es < 13 sale con 0 (00-12 -> planta baja)
+         } else if PosicionZ >= 24 {
+             LeerAlturaBasePlanta_2473 = 22 //si la altura es >= 24 sale con b = 22 (24- -> segunda planta)
+         } else {
+             LeerAlturaBasePlanta_2473 = 11 //si la altura es >= 13 y < 24 sale con b = 11 (13-23 -> primera planta)
+         }
+        return LeerAlturaBasePlanta_2473
+    }
+
+    public func GuardarDireccionPantalla_2D00( _ NumeroPantalla:UInt8) {
+         //guarda en 0x156a-0x156b la dirección de los datos de la pantalla a
+         var PunteroDatosPantalla:Int
+         var TamañoPantalla:UInt8
+         //var Contador:Int
+         NumeroPantallaActual_2DBD = NumeroPantalla //guarda la pantalla actual
+         PunteroDatosPantalla = 0
+         if NumeroPantalla != 0 { //si la pantalla actual  está definida (o no es la número 0)
+             for Contador in 1...NumeroPantalla {
+                 TamañoPantalla = DatosHabitaciones_4000[PunteroDatosPantalla]
+                 PunteroDatosPantalla = PunteroDatosPantalla + Int(TamañoPantalla)
+             }
+         }
+         PunteroPantallaActual_156A = PunteroDatosPantalla
+     }
+
+    public func RellenarBufferAlturas_2D22( _ PunteroDatosPersonaje:Int) {
+         //rellena el buffer de alturas indicado por 0x2d8a con los datos leidos de abadia7 y recortados para la pantalla del personaje que se le pasa en iy
+         var Contador:Int
+         var AlturaBase:UInt8 //altura base de la planta
+         var PunteroAlturasPantalla:Int
+         var BufferAuxiliar:Bool=false //true: se usa el buffer secundario de 96F4
+         if PunteroBufferAlturas_2D8A != 0x01C0 { BufferAuxiliar = true }
+         for Contador in 0...0x23F {
+             if !BufferAuxiliar {
+                 TablaBufferAlturas_01C0[Contador] = 0 //limpia 576 bytes (24x24) = (4 + 16 + 4)x2
+             } else {
+                 TablaBufferAlturas_96F4[Contador] = 0 //limpia 576 bytes (24x24) = (4 + 16 + 4)x2
+             }
+         }
+         //calcula los mínimos valores visibles de pantalla para la posición del personaje
+         AlturaBase = CalcularMinimosVisibles_0B8F(PunteroDatosPersonaje)
+         switch AlturaBase {
+             case 0:
+                 PunteroAlturasPantalla = 0x4A00 //valores de altura de la planta baja
+             case 0xB:
+                 PunteroAlturasPantalla = 0x4F00 //valores de altura de la primera planta
+             default:
+                 PunteroAlturasPantalla = 0x5080 //valores de altura de la segunda planta
+         }
+         RellenarBufferAlturas_3945_3973(PunteroAlturasPantalla) //rellena el buffer de pantalla con los datos leidos de la abadia recortados para la pantalla actual
+     }
+
+     public func CalcularMinimosVisibles_0B8F( _ PunteroDatosPersonaje:Int) -> UInt8 {
+         //dada la posición de un personaje, calcula los mínimos valores visibles de pantalla y devuelve la altura base de la planta
+         var PosicionX:UInt8
+         var PosicionY:UInt8
+         var Altura:UInt8
+         var PersonajeCamara:Bool = false //true si el puntero del personaje es 0x2d73. este puntero
+         //se refiere a un área de memoria donde se guarda la posición del personaje al que sigue la
+         //cámara.
+         if PunteroDatosPersonaje == 0x2D73 { PersonajeCamara = true } //personaje extra
+         if !PersonajeCamara {
+             PosicionX = TablaCaracteristicasPersonajes_3036[PunteroDatosPersonaje + 2 - 0x3036] //lee la posición en x del personaje
+         } else {
+             PosicionX = PosicionXPersonajeActual_2D75 //lee la posición en x del personaje al que sigue la cámara
+         }
+         PosicionX = (PosicionX & 0xF0) - 4 //se queda con la mínima posición visible en X de la parte más significativa
+         MinimaPosicionXVisible_27A9 = PosicionX
+         if !PersonajeCamara {
+             PosicionY = TablaCaracteristicasPersonajes_3036[PunteroDatosPersonaje + 3 - 0x3036] //lee la posición en y del personaje
+         } else {
+             PosicionY = PosicionYPersonajeActual_2D76 //lee la posición en y del personaje al que sigue la cámara
+         }
+         PosicionY = (PosicionY & 0xF0) - 4 //se queda con la mínima posición visible en y de la parte más significativa
+         MinimaPosicionYVisible_279D = PosicionY
+         if !PersonajeCamara {
+             Altura = TablaCaracteristicasPersonajes_3036[PunteroDatosPersonaje + 4 - 0x3036] //lee la altura del personaje
+         } else {
+             Altura = PosicionZPersonajeActual_2D77 //lee la posición en z del personaje al que sigue la cámara
+         }
+         MinimaAlturaVisible_27BA = LeerAlturaBasePlanta_2473(Altura) //dependiendo de la altura, devuelve la altura base de la planta
+         AlturaBasePlantaActual_2DBA = MinimaAlturaVisible_27BA
+         return MinimaAlturaVisible_27BA
+    }
+
+    public func RellenarBufferAlturas_3945_3973( _ PunteroAlturasPantalla:Int) {
+         //rellena el buffer de pantalla con los datos leidos de la abadia recortados para la pantalla actual
+         //entradas:
+         //    byte 0
+         //        bits 7-4: valor inicial de altura
+         //        bit 3: si es 0, entrada de 4 bytes. si es 1, entrada de 5 bytes
+         //        bit 2-0: tipo de elemento de la pantalla
+         //            si es 0, 6 o 7, sale
+         //            si es del 1 al 4 recorta (altura cambiante)
+         //            si es 5, recorta (altura constante)
+         //    byte 1: coordenada X de inicio
+         //    byte 2: coordenada Y de inicio
+         //    byte 3: si longitud == 4 bytes
+         //        bits 7-4: número de unidades en X
+         //        bits 3-0: número de unidades en Y
+         //            si longitud == 5 bytes
+         //        bits 7-0: número de unidades en X
+         //    byte 4 número de unidades en Y
+         var PunteroAlturasPantalla:Int = PunteroAlturasPantalla
+         var Byte0:UInt8
+         var Byte1:UInt8
+         var Byte2:UInt8
+         var Byte3:UInt8
+         var Byte4:UInt8
+         var X:UInt8 //coordenada X de inicio
+         var Y:UInt8 //coordenada Y de inicio
+         var Z:UInt8 //valor inicial de altura
+         var nX:UInt8 //número de unidades en X
+         var nY:UInt8 //número de unidades en Y
+         var PunteroBufferAlturas:Int
+         var Ancho:Int
+         var Alto:Int
+         var BufferAuxiliar:Bool=false //true: se usa el buffer secundario de 96F4
+         if PunteroBufferAlturas_2D8A != 0x01C0 { BufferAuxiliar = true }
+         while true {
+             Byte0 = TablaAlturasPantallas_4A00[PunteroAlturasPantalla - 0x4A00] //lee un byte
+             if Byte0 == 0xFF { return } //si ha llegado al final de los datos, sale
+             if (Byte0 & 0x7) == 0 { return } //si los 3 bits menos significativos del byte leido son 0, sale
+             if (Byte0 & 0x7) >= 6 { return } //si el (dato & 0x07) >= 0x06, sale
+             Byte3 = TablaAlturasPantallas_4A00[PunteroAlturasPantalla + 3 - 0x4A00] //lee un byte
+             if (Byte0 & 0x8) == 0 { //si la entrada es de 4 bytes
+                 nY = Byte3 & 0xF
+                 nX = (Byte3 >> 4) & 0xF //a = 4 bits más significativos del byte 3
+             } else { // si la entrada es de 5 bytes, lee el último byte
+                 Byte4 = TablaAlturasPantallas_4A00[PunteroAlturasPantalla + 4 - 0x4A00] //lee el último byte
+                 nX = Byte3
+                 nY = Byte4
+             }
+             Z = (Byte0 >> 4) & 0xF //obtiene los 4 bits superiores del byte 0
+             Byte1 = TablaAlturasPantallas_4A00[PunteroAlturasPantalla + 1 - 0x4A00] //lee un byte
+             Byte2 = TablaAlturasPantallas_4A00[PunteroAlturasPantalla + 2 - 0x4A00] //lee un byte
+             X = Byte1
+             Y = Byte2
+             if (Byte0 & 0x8) != 0 { //si la entrada es de 5 bytes
+                 PunteroAlturasPantalla = PunteroAlturasPantalla + 1
+             }
+             PunteroAlturasPantalla = PunteroAlturasPantalla + 4
+             nX = nX + 1
+             nY = nY + 1
+             //If X >= MinimaPosicionXVisible_27A9 Then
+             //    If X >= 0x18 Then
+             //        salta
+             //    End If
+             //Else
+             //    If (X + nX) >= MinimaPosicionXVisible_27A9 Then sigue
+             //End If
+             //comprueba si se ve en x
+             //39b5
+             if (X >= MinimaPosicionXVisible_27A9 && X < (0x18 + MinimaPosicionXVisible_27A9)) || ((X < MinimaPosicionXVisible_27A9) && (X + nX) >= MinimaPosicionXVisible_27A9) {
+                 //comprueba si se ve en y
+                 //39c8
+                 if (Y >= MinimaPosicionYVisible_279D && Y < (0x18 + MinimaPosicionYVisible_279D)) || ((Y < MinimaPosicionYVisible_279D) && (Y + nY) >= MinimaPosicionYVisible_279D) {
+                     //si entra aquí, es porque algo de la entrada es visible
+                     //39d8
+                     if (Byte0 & 0x7) == 5 { //si es 5, recorta (altura constante)
+                         //a partir de aquí, X e Y son incrementos respecto del borde de la pantalla
+                         //39ee
+                         if X >= MinimaPosicionXVisible_27A9 {
+                             //39ff
+                             X = X - MinimaPosicionXVisible_27A9
+                             if (X + nX) >= 0x18 { nX = 0x18 - X }
+                         } else {
+                             //39f3
+                             if (X + nX - MinimaPosicionXVisible_27A9) > 0x18 { //si la última coordenada X > limite superior en X
+                                 nX = 0x18
+                             } else { //si la última coordenada X <= limite superior en X, salta
+                                 nX = X + nX - MinimaPosicionXVisible_27A9
+                             }
+                             X = 0
+                         }
+                         //pasa a recortar en Y
+                         //3a09
+                         if Y >= MinimaPosicionYVisible_279D { //si la coordenada Y > limite inferior en Y, salta
+                             //3a1a
+                             Y = Y - MinimaPosicionYVisible_279D
+                             if (Y + nY) >= 0x18 { nY = 0x18 - Y }
+                         } else {
+                             //3a0e
+                             if (Y + nY - MinimaPosicionYVisible_279D) > 0x18 { //si la última coordenada y > limite superior en y
+                                 nY = 0x18
+                             } else { //si la última coordenada y <= limite superior en y, salta
+                                 nY = Y + nY - MinimaPosicionYVisible_279D
+                             }
+                             Y = 0
+                         }
+                         //3a24
+                         //aquí llega la entrada una vez que ha sido recortada en X y en Y
+                         //X = posición inicial en X
+                         //Y = posición inicial en Y
+                         //nX = número de elementos a dibujar en X
+                         //nY = número de elementos a dibujar en Y
+                         for Alto in 0..<nY {
+                             for Ancho in 0..<nX {
+                                 PunteroBufferAlturas = 24 * (Int(Y) + Int(Alto)) + Int(X) + Int(Ancho) //cada línea ocupa 24 bytes
+                                 if !BufferAuxiliar {
+                                     TablaBufferAlturas_01C0[PunteroBufferAlturas] = Z
+                                 } else {
+                                     TablaBufferAlturas_96F4[PunteroBufferAlturas] = Z
+                                 }
+                             }
+                         }
+                     } else { //si es del 1 al 4 recorta (altura cambiante)
+                         //39DF
+                         RellenarAlturas_38FD(X, Y, Z, nX, nY, Byte0 & 0x7)
+                     }
+                 }
+             }
+         }
+     }
+
+     public func RellenarAlturas_38FD( _ X:UInt8, _ Y:UInt8, _ Z:UInt8, _ nX:UInt8, _ nY:UInt8, _ TipoIncremento:UInt8) {
+         //rutina para rellenar alturas
+         //X(L)=posicion X inicial
+         //Y(H)=posicion Y inicial
+         //Z(a)=valor de la altura inicial de bloque
+         //nX(c)=número de unidades en X
+         //nY(b)=número de unidades en Y
+         var Incremento1:Int=0
+         var Incremento2:Int=0
+         //var Alto:Int
+         //var Ancho:Int
+         var Altura:Int
+         var AlturaAnterior:Int
+         //tabla de instrucciones para modificar un bucle del cálculo de alturas
+         //38EF:   00 00 -> 0 nop, nop (caso imposible)
+         //        3C 00 -> 1 inc a, nop
+         //        00 3D -> 2 nop, dec a
+         //        3D 00 -> 3 dec a, nop
+         //        00 3C -> 4 nop, inc a
+         //        00 00 -> 5 nop, nop (caso imposible)
+         switch TipoIncremento {
+             case 0: //caso imposible
+                 Incremento1 = 0
+                 Incremento2 = 0
+             case 1:
+                 Incremento1 = 1
+                 Incremento2 = 0
+             case 2:
+                 Incremento1 = 0
+                 Incremento2 = -1
+             case 3:
+                 Incremento1 = -1
+                 Incremento2 = 0
+             case 4:
+                 Incremento1 = 0
+                 Incremento2 = 1
+             case 5: //caso imposible
+                 Incremento1 = 0
+                 Incremento2 = 0
+             default:
+                 break
+         }
+         Altura = Int(Z)
+         for Alto in 0..<Int(nY) {
+             AlturaAnterior = Altura
+             for Ancho in 0..<nX {
+                 if Altura >= 0 {
+                     EscribirAlturaBufferAlturas_391D(X + UInt8(Ancho), Y + UInt8(Alto), UInt8(Altura))
+                 } else {
+                     EscribirAlturaBufferAlturas_391D(X + UInt8(Ancho), Y + UInt8(Alto), UInt8(256 + Altura))
+                 }
+                 Altura = Altura + Incremento1
+             }
+             //3915
+             Altura = AlturaAnterior + Incremento2
+         }
+     }
+
+     public func EscribirAlturaBufferAlturas_391D( _ X:UInt8, _ Y:UInt8, _ Z:UInt8) {
+         //si la posición X (L) ,Y (H) está dentro del buffer, lo modifica con la altura Z (C)
+         var PunteroBufferAlturas:Int
+         var XAjustada:Int
+         var YAjustada:Int
+         var BufferAuxiliar:Bool=false //true: se usa el buffer secundario de 96F4
+         if PunteroBufferAlturas_2D8A != 0x01C0 { BufferAuxiliar = true }
+         YAjustada = Int(Y) - Int(MinimaPosicionYVisible_279D) //ajusta la coordenada al principio de lo visible en Y
+         //3920
+         if YAjustada < 0 { return } //si no es visible, sale
+         //3921
+         if (YAjustada - 0x18) >= 0 { return }//si no es visible, sale
+         //3924
+         PunteroBufferAlturas = 24 * YAjustada
+         //392f
+         PunteroBufferAlturas = PunteroBufferAlturas + PunteroBufferAlturas_2D8A
+         //3936
+         XAjustada = Int(X) - Int(MinimaPosicionXVisible_27A9)
+         //3939
+         if XAjustada < 0 { return } //si no es visible, sale
+         //393a
+         if (XAjustada - 0x18) >= 0 { return } //si no es visible, sale
+         //393d
+         PunteroBufferAlturas = PunteroBufferAlturas + XAjustada
+         if !BufferAuxiliar {
+             TablaBufferAlturas_01C0[PunteroBufferAlturas - 0x1C0] = Z
+         } else {
+             TablaBufferAlturas_96F4[PunteroBufferAlturas - 0x96F4] = Z
+         }
+         //If Y < MinimaPosicionYVisible_279D Or Y > (0x18 + MinimaPosicionYVisible_279D) Then exit sub 'si no es visible, sale
+         //If X < MinimaPosicionXVisible_27A9 Or X > (0x18 + MinimaPosicionXVisible_27A9) Then exit sub 'si no es visible, sale
+         //PunteroBufferAlturas = 24 * Y + X + PunteroBufferAlturas_2D8A
+         //TablaBufferAlturas_01C0(PunteroBufferAlturas) = Z
+     }
+
+     public func InicializarObjetos_0D23() {
+         var PunteroRutinaProcesarObjetos:Int
+         var PunteroSpritesObjetos:Int
+         var PunteroDatosObjetos:Int
+         PunteroRutinaProcesarObjetos = 0xDBB //rutina a la que saltar para procesar los objetos del juego
+         PunteroSpritesObjetos = 0x2F1B //apunta a los sprites de los objetos del juego
+         PunteroDatosObjetos = 0x3008 //apunta a los datos de posición de los objetos del juego
+        ProcesarObjetos_0D3B(PunteroRutinaProcesarObjetos, PunteroSpritesObjetos, PunteroDatosObjetos, ProcesarSoloUno: false)
+     }
+
+     public func InicializarSpritesPuertas_0D30() {
+         var PunteroRutinaProcesarPuertas:Int
+         var PunteroSpritesPuertas:Int
+         var PunteroDatosPuertas:Int
+         PunteroRutinaProcesarPuertas = 0xDD2 //rutina a la que saltar para procesar los sprites de las puertas
+         PunteroSpritesPuertas = 0x2E8F //apunta a los sprites de las puertas
+         PunteroDatosPuertas = 0x2FE4 //apunta a los datos de las puertas
+        ProcesarObjetos_0D3B(PunteroRutinaProcesarPuertas, PunteroSpritesPuertas, PunteroDatosPuertas, ProcesarSoloUno: false)
+     }
+
+     public func ProcesarObjetos_0D3B( _ PunteroRutinaProcesarObjetos:Int, _ PunteroSpritesObjetosIX:Int, _ PunteroDatosObjetosIY:Int, ProcesarSoloUno:Bool) {
+         var PunteroSpritesObjetosIX:Int = PunteroSpritesObjetosIX
+         var PunteroDatosObjetosIY:Int = PunteroDatosObjetosIY
+         var Valor:UInt8
+         var Visible:Bool
+         var XL:UInt8=0
+         var YH:UInt8=0
+         var Z:UInt8=0
+         var YpC:UInt8=0
+         var PunteroSpritesObjetosIXAnterior:Int
+         while true {
+             if PunteroDatosObjetosIY < 0x3008 { //el puntero apunta a la tabla de puertas
+                 Valor = TablaDatosPuertas_2FE4[PunteroDatosObjetosIY - 0x2FE4] //lee un byte y si encuentra 0xff termina
+             } else { //el puntero apunta a la tabla de objetos
+                 Valor = TablaPosicionObjetos_3008[PunteroDatosObjetosIY - 0x3008] //lee un byte y si encuentra 0xff termina
+             }
+             if Valor == 0xFF { return }
+             //0D44
+             Visible = ObtenerCoordenadasObjeto_0E4C(PunteroSpritesObjetosIX, PunteroDatosObjetosIY, &XL, &YH, &Z, &YpC) //obtiene en X,Y,Z la posición en pantalla del objeto. Si no es visible devuelve False
+             if Visible { //si el objeto es visible, salta a la rutina siguiente
+                 PunteroSpritesObjetosIXAnterior = PunteroSpritesObjetosIX
+                 switch PunteroRutinaProcesarObjetos {
+                     case 0xDD2: //rutina a la que saltar para procesar los sprites de las puertas
+                         ProcesarPuertaVisible_0DD2(PunteroSpritesObjetosIX, PunteroDatosObjetosIY, XL, YH, YpC)
+                     case 0xDBB: //rutina a la que saltar para procesar los objetos del juego
+                         ProcesarObjetoVisible_0DBB(PunteroSpritesObjetosIX, PunteroDatosObjetosIY, XL, YH, YpC)
+                     default:
+                         break
+                 }
+                 PunteroSpritesObjetosIX = PunteroSpritesObjetosIXAnterior
+             }
+             //pone la posición actual del sprite como la posición antigua
+             TablaSprites_2E17[PunteroSpritesObjetosIX + 3 - 0x2E17] = TablaSprites_2E17[PunteroSpritesObjetosIX + 1 - 0x2E17]
+             TablaSprites_2E17[PunteroSpritesObjetosIX + 4 - 0x2E17] = TablaSprites_2E17[PunteroSpritesObjetosIX + 2 - 0x2E17]
+             PunteroDatosObjetosIY = PunteroDatosObjetosIY + 5 //avanza a la siguiente entrada
+             PunteroSpritesObjetosIX = PunteroSpritesObjetosIX + 0x14 //apunta al siguiente sprite
+             if ProcesarSoloUno { return }
+        }
+     }
+
+     public func ObtenerCoordenadasObjeto_0E4C(_ PunteroSpritesObjetosIX:Int, _ PunteroDatosObjetosIY:Int, _ XL: inout UInt8, _ YH: inout UInt8, _ Z: inout UInt8, _ YpC: inout UInt8) -> Bool {
+         //devuelve la posición la entidad en coordenadas de pantalla. Si no es visible sale con False
+         //si es visible devuelve en Z la profundidad del sprite y en X,Y devuelve la posición en pantalla del sprite
+         var Visible:Bool
+         var ObtenerCoordenadasObjeto_0E4C:Bool
+         ObtenerCoordenadasObjeto_0E4C = false
+         ModificarPosicionSpritePantalla_2B2F = false
+         Visible = ProcesarObjeto_2ADD(PunteroSpritesObjetosIX, PunteroDatosObjetosIY, &XL, &YH, &Z, &YpC)
+         ModificarPosicionSpritePantalla_2B2F = true
+         if !Visible {
+             TablaSprites_2E17[PunteroSpritesObjetosIX + 0 - 0x2E17] = 0xFE //marca el sprite como no visible
+         } else {
+             ObtenerCoordenadasObjeto_0E4C = Visible
+         }
+         return ObtenerCoordenadasObjeto_0E4C
+     }
+
+     public func LeerBytePersonajeObjeto( _ PunteroDatosObjeto:Int) -> UInt8 {
+         //devuelve un valor de la tabla TablaPosicionesAlternativas_0593,TablaDatosPuertas_2FE4,
+         //TablaPosicionObjetos_3008, TablaCaracteristicasPersonajes_3036 ó TablaVariablesLogica_3C85
+         var LeerBytePersonajeObjeto:UInt8
+         if PunteroDatosObjeto < 0x2FE4 { //el objeto es una personaje en la tabla de alternativas
+             LeerBytePersonajeObjeto = TablaPosicionesAlternativas_0593[PunteroDatosObjeto - 0x0593]
+         } else if PunteroDatosObjeto < 0x3008 { //el objeto es una puerta
+             LeerBytePersonajeObjeto = TablaDatosPuertas_2FE4[PunteroDatosObjeto - 0x2FE4]
+         } else if PunteroDatosObjeto < 0x3036 { //objetos del juego
+             LeerBytePersonajeObjeto = TablaPosicionObjetos_3008[PunteroDatosObjeto - 0x3008]
+         } else if PunteroDatosObjeto < 0x3C85 { //personajes
+             LeerBytePersonajeObjeto = TablaCaracteristicasPersonajes_3036[PunteroDatosObjeto - 0x3036]
+         } else { //Posiciones predefinidas
+             LeerBytePersonajeObjeto = TablaVariablesLogica_3C85[PunteroDatosObjeto - 0x3C85]
+         }
+         return LeerBytePersonajeObjeto
+     }
+
+     public func EscribirBytePersonajeObjeto( _ PunteroDatosObjeto:Int, _ Valor:UInt8) {
+         //devuelve un valor de la tabla TablaPosicionesAlternativas_0593,TablaDatosPuertas_2FE4,
+         //TablaPosicionObjetos_3008, TablaCaracteristicasPersonajes_3036 ó TablaVariablesLogica_3C85
+         if PunteroDatosObjeto < 0x2FE4 { //el objeto es una personaje en la tabla de alternativas
+             TablaPosicionesAlternativas_0593[PunteroDatosObjeto - 0x0593] = Valor
+         } else if PunteroDatosObjeto < 0x3008 { //el objeto es una puerta
+             TablaDatosPuertas_2FE4[PunteroDatosObjeto - 0x2FE4] = Valor
+         } else if PunteroDatosObjeto < 0x3036 { //objetos del juego
+             TablaPosicionObjetos_3008[PunteroDatosObjeto - 0x3008] = Valor
+         } else if PunteroDatosObjeto < 0x3C85 { //personajes
+             TablaCaracteristicasPersonajes_3036[PunteroDatosObjeto - 0x3036] = Valor
+         } else { //Posiciones predefinidas
+             TablaVariablesLogica_3C85[PunteroDatosObjeto - 0x3C85] = Valor
+         }
+     }
+
+     public func LeerDatoGrafico( _ PunteroDatosGrafico:Int) -> UInt8 {
+         //devuelve un valor de la tabla TilesAbadia_6D00, BufferSprites_9500, TablaGraficosObjetos_A300 ó DatosMonjes_AB59
+         var LeerDatoGrafico:UInt8
+         if PunteroDatosGrafico < 0x9500 { //TilesAbadia_6D00
+             LeerDatoGrafico = TilesAbadia_6D00[PunteroDatosGrafico - 0x6D00]
+         } else if PunteroDatosGrafico < 0xA300 { //BufferSprites_9500
+             LeerDatoGrafico = BufferSprites_9500[PunteroDatosGrafico - 0x9500]
+         } else if PunteroDatosGrafico < 0xAB59 { //TablaGraficosObjetos_A300
+             LeerDatoGrafico = TablaGraficosObjetos_A300[PunteroDatosGrafico - 0xA300]
+         } else { //DatosMonjes_AB59
+             LeerDatoGrafico = DatosMonjes_AB59[PunteroDatosGrafico - 0xAB59]
+         }
+         return LeerDatoGrafico
+     }
+
+     public func LeerByteTablaCualquiera( _ Puntero:Int) -> UInt8 {
+         //lee un byte que puede pertenecer a cualquier tabla. usado en los errores de overflow del programa original
+         var LeerByteTablaCualquiera:UInt8
+         LeerByteTablaCualquiera = 0
+         if PunteroPerteneceTabla(Puntero, TablaBugDejarObjetos_0000, 0x0000) {
+             LeerByteTablaCualquiera = TablaBugDejarObjetos_0000[Puntero]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaBufferAlturas_01C0, 0x1C0) {
+             LeerByteTablaCualquiera = TablaBufferAlturas_01C0[Puntero - 0x1C0]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaBloquesPantallas_156D, 0x156D) {
+             LeerByteTablaCualquiera = TablaBloquesPantallas_156D[Puntero - 0x156D]
+         }
+         if PunteroPerteneceTabla(Puntero, DatosAlturaEspejoCerrado_34DB, 0x34DB) {
+             LeerByteTablaCualquiera = DatosAlturaEspejoCerrado_34DB[Puntero - 0x34DB]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaRutinasConstruccionBloques_1FE0, 0x1FE0) {
+             LeerByteTablaCualquiera = TablaRutinasConstruccionBloques_1FE0[Puntero - 0x1FE0]
+         }
+         if PunteroPerteneceTabla(Puntero, VariablesBloques_1FCD, 0x1FCD) {
+             LeerByteTablaCualquiera = VariablesBloques_1FCD[Puntero - 0x1FCD]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaCaracteristicasMaterial_1693, 0x1693) {
+             LeerByteTablaCualquiera = TablaCaracteristicasMaterial_1693[Puntero - 0x1693]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaHabitaciones_2255, 0x2255) {
+             LeerByteTablaCualquiera = TablaHabitaciones_2255[Puntero - 0x2255]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaAvancePersonaje4Tiles_284D, 0x284D) {
+             LeerByteTablaCualquiera = TablaAvancePersonaje4Tiles_284D[Puntero - 0x284D]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaAvancePersonaje1Tile_286D, 0x286D) {
+             LeerByteTablaCualquiera = TablaAvancePersonaje1Tile_286D[Puntero - 0x286D]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaPunterosPersonajes_2BAE, 0x2BAE) {
+             LeerByteTablaCualquiera = TablaPunterosPersonajes_2BAE[Puntero - 0x2BAE]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaVariablesAuxiliares_2D8D, 0x2D8D) {
+             LeerByteTablaCualquiera = TablaVariablesAuxiliares_2D8D[Puntero - 0x2D8D]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaPermisosPuertas_2DD9, 0x2DD9) {
+             LeerByteTablaCualquiera = TablaPermisosPuertas_2DD9[Puntero - 0x2DD9]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaObjetosPersonajes_2DEC, 0x2DEC) {
+             LeerByteTablaCualquiera = TablaObjetosPersonajes_2DEC[Puntero - 0x2DEC]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaSprites_2E17, 0x2E17) {
+             LeerByteTablaCualquiera = TablaSprites_2E17[Puntero - 0x2E17]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaDatosPuertas_2FE4, 0x2FE4) {
+             LeerByteTablaCualquiera = TablaDatosPuertas_2FE4[Puntero - 0x2FE4]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaDatosPuertas_2FE4, 0x2FE4) {
+             LeerByteTablaCualquiera = TablaDatosPuertas_2FE4[Puntero - 0x2FE4]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaPosicionObjetos_3008, 0x3008) {
+             LeerByteTablaCualquiera = TablaPosicionObjetos_3008[Puntero - 0x3008]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaCaracteristicasPersonajes_3036, 0x3036) {
+             LeerByteTablaCualquiera = TablaCaracteristicasPersonajes_3036[Puntero - 0x3036]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaPunterosCarasMonjes_3097, 0x3097) {
+             LeerByteTablaCualquiera = TablaPunterosCarasMonjes_3097[Puntero - 0x3097]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaDesplazamientoAnimacion_309F, 0x309F) {
+             LeerByteTablaCualquiera = TablaDesplazamientoAnimacion_309F[Puntero - 0x309F]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaAnimacionPersonajes_319F, 0x319F) {
+             LeerByteTablaCualquiera = TablaAnimacionPersonajes_319F[Puntero - 0x319F]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaAccesoHabitaciones_3C67, 0x3C67) {
+             LeerByteTablaCualquiera = TablaAccesoHabitaciones_3C67[Puntero - 0x3C67]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaVariablesLogica_3C85, 0x3C85) {
+             LeerByteTablaCualquiera = TablaVariablesLogica_3C85[Puntero - 0x3C85]
+         }
+         //If PunteroPerteneceTabla(Puntero, TablaPosicionesPredefinidasMalaquias_3CA8, 0x3CA8&) Then
+         //LeerByteTablaCualquiera = TablaPosicionesPredefinidasMalaquias_3CA8(Puntero - 0x3CA8&)
+         //End If
+         //If PunteroPerteneceTabla(Puntero, TablaPosicionesPredefinidasAbad_3CC6, 0x3CC6&) Then
+         //LeerByteTablaCualquiera = TablaPosicionesPredefinidasAbad_3CC6(Puntero - 0x3CC6&)
+         //End If
+         //If PunteroPerteneceTabla(Puntero, TablaPosicionesPredefinidasBerengario_3CE7, 0x3CE7&) Then
+         //LeerByteTablaCualquiera = TablaPosicionesPredefinidasBerengario_3CE7(Puntero - 0x3CE7&)
+         //End If
+         //If PunteroPerteneceTabla(Puntero, TablaPosicionesPredefinidasSeverino_3CFF, 0x3CFF&) Then
+         //LeerByteTablaCualquiera = TablaPosicionesPredefinidasSeverino_3CFF(Puntero - 0x3CFF&)
+         //End If
+         //If PunteroPerteneceTabla(Puntero, TablaPosicionesPredefinidasAdso_3D11, 0x3D11&) Then
+         //LeerByteTablaCualquiera = TablaPosicionesPredefinidasAdso_3D11(Puntero - 0x3D11&)
+         //End If
+         if PunteroPerteneceTabla(Puntero, TablaPunterosVariablesScript_3D1D, 0x3D1D) {
+             LeerByteTablaCualquiera = TablaPunterosVariablesScript_3D1D[Puntero - 0x3D1D]
+         }
+         if PunteroPerteneceTabla(Puntero, DatosHabitaciones_4000, 0x4000) {
+             LeerByteTablaCualquiera = DatosHabitaciones_4000[Puntero - 0x4000]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaPunterosTrajesMonjes_48C8, 0x48C8) {
+             LeerByteTablaCualquiera = TablaPunterosTrajesMonjes_48C8[Puntero - 0x48C8]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaPatronRellenoLuz_48E8, 0x48E8) {
+             LeerByteTablaCualquiera = TablaPatronRellenoLuz_48E8[Puntero - 0x48E8]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaAlturasPantallas_4A00, 0x4A00) {
+             LeerByteTablaCualquiera = TablaAlturasPantallas_4A00[Puntero - 0x4A00]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaEtapasDia_4F7A, 0x4F7A) {
+             LeerByteTablaCualquiera = TablaEtapasDia_4F7A[Puntero - 0x4F7A]
+         }
+         if PunteroPerteneceTabla(Puntero, DatosMarcador_6328, 0x6328) {
+             LeerByteTablaCualquiera = DatosMarcador_6328[Puntero - 0x6328]
+         }
+         if PunteroPerteneceTabla(Puntero, DatosCaracteresPergamino_6947, 0x6947) {
+             LeerByteTablaCualquiera = DatosCaracteresPergamino_6947[Puntero - 0x6947]
+         }
+         if PunteroPerteneceTabla(Puntero, PunterosCaracteresPergamino_680C, 0x680C) {
+             LeerByteTablaCualquiera = PunterosCaracteresPergamino_680C[Puntero - 0x680C]
+         }
+         if PunteroPerteneceTabla(Puntero, TilesAbadia_6D00, 0x6D00) {
+             LeerByteTablaCualquiera = TilesAbadia_6D00[Puntero - 0x6D00]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaRellenoBugTiles_8D00, 0x8D00) {
+             LeerByteTablaCualquiera = TablaRellenoBugTiles_8D00[Puntero - 0x8D00]
+         }
+         if PunteroPerteneceTabla(Puntero, TextoPergaminoPresentacion_7300, 0x7300) {
+             LeerByteTablaCualquiera = TextoPergaminoPresentacion_7300[Puntero - 0x7300]
+         }
+         if PunteroPerteneceTabla(Puntero, DatosGraficosPergamino_788A, 0x788A) {
+             LeerByteTablaCualquiera = DatosGraficosPergamino_788A[Puntero - 0x788A]
+         }
+         if PunteroPerteneceTabla(Puntero, BufferTiles_8D80, 0x8D80) {
+             LeerByteTablaCualquiera = BufferTiles_8D80[Puntero - 0x8D80]
+         }
+         if PunteroPerteneceTabla(Puntero, BufferSprites_9500, 0x9500) {
+             LeerByteTablaCualquiera = BufferSprites_9500[Puntero - 0x9500]
+         }
+         //If PunteroPerteneceTabla(Puntero, TablaBufferAlturas_96F4, 0x96F4) { 'esta tabla se solapa con el buffer de sprites
+         // LeerByteTablaCualquiera = TablaBufferAlturas_96F4(Puntero - 0x96F4)
+         // End If
+
+         if PunteroPerteneceTabla(Puntero, TablasAndOr_9D00, 0x9D00) {
+             LeerByteTablaCualquiera = TablasAndOr_9D00[Puntero - 0x9D00]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaFlipX_A100, 0xA100) {
+             LeerByteTablaCualquiera = TablaFlipX_A100[Puntero - 0xA100]
+         }
+         if PunteroPerteneceTabla(Puntero, TablaGraficosObjetos_A300, 0xA300) {
+             LeerByteTablaCualquiera = TablaGraficosObjetos_A300[Puntero - 0xA300]
+         }
+         if PunteroPerteneceTabla(Puntero, DatosMonjes_AB59, 0xAB59) {
+             LeerByteTablaCualquiera = DatosMonjes_AB59[Puntero - 0xAB59]
+         }
+         if PunteroPerteneceTabla(Puntero, BufferComandosMonjes_A200, 0xA200) {
+             LeerByteTablaCualquiera = BufferComandosMonjes_A200[Puntero - 0xA200]
+         }
+     return LeerByteTablaCualquiera
+     }
+
+     public func ProcesarObjeto_2ADD( _ PunteroSpritesObjetosIX:Int, _ PunteroDatosObjetosIY:Int, _ XL: inout UInt8, _ YH: inout UInt8, _ Z: inout UInt8, _ YpC: inout UInt8) -> Bool {
+         //comprueba si el sprite está dentro de la zona visible de pantalla.
+         //Si no es así, sale. Si está dentro de la zona visible lo transforma
+         //a otro sistema de coordenadas. Dependiendo de un parámetro sigue o no.
+         //Si sigue actualiza la posición según la orientación
+         //si no es visible, sale. Si es visible, sale 2 veces (2 pop de pila)
+         var ProcesarObjeto_2ADD:Bool=false
+         var ValorX:Int
+         var ValorY:Int
+         var ValorZ:UInt8
+         var AlturaBase:UInt8
+         //On Error Resume Next 'desplazamiento puede ser <0
+         //If PunteroDatosObjetosIY = 0x3036 Then Stop
+         ValorX = Int(LeerBytePersonajeObjeto(PunteroDatosObjetosIY + 2)) - Int(LimiteInferiorVisibleX_2AE1)
+         ValorY = Int(LeerBytePersonajeObjeto(PunteroDatosObjetosIY + 3)) - Int(LimiteInferiorVisibleY_2AEB)
+         ValorZ = LeerBytePersonajeObjeto(PunteroDatosObjetosIY + 4)
+         if ValorX < 0 || ValorX > 0x28 { //si el objeto en X es < limite inferior visible de X o el objeto en X es >= limite superior visible de X, sale
+             ProcesarObjeto_2ADD = false
+             return ProcesarObjeto_2ADD
+         }
+         if ValorY < 0 || ValorY > 0x28 { //si el objeto en Y es < limite inferior visible de Y o el objeto en Y es >= limite superior visible de Y, sale
+             ProcesarObjeto_2ADD = false
+             return ProcesarObjeto_2ADD
+         }
+         //2af4
+         AlturaBase = LeerAlturaBasePlanta_2473(ValorZ) //dependiendo de la altura, devuelve la altura base de la planta
+         if AlturaBase != AlturaBasePlantaActual_2AF9 { //si el objeto no está en la misma planta, sale
+             ProcesarObjeto_2ADD = false
+             return ProcesarObjeto_2ADD
+         }
+         XL = UInt8(ValorX) //coordenada X del objeto en la pantalla
+         YH = UInt8(ValorY) //coordenada Y del objeto en la pantalla
+         Z = ValorZ - AlturaBase //altura del objeto ajustada para esta pantalla
+         //2b00
+         //al llegar aquí los parámetros son:
+         //X = coordenada X del objeto en la rejilla
+         //Y = coordenada Y del objeto en la rejilla
+         //Z = altura del objeto en la rejilla ajustada para esta planta
+         switch RutinaCambioCoordenadas_2B01 { //rutina que cambia el sistema de coordenadas dependiendo de la orientación de la pantalla
+             case 0x248A:
+                 CambiarCoordenadasOrientacion0_248A(&XL, &YH)
+             case 0x2485:
+                 CambiarCoordenadasOrientacion1_2485(&XL, &YH)
+             case 0x248B:
+                 CambiarCoordenadasOrientacion2_248B(&XL, &YH)
+             case 0x2494:
+                 CambiarCoordenadasOrientacion3_2494(&XL, &YH)
+             default:
+                break
+         }
+         TablaSprites_2E17[PunteroSpritesObjetosIX + 0x12 - 0x2E17] = XL //graba las nuevas coordenadas x e y en el sprite
+         TablaSprites_2E17[PunteroSpritesObjetosIX + 0x13 - 0x2E17] = YH //graba las nuevas coordenadas x e y en el sprite
+         //2b09
+         //convierte las coordenadas en la rejilla a coordenadas de pantalla
+         var Xcalc:Int
+         var Ycalc:Int
+         var Ypantalla:Int
+         //2b09
+         Ycalc = Int(XL) + Int(YH) //pos x + pos y = coordenada y en pantalla
+         //2B0B
+         Ypantalla = Ycalc
+         //2B0C
+         Ycalc = Ycalc - Int(Z) //le resta la altura (cuanto más alto es el objeto, menor y tiene en pantalla)
+         //2B0D
+         if Ycalc < 0 { return ProcesarObjeto_2ADD }
+         //2B0E
+         Ycalc = Ycalc - 6 //y calc = y calc - 6 (traslada 6 unidades arriba)
+         //2b10
+         if Ycalc < 0 { return ProcesarObjeto_2ADD } //si y calc < 0, sale
+         //2b11
+         if Ycalc < 8 { return ProcesarObjeto_2ADD } //si y calc < 8, sale
+         //2b14
+         if Ycalc >= 0x3A { return ProcesarObjeto_2ADD } //si y calc  >= 58, sale
+         //llega aquí si la y calc está entre 8 y 57
+         //2b17
+         Ycalc = 4 * (Ycalc + 1)
+         Xcalc = 2 * (Int(XL) - Int(YH)) + 0x50 - 0x28
+         if Xcalc < 0 { return ProcesarObjeto_2ADD }
+         if Xcalc >= 0x50 { return ProcesarObjeto_2ADD }
+         //2b26
+         XL = UInt8(Xcalc) //pos x con nuevo sistema de coordenadas
+         YH = UInt8(Ycalc) //pos y con nuevo sistema de coordenadas
+         ProcesarObjeto_2ADD = true //el objeto es visible
+         Ypantalla = Ypantalla - 0x10
+         if Ypantalla < 0 { Ypantalla = 0 }//si la posición en y < 16, pos y = 0
+         YpC = Int2ByteSigno(Ypantalla)
+         if !ModificarPosicionSpritePantalla_2B2F { return ProcesarObjeto_2ADD }
+         //si llega aquí modifica la posición del sprite en pantalla
+         //2B30
+         var Entrada:UInt8
+         var Ocupa1Posicion:Bool=false //true si ocupa una posición. false si ocupa 4 posiciones
+         var MovimientoPar:Bool=false //true si el contador de animación es 0 ó 2. false si es 1 ó 3
+         var OrientadoEscaleras:Bool=false //true si está orientado para subir o bajar escaleras. false si esta girado
+         var Subiendo:Bool=false //true si está subiendo escaleras, false si está bajando
+         Entrada = 0 //primera entrada
+         if (LeerBytePersonajeObjeto(PunteroDatosObjetosIY + 5) & 0x80) != 0 { Ocupa1Posicion = true }
+         if (LeerBytePersonajeObjeto(PunteroDatosObjetosIY + 0) & 1) == 0 { MovimientoPar = true } //lee el bit 0 del contador de animación
+         if (LeerBytePersonajeObjeto(PunteroDatosObjetosIY + 5) & 32) == 0 { OrientadoEscaleras = true }
+         if (LeerBytePersonajeObjeto(PunteroDatosObjetosIY + 5) & 0x10) == 0 { Subiendo = true }
+         if Ocupa1Posicion {
+             Entrada = Entrada + 2
+             if !OrientadoEscaleras {
+                 if !MovimientoPar { Entrada = Entrada + 1 }
+             } else {
+                 if MovimientoPar {
+                     Entrada = Entrada + 2
+                 } else {
+                     Entrada = Entrada + 3
+                     if !Subiendo { Entrada = Entrada + 1 }
+                 }
+             }
+         } else { //ocupa 4 posiciones
+             if !MovimientoPar { Entrada = Entrada + 1 }
+         }
+         //2B41
+         var Puntero:Int
+         var Orientacion:UInt8
+         var Desplazamiento:Int
+         Orientacion = ModificarOrientacion_2480(LeerBytePersonajeObjeto(PunteroDatosObjetosIY + 1)) //obtiene la orientación del personaje. modifica la orientación que se le pasa en a con la orientación de la pantalla actual
+         //2b4b
+         Puntero = ((Int(Orientacion) << 4) & 0x30) + 2 * Int(Entrada) + PunteroTablaDesplazamientoAnimacion_2D84
+         //2b58
+         //Desplazamiento = TablaDesplazamientoAnimacion_309F(Puntero - 0x309F) 'lee un byte de la tabla
+         Desplazamiento = Leer8Signo(TablaDesplazamientoAnimacion_309F, Puntero - 0x309F) //lee un byte de la tabla
+         //2b59
+         Desplazamiento = Desplazamiento + Int(XL) //le suma la x del nuevo sistema de coordenadas
+         //2b5a
+         //Desplazamiento = Desplazamiento - (256 - LeerDatoObjeto(PunteroDatosObjetosIY + 7)) 'le suma un desplazamieno
+         Desplazamiento = Desplazamiento + Leer8Signo(TablaCaracteristicasPersonajes_3036, PunteroDatosObjetosIY + 7 - 0x3036) //le suma un desplazamieno
+         if Desplazamiento >= 0 {
+             XL = UInt8(Desplazamiento) //actualiza la x
+         } else {
+             XL = UInt8(256 + Desplazamiento) //no deberían aparecer coordenadas negativas. bug del original?
+         }
+         Puntero = Puntero + 1
+         //Desplazamiento = TablaDesplazamientoAnimacion_309F(Puntero - 0x309F) 'lee un byte de la tabla
+         Desplazamiento = Leer8Signo(TablaDesplazamientoAnimacion_309F, Puntero - 0x309F) //lee un byte de la tabla
+         Desplazamiento = Desplazamiento + Int(YH) //le suma la Y del nuevo sistema de coordenadas
+         //Desplazamiento = Desplazamiento - (256 - LeerDatoObjeto(PunteroDatosObjetosIY + 8)) 'le suma un desplazamieno
+         Desplazamiento = Desplazamiento + Leer8Signo(TablaCaracteristicasPersonajes_3036, PunteroDatosObjetosIY + 8 - 0x3036) //le suma un desplazamieno
+         YH = UInt8(Desplazamiento) //actualiza la Y
+         TablaSprites_2E17[PunteroSpritesObjetosIX + 1 - 0x2E17] = XL //graba la posición x del sprite (en bytes)
+         TablaSprites_2E17[PunteroSpritesObjetosIX + 2 - 0x2E17] = YH //graba la posición y del sprite (en pixels)
+         if TablaSprites_2E17[PunteroSpritesObjetosIX + 0 - 0x2E17] != 0xFE { return ProcesarObjeto_2ADD }
+         //si el sprite no es visible, continua
+         TablaSprites_2E17[PunteroSpritesObjetosIX + 3 - 0x2E17] = XL //graba la posición anterior x del sprite (en bytes)
+         TablaSprites_2E17[PunteroSpritesObjetosIX + 4 - 0x2E17] = YH //graba la posición anterior y del sprite (en pixels)
+         return ProcesarObjeto_2ADD
+    }
+
+     public func CambiarCoordenadasOrientacion0_248A( _ X: inout UInt8, _ Y: inout UInt8) {
+         //realiza el cambio de coordenadas si la orientación la cámara es del tipo 0
+         //no hace ningún cambio
+     }
+
+     public func CambiarCoordenadasOrientacion1_2485( _ X: inout UInt8, _ Y: inout UInt8) {
+         //realiza el cambio de coordenadas si la orientación la cámara es del tipo 1
+         var Valor:UInt8
+         Valor = Y //guarda Y
+         Y = X
+         X = 0x28 - Valor
+     }
+
+     public func CambiarCoordenadasOrientacion2_248B( _ X: inout UInt8, _ Y: inout UInt8) {
+         //realiza el cambio de coordenadas si la orientación la cámara es del tipo 2
+         Y = 0x28 - Y
+         X = 0x28 - X
+     }
+
+     public func CambiarCoordenadasOrientacion3_2494( _ X: inout UInt8, _ Y: inout UInt8) {
+         //realiza el cambio de coordenadas si la orientación la cámara es del tipo 1
+         var Valor:UInt8
+         Valor = X //guarda x
+         X = Y
+         Y = 0x28 - Valor
+     }
+
+     public func ModificarOrientacion_2480( _ Orientacion:UInt8) -> UInt8 {
+         //modifica la orientación que se le pasa en a con la orientación de la pantalla actual
+         var Resultado:Int
+         Resultado = (Int(Orientacion) - Int(OrientacionPantalla_2481)) & 0x3
+         return Int2ByteSigno(Resultado)
+         //If Orientacion < OrientacionPantalla_2481 {
+         //    ModificarOrientacion_2480 = 3
+         //    Exit Function
+         //End If
+         //ModificarOrientacion_2480 = (Orientacion - OrientacionPantalla_2481) And 0x3
+    }
+
+     public func ProcesarPuertaVisible_0DD2( _ PunteroSpriteIX:Int, _ PunteroDatosIY:Int, _ X:UInt8, _ Y:UInt8, _ Z:UInt8) {
+         //rutina llamada cuando las puertas son visibles en la pantalla actual
+         //se encarga de modificar la posición del sprite según la orientación, modificar el buffer de alturas para indicar si se puede pasar
+         //por la zona de la puerta o no, colocar el gráfico de las puertas y modificar 0x2daf
+         //PunteroSprite apunta al sprite de una puerta
+         //PunteroDatos apunta a los datos de la puerta
+         //X,Y contienen la posición en pantalla del objeto
+         //Z tiene la profundidad de la puerta en pantalla
+         var DeltaX:Int=0
+         var DeltaY:Int=0
+         var DeltaBuffer:Int=0
+         var Orientacion:UInt8
+         var TablaDesplazamientoOrientacionPuertas_05AD:[Int]=[Int](repeating: 0, count: 32)
+         var Valor:Int
+         var PunteroBufferAlturasIX:Int=0
+         var BufferAuxiliar:Bool=false //true: se usa el buffer secundario de 96F4
+         if PunteroBufferAlturas_2D8A != 0x01C0 { BufferAuxiliar = true }
+         //tabla de desplazamientos relacionada con las orientaciones de las puertas
+         //cada entrada ocupa 8 bytes
+         //byte 0: relacionado con la posición x de pantalla
+         //byte 1: relacionado con la posición y de pantalla
+         //byte 2: relacionado con la profundidad de los sprites
+         //byte 3: indica el estado de flipx de los gráficos que necesita la puerta
+         //byte 4: relacionado con la posición x de la rejilla
+         //byte 5: relacionado con la posición y de la rejilla
+         //byte 6-7: no usado, pero es el desplazamiento en el buffer de alturas
+         //05AD:   FF DE 01 00 00 00 0001 -> -01 -34  +01  00    00  00   +01
+         //        FF D6 00 01 00 00 FFE8 -> -01 -42   00 +01    00  00   -24
+         //        FB D6 00 00 00 00 FFFF -> -05 -42   00  00    00  00   -01
+         //        FB DE 01 01 01 01 0018 -> -05 -34  +01 +01   +01 +01   +24
+         TablaDesplazamientoOrientacionPuertas_05AD[0] = -1
+         TablaDesplazamientoOrientacionPuertas_05AD[1] = -34
+         TablaDesplazamientoOrientacionPuertas_05AD[2] = 1
+         TablaDesplazamientoOrientacionPuertas_05AD[7] = 1
+
+         TablaDesplazamientoOrientacionPuertas_05AD[8] = -1
+         TablaDesplazamientoOrientacionPuertas_05AD[9] = -42
+         TablaDesplazamientoOrientacionPuertas_05AD[11] = 1
+         TablaDesplazamientoOrientacionPuertas_05AD[14] = -1
+         TablaDesplazamientoOrientacionPuertas_05AD[15] = -24
+
+         TablaDesplazamientoOrientacionPuertas_05AD[16] = -5
+         TablaDesplazamientoOrientacionPuertas_05AD[17] = -42
+         TablaDesplazamientoOrientacionPuertas_05AD[22] = -1
+         TablaDesplazamientoOrientacionPuertas_05AD[23] = -1
+
+         TablaDesplazamientoOrientacionPuertas_05AD[24] = -5
+         TablaDesplazamientoOrientacionPuertas_05AD[25] = -34
+         TablaDesplazamientoOrientacionPuertas_05AD[26] = 1
+         TablaDesplazamientoOrientacionPuertas_05AD[27] = 1
+         TablaDesplazamientoOrientacionPuertas_05AD[28] = 1
+         TablaDesplazamientoOrientacionPuertas_05AD[29] = 1
+         TablaDesplazamientoOrientacionPuertas_05AD[31] = 24
+
+         DefinirDatosSpriteComoAntiguos_2AB0(PunteroSpriteIX)
+         LeerOrientacionPuerta_0E7C(PunteroSpriteIX, &DeltaX, &DeltaY)  //lee 2 valores relacionados con la orientación y modifica la posición del sprite (en coordenadas locales) según la orientación
+         Orientacion = TablaDatosPuertas_2FE4[PunteroDatosIY + 0 - 0x2FE4] //lee la orientación de la puerta
+         Orientacion = ModificarOrientacion_2480(Orientacion & 0x3)  //modifica la orientación que se le pasa con la orientación de la pantalla actual
+         //0deb
+         Valor = TablaDesplazamientoOrientacionPuertas_05AD[Int(Orientacion) * 8] //indexa en la tabla
+         TablaSprites_2E17[PunteroSpriteIX + 1 - 0x2E17] = Int2ByteSigno(Valor + DeltaX + Int(X)) //modifica la posición x del sprite
+         //0df1
+         Valor = TablaDesplazamientoOrientacionPuertas_05AD[Int(Orientacion) * 8 + 1] //indexa en la tabla
+         TablaSprites_2E17[PunteroSpriteIX + 2 - 0x2E17] = Int2ByteSigno(Valor + DeltaY + Int(Y)) //modifica la posición y del sprite
+         //0df8
+         Valor = TablaDesplazamientoOrientacionPuertas_05AD[Int(Orientacion) * 8 + 2] //indexa en la tabla
+         Valor = Valor + Int(Z)
+         if PintarPantalla_0DFD { Valor = Valor | 0x80 } //Si se pinta la pantalla, 0x80, en otro caso 0
+         if RedibujarPuerta_0DFF { Valor = Valor | 0x80 }//Si se pinta la puerta, 0x80, en otro caso 0
+         //0e00
+         TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17] = Int2ByteSigno(Valor)
+         if TablaDesplazamientoOrientacionPuertas_05AD[Int(Orientacion) * 8 + 3] != 0 { PuertaRequiereFlip_2DAF = true }
+         //modifica la posición x e y del sprite en la rejilla según los 2 siguientes valores de la tabla
+         Valor = TablaDesplazamientoOrientacionPuertas_05AD[Int(Orientacion) * 8 + 4] //indexa en la tabla
+         TablaSprites_2E17[PunteroSpriteIX + 0x12 - 0x2E17] = TablaSprites_2E17[PunteroSpriteIX + 0x12 - 0x2E17] + UInt8(Valor)
+         Valor = TablaDesplazamientoOrientacionPuertas_05AD[Int(Orientacion) * 8 + 5] //indexa en la tabla
+         TablaSprites_2E17[PunteroSpriteIX + 0x13 - 0x2E17] = TablaSprites_2E17[PunteroSpriteIX + 0x13 - 0x2E17] + UInt8(Valor)
+         //coloca la dirección del gráfico de la puerta en el sprite (0xaa49)
+         //0e0e
+         TablaSprites_2E17[PunteroSpriteIX + 7 - 0x2E17] = 0x49
+         TablaSprites_2E17[PunteroSpriteIX + 8 - 0x2E17] = 0xAA
+         //si el objeto no es visible, sale. En otro caso, devuelve en ix un puntero a la entrada de la tabla de alturas de la posición correspondiente
+        if !LeerDesplazamientoPuerta_0E2C(&PunteroBufferAlturasIX, PunteroDatosIY, &DeltaBuffer) { return }
+         if !BufferAuxiliar {
+             TablaBufferAlturas_01C0[PunteroBufferAlturasIX - 0x01C0] = 0xF //marca la altura de esta posición del buffer de alturas
+             TablaBufferAlturas_01C0[PunteroBufferAlturasIX + DeltaBuffer - 0x01C0] = 0xF //marca la altura de la siguiente posición del buffer de alturas
+             TablaBufferAlturas_01C0[PunteroBufferAlturasIX + 2 * DeltaBuffer - 0x01C0] = 0xF //marca la altura de la siguiente posición del buffer de alturas
+         } else {
+             TablaBufferAlturas_96F4[PunteroBufferAlturasIX - 0x96F4] = 0xF //marca la altura de esta posición del buffer de alturas
+             TablaBufferAlturas_96F4[PunteroBufferAlturasIX + DeltaBuffer - 0x96F4] = 0xF //marca la altura de la siguiente posición del buffer de alturas
+             TablaBufferAlturas_96F4[PunteroBufferAlturasIX + 2 * DeltaBuffer - 0x96F4] = 0xF //marca la altura de la siguiente posición del buffer de alturas
+         }
+     }
+
+     public func DefinirDatosSpriteComoAntiguos_2AB0( _ PunteroSpriteIX:Int) {
+         //pone la posición y dimensiones actuales como posición y dimensiones antiguas
+         //copia la posición actual en x y en y como la posición antigua
+         TablaSprites_2E17[PunteroSpriteIX + 3 - 0x2E17] = TablaSprites_2E17[PunteroSpriteIX + 1 - 0x2E17]
+         TablaSprites_2E17[PunteroSpriteIX + 4 - 0x2E17] = TablaSprites_2E17[PunteroSpriteIX + 2 - 0x2E17]
+         //copia el ancho y alto del sprite actual como el ancho y alto antiguos
+         TablaSprites_2E17[PunteroSpriteIX + 9 - 0x2E17] = TablaSprites_2E17[PunteroSpriteIX + 5 - 0x2E17]
+         TablaSprites_2E17[PunteroSpriteIX + 10 - 0x2E17] = TablaSprites_2E17[PunteroSpriteIX + 6 - 0x2E17]
+     }
+
+     public func LeerOrientacionPuerta_0E7C( _ PunteroSpriteIX:Int, _ DeltaX: inout Int, _ DeltaY: inout Int) {
+         //lee en DeltaX, DeltaY 2 valores relacionados con la orientación y modifica la posición del sprite (en coordenadas locales) según la orientación
+         //PunteroSprite apunta al sprite de una puerta
+        var TablaDesplazamientoOrientacionPuertas_0E9D:[Int]=[Int](repeating: 0, count: 16)
+         var Orientacion:UInt8
+         //tabla relacionada con el desplazamiento de las puertas y la orientación
+         //cada entrada ocupa 4 bytes
+         //byte 0: valor a sumar a la posición x en coordenadas de pantalla del sprite de la puerta
+         //byte 1: valor a sumar a la posición y en coordenadas de pantalla del sprite de la puerta
+         //byte 2: valor a sumar a la posición x en coordenadas locales del sprite de la puerta
+         //byte 3: valor a sumar a la posición y en coordenadas locales del sprite de la puerta
+         //0E9D:   02 00 00 FF -> +2 00 00 -1
+         //        00 FC FF FF -> 00 -4 -1 -1
+         //        FE 00 FF 00 -> -2 00 -1 00
+         //        00 04 00 00 -> 00 +4 00 00
+         TablaDesplazamientoOrientacionPuertas_0E9D[0] = 2
+         TablaDesplazamientoOrientacionPuertas_0E9D[3] = -1
+
+         TablaDesplazamientoOrientacionPuertas_0E9D[5] = -4
+         TablaDesplazamientoOrientacionPuertas_0E9D[6] = -1
+         TablaDesplazamientoOrientacionPuertas_0E9D[7] = -1
+
+         TablaDesplazamientoOrientacionPuertas_0E9D[8] = -2
+         TablaDesplazamientoOrientacionPuertas_0E9D[10] = -1
+
+         TablaDesplazamientoOrientacionPuertas_0E9D[13] = 4
+
+         Orientacion = ModificarOrientacion_2480(3) //modifica la orientación que se le pasa con la orientación de la pantalla actual
+         //indexa en la tabla. cada entrada ocupa 4 bytes
+         //lee los valores a sumar a la posición en coordenadas de pantalla del sprite de la puerta
+         DeltaX = TablaDesplazamientoOrientacionPuertas_0E9D[Int(Orientacion) * 4]
+         DeltaY = TablaDesplazamientoOrientacionPuertas_0E9D[Int(Orientacion) * 4 + 1]
+         // modifica la posición x de la rejilla según la orientación de la cámara con el valor leido
+         TablaSprites_2E17[PunteroSpriteIX + 0x12 - 0x2E17] = UInt8(Int(TablaSprites_2E17[PunteroSpriteIX + 0x12 - 0x2E17]) + TablaDesplazamientoOrientacionPuertas_0E9D[Int(Orientacion) * 4 + 2])
+         TablaSprites_2E17[PunteroSpriteIX + 0x13 - 0x2E17] = UInt8(Int(TablaSprites_2E17[PunteroSpriteIX + 0x13 - 0x2E17]) + TablaDesplazamientoOrientacionPuertas_0E9D[Int(Orientacion) * 4 + 3])
+     }
+
+     public func LeerDesplazamientoPuerta_0E2C( _ PunteroBufferAlturasIX: inout Int, _ PunteroDatosIY:Int, _ DeltaBuffer: inout Int) -> Bool {
+         //lee en DeltaBuffer el desplazamiento para el buffer de alturas, y si la puerta es visible devuelve en PunteroBufferAlturasIX un puntero a la entrada de la tabla de alturas de la posición correspondiente
+         //DeltaBuffer=incremento entre posiciones marcadas en el buffer de alturas
+         //devuelve true si el elemento ocupa una posición central
+         var LeerDesplazamientoPuerta_0E2C:Bool
+         var Orientacion:UInt8
+         var TablaDesplazamientosBufferPuertas:[Int]=[0,0,0,0]
+         //tabla de desplazamientos en el buffer de alturas relacionada con la orientación de las puertas
+         //0E44:   0001 -> +01
+         //        FFE8 -> -24
+         //        FFFF -> -01
+         //        0018 -> +24
+         TablaDesplazamientosBufferPuertas[0] = 1
+         TablaDesplazamientosBufferPuertas[1] = -24
+         TablaDesplazamientosBufferPuertas[2] = -1
+         TablaDesplazamientosBufferPuertas[3] = 24
+         Orientacion = LeerBytePersonajeObjeto(PunteroDatosIY + 0)  //obtiene la orientación de la puerta
+         Orientacion = Orientacion & 0x3
+         //Orientacion = Orientacion * 2 'cada entrada ocupa 2 bytes
+         //DeltaX = TablaDesplazamientosBufferPuertas(Orientacion)
+         //DeltaY = TablaDesplazamientosBufferPuertas(Orientacion + 1)
+         DeltaBuffer = Int(TablaDesplazamientosBufferPuertas[Int(Orientacion)])
+         LeerDesplazamientoPuerta_0E2C = DeterminarPosicionCentral_0CBE(PunteroDatosIY, &PunteroBufferAlturasIX)
+         return LeerDesplazamientoPuerta_0E2C
+    }
+
+     public func DeterminarPosicionCentral_0CBE( _ PunteroDatosIY:Int, _ PunteroBufferAlturasIX: inout Int) -> Bool {
+         //si la posición no es una de las del centro de la pantalla o la altura del personaje no coincide con la altura base de la planta, sale con false
+         //en otro caso, devuelve en PunteroBufferAlturasIX un puntero a la entrada de la tabla de alturas de la posición correspondiente
+         //llamado con PunteroDatosIY = dirección de los datos de posición asociados al personaje/objeto
+         var DeterminarPosicionCentral_0CBE:Bool
+         var Altura:UInt8
+         var AlturaBase:UInt8
+         var X:UInt8
+         var Y:UInt8
+         DeterminarPosicionCentral_0CBE = false
+         Altura = LeerBytePersonajeObjeto(PunteroDatosIY + 4) //obtiene la altura del personaje
+         AlturaBase = LeerAlturaBasePlanta_2473(Altura) //dependiendo de la altura, devuelve la altura base de la planta
+         if AlturaBasePlantaActual_2DBA != AlturaBase { return DeterminarPosicionCentral_0CBE } //si las alturas son distintas, sale con false
+         X = LeerBytePersonajeObjeto(PunteroDatosIY + 2) //posición x del personaje
+         Y = LeerBytePersonajeObjeto(PunteroDatosIY + 3) //posición y del personaje
+         if !DeterminarPosicionCentral_279B(&X, &Y) { return DeterminarPosicionCentral_0CBE } //ajusta la posición pasada en X,Y a las 20x20 posiciones centrales que se muestran. Si la posición está fuera, sale
+         DeterminarPosicionCentral_0CBE = true //visible
+         PunteroBufferAlturasIX = PunteroBufferAlturas_2D8A + 24 * Int(Y) + Int(X)
+         return DeterminarPosicionCentral_0CBE
+    }
+
+     public func DeterminarPosicionCentral_279B( _ X: inout UInt8, _ Y: inout UInt8) -> Bool {
+         //ajusta la posición pasada en X,Y a las 20x20 posiciones centrales que se muestran. Si la posición está fuera, devuelve false
+         var DeterminarPosicionCentral_279B:Bool
+         DeterminarPosicionCentral_279B = false
+         if Y < MinimaPosicionYVisible_279D { return DeterminarPosicionCentral_279B } //si la posición en y es < el límite inferior en y en esta pantalla, sale
+         Y = Y - MinimaPosicionYVisible_279D //límite inferior en y
+         if Y < 2 { return DeterminarPosicionCentral_279B }
+         if Y >= 0x16 { return DeterminarPosicionCentral_279B } //si la posición en y es > el límite superior en y en esta pantalla, sale
+         if X < MinimaPosicionXVisible_27A9 { return DeterminarPosicionCentral_279B } // si la posición en x es < el límite inferior en x en esta pantalla, sale
+         X = X - MinimaPosicionXVisible_27A9 //límite inferior en x
+         if X < 2 { return DeterminarPosicionCentral_279B }
+         if X >= 0x16 { return DeterminarPosicionCentral_279B } //si la posición en x es > el límite superior en x en esta pantalla, sale
+         DeterminarPosicionCentral_279B = true
+         return DeterminarPosicionCentral_279B
+     }
+
+     public func ProcesarObjetoVisible_0DBB( _ PunteroSpriteIX:Int, _ PunteroDatosIY:Int, _ X:UInt8, _ Y:UInt8, _ Z:UInt8) {
+         //rutina llamada cuando los objetos del juego son visibles en la pantalla actual
+         //si no se dibujaba el objeto, ajusta la posición y lo marca para que se dibuje
+         //PunteroSpriteIX apunta al sprite del objeto
+         //PunteroDatosIY apunta a los datos del objeto
+         //X,Y continene la posición en pantalla del objeto
+         //X = la coordenada y del sprite en pantalla (-16)
+         if LeerBitArray(TablaPosicionObjetos_3008, PunteroDatosIY - 0x3008, 7) { return } //si el objeto ya se ha cogido, sale
+         TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17] = Z | 0x80  //indica que hay que pintar el objeto y actualiza la profundidad del objeto dentro del buffer de tiles
+         TablaSprites_2E17[PunteroSpriteIX + 2 - 0x2E17] = Y - 8  //modifica la posición y del objeto (-8 pixels)
+         if X >= 2 {
+             TablaSprites_2E17[PunteroSpriteIX + 1 - 0x2E17] = X - 2 //modifica la posición x del objeto (-2 pixels)
+         } else {
+             TablaSprites_2E17[PunteroSpriteIX + 1 - 0x2E17] = UInt8(256 + Int(X) - 2) //evita el bug del pergamino
+         }
+     }
+
+     public func ProcesarPersonaje_2468( _ PunteroSpritePersonajeIX:Int, _ PunteroDatosPersonajeIY:Int, _ PunteroDatosPersonajeHL:Int) {
+         //procesa los datos del personaje para cambiar la animación y posición del sprite
+         //PunteroSpritePersonajeIX = dirección del sprite correspondiente
+         //PunteroDatosPersonajeIY = datos de posición del personaje correspondiente
+         var PunteroTablaAnimaciones:Int
+         var Y:UInt8=0
+         var HL:String
+         var IX:String
+         var IY:String
+         IX = String(format: "%02X", PunteroSpritePersonajeIX)
+         IY = String(format: "%02X", PunteroDatosPersonajeIY)
+         HL = String(format: "%02X", PunteroDatosPersonajeHL)
+         PunteroTablaAnimaciones = CambiarAnimacionTrajesMonjes_2A61(PunteroSpritePersonajeIX, PunteroDatosPersonajeIY) //cambia la animación de los trajes de los monjes según la posición y en contador de animaciones
+         HL = String(format: "%02X", PunteroTablaAnimaciones)
+         if ComprobarVisibilidadSprite_245E(PunteroSpritePersonajeIX, PunteroDatosPersonajeIY, &Y) {
+             ActualizarDatosGraficosPersonaje_2A34(PunteroSpritePersonajeIX, PunteroDatosPersonajeIY, PunteroTablaAnimaciones, Y)
+         }
+     }
+
+     public func CambiarAnimacionTrajesMonjes_2A61( _ PunteroSpritePersonajeIX:Int, _ PunteroDatosPersonajeIY:Int) -> Int {
+         //cambia la animación de los trajes de los monjes según la posición y en contador de animaciones y obtiene la dirección de los
+         //datos de la animación que hay que poner en hl
+         //PunteroSpritePersonajeIX = dirección del sprite correspondiente
+         //PunteroDatosPersonajeIY = datos de posición del personaje correspondiente
+         //al salir devuelve el índice en la tabla de animaciones
+         var CambiarAnimacionTrajesMonjes_2A61:Int
+         var AnimacionPersonaje:UInt8
+         var AnimacionTraje:UInt8
+         var AnimacionSprite:UInt8
+         var Orientacion:UInt8
+         var PunteroAnimacion:Int
+         var IX:String
+         var IY:String
+         var DE:String
+         IX = String(format: "%02X", PunteroSpritePersonajeIX)
+         IY = String(format: "%02X", PunteroDatosPersonajeIY)
+         AnimacionPersonaje = TablaCaracteristicasPersonajes_3036[PunteroDatosPersonajeIY - 0x3036] //obtiene la animación del personaje
+         //2A64
+         Orientacion = TablaCaracteristicasPersonajes_3036[PunteroDatosPersonajeIY + 1 - 0x3036]  //obtiene la orientación del personaje
+         //2A67
+         Orientacion = ModificarOrientacion_2480(Orientacion) //modifica la orientación que se le pasa con la orientación de la pantalla actual
+         //2A6b
+         AnimacionTraje = (Orientacion * 4) | AnimacionPersonaje //desplaza la orientación 2 a la izquierda y la combina con la animación para obtener la animación del traje de los monjes
+         //2A6F
+         AnimacionSprite = TablaSprites_2E17[PunteroSpritePersonajeIX + 0xB - 0x2E17] //lee el antiguo valor...
+         //2A72
+         AnimacionSprite = AnimacionSprite & 0xF0 //...y se queda con los bits que no son de la animación
+         AnimacionSprite = AnimacionSprite | AnimacionTraje
+         //2A75
+         TablaSprites_2E17[PunteroSpritePersonajeIX + 0xB - 0x2E17] = AnimacionSprite //combina el valor anterior con la animación del traje
+         //2A78
+         PunteroAnimacion = Int(Orientacion) //recupera la orientación del personaje en la pantalla actual
+         PunteroAnimacion = PunteroAnimacion + 1
+         PunteroAnimacion = PunteroAnimacion & 2 //indica si el personaje mira hacia la derecha o hacia la izquierda
+         PunteroAnimacion = PunteroAnimacion << 1 //desplaza 1 bit a la izquierda
+         PunteroAnimacion = PunteroAnimacion | Int(AnimacionPersonaje) //combina con el número de animación actual
+         PunteroAnimacion = PunteroAnimacion * 4 //desplaza 2 bits a la izquierda (las animaciones de las x y de las y están separadas por 8 entradas)
+         //2A80
+         //a = 0 0 0 (si se mueve en x, 0, si se mueve en y, 1) (número de la secuencia de animación (2 bits)) 0 0
+         DE = String(format: "%02X", PunteroTablaAnimacionesPersonaje_2A84)
+         if (PunteroTablaAnimacionesPersonaje_2A84 & 0xC000) != 0xC000 {
+             //2A8D
+             PunteroAnimacion = PunteroAnimacion + PunteroTablaAnimacionesPersonaje_2A84 //indexa en la tabla
+             CambiarAnimacionTrajesMonjes_2A61 = PunteroAnimacion
+             return CambiarAnimacionTrajesMonjes_2A61 //si la dirección que se ha puesto en 2A84 empieza por 0xc0, vuelve
+         }
+         //aquí llega si la dirección que se ha puesto en la instrucción modificada empieza por 0xc0
+         //PunteroAnimacion = índice en la tabla de animaciones
+         var NumeroMonje:UInt8
+         var PunteroCaraMonje:Int
+         //2A8F
+         NumeroMonje = UInt8(PunteroTablaAnimacionesPersonaje_2A84 & 0xFF) //número de monje (0, 2, 4 ó 6)
+         //2A96
+         PunteroCaraMonje = Leer16(TablaPunterosCarasMonjes_3097, Int(NumeroMonje) + 0x3097 - 0x3097)
+         //2aa0
+         if (PunteroAnimacion & 0x10) != 0 { //según se mueva en x o en y, pone una cabeza
+             //2AA5
+             PunteroCaraMonje = PunteroCaraMonje + 0x32 //si el bit 4 es 1 (se mueve en y), coge la segunda cara
+         }
+         //2AA9
+         PunteroAnimacion = PunteroAnimacion + 0x31DF
+         Escribir16(&TablaAnimacionPersonajes_319F, PunteroAnimacion - 0x319F, PunteroCaraMonje)
+         CambiarAnimacionTrajesMonjes_2A61 = PunteroAnimacion
+         return CambiarAnimacionTrajesMonjes_2A61
+     }
+
+     public func ComprobarVisibilidadSprite_245E( _ PunteroSpritePersonajeIX:Int, _ PunteroDatosPersonajeIY:Int, _ Ypantalla: inout UInt8) -> Bool {
+         var ComprobarVisibilidadSprite_245E:Bool
+         var Visible:Bool
+         var X:UInt8=0
+         var Z:UInt8=0
+         var Y:UInt8=0
+         ComprobarVisibilidadSprite_245E = false
+         Visible = ProcesarObjeto_2ADD(PunteroSpritePersonajeIX, PunteroDatosPersonajeIY, &X, &Y, &Z, &Ypantalla) //comprueba si es visible y si lo es, actualiza su posición si fuese necesario
+         if !Visible {
+             TablaSprites_2E17[PunteroSpritePersonajeIX + 0 - 0x2E17] = 0xFE //marca el sprite como no usado
+             return ComprobarVisibilidadSprite_245E //sale con visibilidad=false
+         }
+         ComprobarVisibilidadSprite_245E = Visible
+         return ComprobarVisibilidadSprite_245E
+     }
+
+     public func ActualizarDatosGraficosPersonaje_2A34 ( _ PunteroSpritePersonajeIX:Int, _ PunteroDatosPersonajeIY:Int, _ PunteroDatosPersonajeHL:Int, _ Y:UInt8) {
+         //aquí se llega desde fuera si un sprite es visible, después de haber actualizado su posición.
+         //en PunteroDatosPersonajeHL se apunta a la animación correspondiente para el sprite
+         //PunteroSpritePersonajeIX = dirección del sprite correspondiente
+         //PunteroDatosPersonajeIY = datos de posición del personaje correspondiente
+         //Y = posición y en pantalla del sprite
+         var Orientacion:UInt8
+         TablaSprites_2E17[PunteroSpritePersonajeIX + 7 - 0x2E17] = TablaAnimacionPersonajes_319F[PunteroDatosPersonajeHL - 0x319F] //actualiza la dirección de los gráficos del sprite con la animación que toca
+         //2a38
+         TablaSprites_2E17[PunteroSpritePersonajeIX + 8 - 0x2E17] = TablaAnimacionPersonajes_319F[PunteroDatosPersonajeHL + 1 - 0x319F] //actualiza la dirección de los gráficos del sprite con la animación que toca
+         //2a3d
+         TablaSprites_2E17[PunteroSpritePersonajeIX + 5 - 0x2E17] = TablaAnimacionPersonajes_319F[PunteroDatosPersonajeHL + 2 - 0x319F] //actualiza el ancho y alto del sprite según la animación que toca
+         //2a42
+         TablaSprites_2E17[PunteroSpritePersonajeIX + 6 - 0x2E17] = TablaAnimacionPersonajes_319F[PunteroDatosPersonajeHL + 3 - 0x319F] //actualiza el ancho y alto del sprite según la animación que toca
+         //2a47
+         TablaSprites_2E17[PunteroSpritePersonajeIX + 0 - 0x2E17] = Y | 0x80 //indica que hay que redibujar el sprite. combina el valor con la posición y de pantalla del sprite
+         //2a4d
+         Orientacion = ModificarOrientacion_2480(LeerBytePersonajeObjeto(PunteroDatosPersonajeIY + 1)) //obtiene la orientación del personaje. modifica la orientación que se le pasa en a con la orientación de la pantalla actual
+         //2a53
+         Orientacion = Orientacion >> 1
+         //2a55
+         if Orientacion != LeerBytePersonajeObjeto(PunteroDatosPersonajeIY + 6) { //comprueba si ha cambiado la orientación del personaje
+             //si es así, salta al método correspondiente por si hay que flipear los gráficos
+             //2A58
+             switch PunteroRutinaFlipPersonaje_2A59 {
+                 case 0x353B:
+                     FlipearSpritesGuillermo_353B()
+                 case 0x34E2:
+                     FlipearSpritesAdso_34E2()
+                 case 0x34FB:
+                     FlipearSpritesMalaquias_34FB()
+                 case 0x350B:
+                     FlipearSpritesAbad_350B()
+                 case 0x351B:
+                     FlipearSpritesBerengario_351B()
+                 case 0x352B:
+                     FlipearSpritesSeverino_352B()
+                 case 0x5473:
+                     FlipearGraficosEspejo_5473(PunteroSpriteIX: PunteroSpritePersonajeIX)
+                 default:
+                     break
+             }
+         }
+         //2A5D
+         MovimientoRealizado_2DC1 = true //indica que ha habido movimiento
+     }
+
+     public func FlipearSpritesGuillermo_353B() {
+         //este método se llama cuando cambia la orientación del sprite de guillermo y se encarga de flipear los sprites de guillermo
+         TablaCaracteristicasPersonajes_3036[0x303C - 0x3036] = TablaCaracteristicasPersonajes_3036[0x303C - 0x3036] ^ 1 //invierte el estado del flag
+         //A300 apunta a los gráficos de guillermo de 5 bytes de ancho
+         //5 bytes de ancho y 0x366 bytes (0xae*5)
+        GirarGraficosRespectoX_3552(Tabla: &TablaGraficosObjetos_A300, PunteroTablaHL: 0xA300 - 0xA300, AnchoC: 5, NGraficosB: 0xAE)
+         //A666 apunta a los gráficos de guillermo de 4 bytes de ancho
+         //4 bytes de ancho y 0x84 bytes (0x21*4)
+        GirarGraficosRespectoX_3552(Tabla: &TablaGraficosObjetos_A300, PunteroTablaHL: 0xA666 - 0xA300, AnchoC: 4, NGraficosB: 0x21)
+     }
+
+    public func FlipearSpritesAdso_34E2() {
+        //este método se llama cuando cambia la orientación del sprite de adso y se encarga de flipear los sprites de adso
+        TablaCaracteristicasPersonajes_3036[0x304B - 0x3036] = TablaCaracteristicasPersonajes_3036[0x304B - 0x3036] ^ 1 //flip de adso
+        //A6EA apunta a los sprites de adso de 5 bytes de ancho
+        GirarGraficosRespectoX_3552(Tabla: &TablaGraficosObjetos_A300, PunteroTablaHL: 0xA6EA - 0xA300, AnchoC: 5, NGraficosB: 0x5F)
+        //A8C5 apunta a los sprite de adso de 4 bytes de ancho
+        GirarGraficosRespectoX_3552(Tabla: &TablaGraficosObjetos_A300, PunteroTablaHL: 0xA8C5 - 0xA300, AnchoC: 4, NGraficosB: 0x5A)
+    }
+
+    public func FlipearSpritesMalaquias_34FB() {
+        //este método se llama cuando cambia la orientación del sprite de malaquías y se encarga de flipear las caras del sprite
+        var PunteroDatos:Int
+        TablaCaracteristicasPersonajes_3036[0x305A - 0x3036] = TablaCaracteristicasPersonajes_3036[0x305A - 0x3036] ^ 1 //flip de malaquías
+        PunteroDatos = Leer16(TablaPunterosCarasMonjes_3097, 0x3097 - 0x3097) //apunta a los datos de las caras de malaquías
+        GirarGraficosRespectoX_3552(Tabla: &DatosMonjes_AB59, PunteroTablaHL: PunteroDatos - 0xAB59, AnchoC: 5, NGraficosB: 0x14) //flipea las caras de malaquías
+    }
+
+    public func FlipearSpritesAbad_350B() {
+        //este método se llama cuando cambia la orientación del sprite del abad y se encarga de flipear las caras del sprite
+        var PunteroDatos:Int
+        TablaCaracteristicasPersonajes_3036[0x3069 - 0x3036] = TablaCaracteristicasPersonajes_3036[0x3069 - 0x3036] ^ 1 //flip de malaquías
+        PunteroDatos = Leer16(TablaPunterosCarasMonjes_3097, 0x3099 - 0x3097) //apunta a los datos de las caras del abad
+        GirarGraficosRespectoX_3552(Tabla: &DatosMonjes_AB59, PunteroTablaHL: PunteroDatos - 0xAB59, AnchoC: 5, NGraficosB: 0x14) //flipea las caras del abad
+    }
+
+    public func FlipearSpritesBerengario_351B() {
+        //este método se llama cuando cambia la orientación del sprite de berengario y se encarga de flipear las caras del sprite
+        var PunteroDatos:Int
+        TablaCaracteristicasPersonajes_3036[0x3078 - 0x3036] = TablaCaracteristicasPersonajes_3036[0x3078 - 0x3036] ^ 1 //flip de malaquías
+        PunteroDatos = Leer16(TablaPunterosCarasMonjes_3097, 0x309B - 0x3097) //apunta a los datos de las caras de berengario
+        GirarGraficosRespectoX_3552(Tabla: &DatosMonjes_AB59, PunteroTablaHL: PunteroDatos - 0xAB59, AnchoC: 5, NGraficosB: 0x14) //flipea las caras de berengario
+    }
+
+     public func FlipearSpritesSeverino_352B() {
+         //este método se llama cuando cambia la orientación del sprite de severino y se encarga de flipear las caras del sprite
+         var PunteroDatos:Int
+         TablaCaracteristicasPersonajes_3036[0x3087 - 0x3036] = TablaCaracteristicasPersonajes_3036[0x3087 - 0x3036] ^ 1 //flip de malaquías
+         PunteroDatos = Leer16(TablaPunterosCarasMonjes_3097, 0x309D - 0x3097) //apunta a los datos de las caras de severino
+        GirarGraficosRespectoX_3552(Tabla: &DatosMonjes_AB59, PunteroTablaHL: PunteroDatos - 0xAB59, AnchoC: 5, NGraficosB: 0x14) //flipea las caras de severino
+     }
+    
+    public func FlipearGraficosEspejo_5473(PunteroSpriteIX:Int) {
+        //rutina encargada de flipear los gráficos
+        var AnchoL:UInt8
+        var AltoH:UInt8
+        var ContadorBC:Int
+        var PunteroGraficosHL:Int
+        var PunteroSpritesDE:Int
+        //obtiene el ancho y el alto del sprite
+        AnchoL = TablaSprites_2E17[PunteroSpriteIX + 5 - 0x2E17]
+        AltoH = TablaSprites_2E17[PunteroSpriteIX + 6 - 0x2E17]
+        //bc = ancho*alto
+        ContadorBC = Int(AnchoL) * Int(AltoH)
+        PunteroSpritesDE = PunteroEspejo_5483
+        //hl = dirección de los gráficos del sprite
+        PunteroGraficosHL = Leer16(TablaSprites_2E17, PunteroSpriteIX + 0x07 - 0x2E17)
+        //pone la nueva dirección de los gráficos
+        Escribir16(&TablaSprites_2E17, PunteroSpriteIX + 0x07 - 0x2E17, PunteroEspejo_5483)
+        //copia los gráficos al destino
+        while true {
+            BufferSprites_9500[PunteroSpritesDE - 0x9500] = TablaGraficosObjetos_A300[PunteroGraficosHL - 0xA300]
+            PunteroSpritesDE = PunteroSpritesDE + 1
+            PunteroGraficosHL = PunteroGraficosHL + 1
+            ContadorBC = ContadorBC - 1
+            if ContadorBC == 0 { break }
+        }
+        //flipea los gráficos apuntados por hl según las características indicadas por bc
+        GirarGraficosRespectoX_3552(Tabla: &BufferSprites_9500, PunteroTablaHL: PunteroEspejo_5483 - 0x9500, AnchoC: AnchoL, NGraficosB: AltoH)
+    }
+
+    public func RellenarBufferAlturasPersonaje_28EF( _ PunteroDatosPersonajeIY:Int, _ ValorBufferAlturas:UInt8) {
+         //si la posición del sprite es central y la altura está bien, pone ValorBufferAlturas en las posiciones que ocupa del buffer de alturas
+         //PunteroDatosPersonajeIY = dirección de los datos de posición asociados al personaje
+         //ValorBufferAlturas = valor a poner en las posiciones que ocupa el personaje del buffer de alturas
+         var PunteroBufferAlturasIX:Int=0
+         var Altura:UInt8
+         var BufferAuxiliar:Bool=false //true: se usa el buffer secundario de 96F4
+         if PunteroBufferAlturas_2D8A != 0x01C0 { BufferAuxiliar = true }
+         if !DeterminarPosicionCentral_0CBE(PunteroDatosPersonajeIY, &PunteroBufferAlturasIX) { return } //si la posición no es una de las del centro de la pantalla o la altura del personaje no coincide con la altura base de la planta, sale
+         //28F3
+         //en otro caso PunteroBufferAlturasIX apunta a la altura de la pos actual
+         if !BufferAuxiliar {
+             Altura = TablaBufferAlturas_01C0[PunteroBufferAlturasIX - 0x01C0] //obtiene la entrada del buffer de alturas
+         } else {
+             Altura = TablaBufferAlturas_96F4[PunteroBufferAlturasIX - 0x96F4] //obtiene la entrada del buffer de alturas
+         }
+         //28f6
+         if !BufferAuxiliar {
+             TablaBufferAlturas_01C0[PunteroBufferAlturasIX - 0x01C0] = (Altura & 0xF) | ValorBufferAlturas //indica que el personaje está en la posición (x, y)
+         } else {
+             TablaBufferAlturas_96F4[PunteroBufferAlturasIX - 0x96F4] = (Altura & 0xF) | ValorBufferAlturas //indica que el personaje está en la posición (x, y)
+         }
+         //28FC
+         if LeerBitArray(TablaCaracteristicasPersonajes_3036, PunteroDatosPersonajeIY + 5 - 0x3036, 7) { return }//si el bit 7 del byte 5 está puesto, sale
+         //2901
+         //indica que el personaje también ocupa la posición (x - 1, y)
+         if !BufferAuxiliar {
+             Altura = TablaBufferAlturas_01C0[PunteroBufferAlturasIX - 1 - 0x01C0]
+             TablaBufferAlturas_01C0[PunteroBufferAlturasIX - 1 - 0x01C0] = (Altura & 0xF) | ValorBufferAlturas //indica que el personaje está en la posición (x-1, y)
+         } else {
+             Altura = TablaBufferAlturas_96F4[PunteroBufferAlturasIX - 1 - 0x96F4]
+             TablaBufferAlturas_96F4[PunteroBufferAlturasIX - 1 - 0x96F4] = (Altura & 0xF) | ValorBufferAlturas //indica que el personaje está en la posición (x-1, y)
+         }
+         //290A
+         //indica que el personaje también ocupa la posición (x, y-1)
+         if !BufferAuxiliar {
+             Altura = TablaBufferAlturas_01C0[PunteroBufferAlturasIX - 0x18 - 0x01C0]
+         } else {
+             Altura = TablaBufferAlturas_96F4[PunteroBufferAlturasIX - 0x18 - 0x96F4]
+         }
+         //290D
+         if !BufferAuxiliar {
+             TablaBufferAlturas_01C0[PunteroBufferAlturasIX - 0x18 - 0x01C0] = (Altura & 0xF) | ValorBufferAlturas //indica que el personaje está en la posición (x, y-1)
+         } else {
+             TablaBufferAlturas_96F4[PunteroBufferAlturasIX - 0x18 - 0x96F4] = (Altura & 0xF) | ValorBufferAlturas //indica que el personaje está en la posición (x, y-1)
+         }
+         //2913
+         //indica que el personaje también ocupa la posición (x-1, y-1)
+         if !BufferAuxiliar {
+             Altura = TablaBufferAlturas_01C0[PunteroBufferAlturasIX - 0x19 - 0x01C0]
+             TablaBufferAlturas_01C0[PunteroBufferAlturasIX - 0x19 - 0x01C0] = (Altura & 0xF) | ValorBufferAlturas //indica que el personaje está en la posición (x, y-1)
+         } else {
+             Altura = TablaBufferAlturas_96F4[PunteroBufferAlturasIX - 0x19 - 0x96F4]
+             TablaBufferAlturas_96F4[PunteroBufferAlturasIX - 0x19 - 0x96F4] = (Altura & 0xF) | ValorBufferAlturas //indica que el personaje está en la posición (x, y-1)
+         }
+     }
+
+     public func DibujarSprites_2674() {
+        //dibuja los sprites
+        if HabitacionOscura_156C {
+            DibujarSprites_267B()
+        } else {
+            DibujarSprites_4914()
+        }
+    }
+
+    public func DibujarSprites_267B() {
+        //dibuja los sprites
+        var PunteroSpritesHL:Int
+        var Valor:UInt8
+
+        //dibujo de los sprites cuando la habitación no está iluminada
+        PunteroSpritesHL = 0x2E17 //apunta al primer sprite de los personajes
+        while true {
+            //2681
+            Valor = TablaSprites_2E17[PunteroSpritesHL - 0x2E17]
+            if Valor == 0xFF {
+                break //si ha llegado al final, salta
+            } else if Valor != 0xFE { //si es visible, marca el sprite como que no hay que dibujarlo (porque está oscuro)
+                //268A
+                TablaSprites_2E17[PunteroSpritesHL - 0x2E17] = Valor & 0x7F
+            }
+            PunteroSpritesHL = PunteroSpritesHL + 0x14 //longitud de cada sprite
+        }
+        //268F
+        if !depuracion.LuzEnGuillermo {
+            if TablaSprites_2E17[0x2E2B - 0x2E17] == 0xFE { return } //si el sprite de adso no es visible, sale //### depuración
+        }
+        if (!depuracion.LuzEnGuillermo && depuracion.Luz == EnumTipoLuz.EnumTipoLuz_Off) || depuracion.Luz == EnumTipoLuz.EnumTipoLuz_Normal {
+            if !depuracion.Lampara {
+                //2695
+                if !LeerBitArray(TablaObjetosPersonajes_2DEC, 0x2DF3 - 0x2DEC, 7) { return } //si adso no tiene la lámpara, sale //### depuración
+            }
+        }
+        TablaSprites_2E17[0x2FCF - 0x2E17] = 0xBC //activa el sprite de la luz
+        DibujarSprites_4914()
+    }
+
+    public func DibujarSprites_4914() {
+        var Punteros:[Int]=[Int](repeating:0, count: 23) //punteros a los sprites
+        var NumeroSprites:Int=0 //número de sprites en la pila
+        var NumeroSpritesVisibles:Int //número de elementos visibles
+        var PunteroSpriteIX:Int //sprite original (bucle exterior)
+        var Valor:UInt8
+        var NumeroCambios:UInt8
+        var Temporal:Int
+        var Contador:Int
+        var Contador2:Int
+        var Profundidad1:UInt8
+        var Profundidad2:UInt8
+        var Xactual:UInt8
+        var Yactual:UInt8
+        var nXactual:UInt8
+        var nYactual:UInt8
+        var Xanterior:UInt8
+        var Yanterior:UInt8
+        var nXanterior:UInt8
+        var nYanterior:UInt8
+        var TileX:UInt8=0
+        var TileY:UInt8=0
+        var nXsprite:UInt8=0
+        var nYsprite:UInt8=0
+        var ValorLongDE:Int
+        var PunteroBufferTiles:Int
+        var AltoXanchoSprite:Int
+        var PunteroBufferSprites:Int
+        var PunteroBufferSpritesAnterior:Int
+        var PunteroBufferSpritesLibre:Int //4908
+        var ProfundidadMaxima_4DD9:Int //límite superior de profundidad de la iteración anterior
+        var PunteroSpriteIY:Int //sprite actual (bucle interior)
+        var Distancia1X:UInt8=0 //distancia desde el inicio del sprite actual al inicio del sprite original
+        var Distancia2X:UInt8=0 //distancia desde el inicio del sprite original al inicio del sprite actual
+        var LongitudX:UInt8=0 //longitud a pintar del sprite actual
+        var Distancia1Y:UInt8=0
+        var Distancia2Y:UInt8=0
+        var LongitudY:UInt8=0
+        var ProfundidadMaxima:Int //profundidad máxima de la iteración actual
+        var PunteroBufferTilesAnterior_3095:Int
+        var NCiclos:Int=0
+        //ModPantalla.Refrescar()
+        if !depuracion.PersonajesAdso {
+            TablaSprites_2E17[0x2E2B + 0 - 0x2E17] = 0xFE //desconecta a adso
+        }
+        if !depuracion.PersonajesMalaquias {
+            TablaSprites_2E17[0x2E3F + 0 - 0x2E17] = 0xFE //desconecta a malaquías
+        }
+        if !depuracion.PersonajesAbad {
+            TablaSprites_2E17[0x2E53 + 0 - 0x2E17] = 0xFE //desconecta al abad ###depuración
+        }
+        if !depuracion.PersonajesBerengario {
+            TablaSprites_2E17[0x2E67 + 0 - 0x2E17] = 0xFE //desconecta a berengario
+        }
+        if !depuracion.PersonajesSeverino {
+            TablaSprites_2E17[0x2E7B + 0 - 0x2E17] = 0xFE //desconecta a severino
+        }
+
+
+        //TablaSprites_2E17(0x2E2B + 1 - 0x2E17) = TablaSprites_2E17(0x2E17 + 1 - 0x2E17)
+        //TablaSprites_2E17(0x2E2B + 2 - 0x2E17) = TablaSprites_2E17(0x2E17 + 2 - 0x2E17)
+        //TablaSprites_2E17(0x2E2B + 3 - 0x2E17) = TablaSprites_2E17(0x2E17 + 3 - 0x2E17)
+
+
+        while true {
+            //4918
+            PunteroBufferSprites = 0x9500 //apunta al comienzo del buffer para los sprites
+            PunteroBufferSpritesLibre = 0x9500
+            PunteroSpriteIX = 0x2E17 //apunta al primer sprite
+            //limpia los punteros de la iteración anterior
+            for Contador in 0..<NumeroSprites {
+                Punteros[Contador] = 0
+            }
+            NumeroSprites = 0
+            NumeroSpritesVisibles = 0
+            while true {
+                //4929
+                Valor = TablaSprites_2E17[PunteroSpriteIX - 0x2E17]
+                if Valor == 0xFF {
+                    break //si ha llegado al final, salta
+                } else if Valor != 0xFE { //si es visible, guarda la dirección
+                    //4932
+                    Punteros[NumeroSprites] = PunteroSpriteIX //ojo, cambiado.  antes NumeroSpritesVisibles
+                    NumeroSprites = NumeroSprites + 1
+                    if (Valor & 0x80) != 0 { //hay que dibujar el sprite
+                        if LeerBitArray(TablaSprites_2E17, PunteroSpriteIX + 0 - 0x2E17, 7) { //hay que dibujar el sprite
+                            NumeroSpritesVisibles = NumeroSpritesVisibles + 1
+                        }
+                    }
+                }
+                PunteroSpriteIX = PunteroSpriteIX + 0x14 //20 bytes por entrada
+                //Application.DoEvents()
+            }
+            //493b
+            //aquí llega una vez que ha metido en la pila las entradas a tratar
+            if NumeroSpritesVisibles == 0 { return } // si no había alguna entrada activa, vuelve
+            //494a
+            //aquí llega si había alguna entrada que había que pintar
+            //primero se ordenan las entradas según la profundidad por el método de la burbuja mejorado
+            if NumeroSprites > 1 {
+                while true {
+                    NumeroCambios = 0
+                    for Contador in stride(from: NumeroSprites - 2, through: 0, by: -1) {
+                        Profundidad1 = TablaSprites_2E17[Punteros[Contador + 1] - 0x2E17] & 0x3F
+                        Profundidad2 = TablaSprites_2E17[Punteros[Contador] - 0x2E17] & 0x3F
+                        if Profundidad2 < Profundidad1 { //realiza un intercambio
+                            Temporal = Punteros[Contador]
+                            Punteros[Contador] = Punteros[Contador + 1]
+                            Punteros[Contador + 1] = Temporal
+                            NumeroCambios = NumeroCambios + 1
+                        }
+                    }
+                    if NumeroCambios == 0 { break }
+                    //Application.DoEvents()
+                }
+            }
+            //aquí llega una vez que las entradas de la pila están ordenadas por la profundidad
+            //4977
+            for Contador in stride(from: NumeroSprites - 1, through: 0, by: -1)  {
+                //498C
+                PunteroSpriteIX = Punteros[Contador]
+                //498F
+                ClearBitArray(&TablaSprites_2E17, PunteroSpriteIX + 0 - 0x2E17, 6) //pone el bit 6 a 0. sprite no prcesado
+                if LeerBitArray(TablaSprites_2E17, PunteroSpriteIX + 0 - 0x2E17, 7) { //el sprite ha cambiado
+                    //4999
+
+                    Xactual = TablaSprites_2E17[PunteroSpriteIX + 1 - 0x2E17] //posición x en bytes
+                    Yactual = TablaSprites_2E17[PunteroSpriteIX + 2 - 0x2E17] //posición y en pixels
+                    nYactual = TablaSprites_2E17[PunteroSpriteIX + 6 - 0x2E17] //alto en pixels
+                    nXactual = TablaSprites_2E17[PunteroSpriteIX + 5 - 0x2E17] //ancho en bytes
+                    nXactual = nXactual & 0x7F //el bit7 de la posición 5 no nos interesa ahora
+                    CalcularDimensionesAmpliadasSprite_4D35(Xactual, Yactual, nXactual, nYactual, &nXsprite, &nYsprite, &TileX, &TileY)
+                    Xanterior = TablaSprites_2E17[PunteroSpriteIX + 3 - 0x2E17] //posición x en bytes
+                    Yanterior = TablaSprites_2E17[PunteroSpriteIX + 4 - 0x2E17] //posición y en pixels
+                    nYanterior = TablaSprites_2E17[PunteroSpriteIX + 0xA - 0x2E17]  //alto en pixels
+                    nXanterior = TablaSprites_2E17[PunteroSpriteIX + 9 - 0x2E17] //ancho en bytes
+
+                    //l=X=anterior posición x del sprite (en bytes)
+                    //h=Y=anterior posición y del sprite (en pixels)
+                    //e=nX=anterior ancho del sprite (en bytes)
+                    //d=nY=anterior alto del sprite (en pixels)
+                    //2DD5=TileX=posición x del tile en el que empieza el sprite
+                    //2DD6=TileY=posición y del tile en el que empieza el sprite
+                    //2DD7=nXsprite=tamaño en x del sprite
+                    //2DD8=nYsprite=tamaño en y del sprite
+                    //49BD
+                    if !depuracion.DeshabilitarCalculoDimensionesAmpliadas && NCiclos < 100 {
+                        CalcularDimensionesAmpliadasSprite_4CBF(Xanterior, Yanterior, nXanterior, nYanterior, &nXsprite, &nYsprite, &TileX, &TileY)
+                    }
+
+                    TablaSprites_2E17[PunteroSpriteIX + 0xC - 0x2E17] = TileX //posición en x del tile en el que empieza el sprite (en bytes)
+                    TablaSprites_2E17[PunteroSpriteIX + 0xD - 0x2E17] = TileY //posición en y del tile en el que empieza el sprite (en pixels
+                    //dado PunteroSpriteIX, calcula la coordenada correspondiente del buffer de tiles (buffer de tiles de 16x20, donde cada tile ocupa 16x8)
+                    //49c9
+                    ValorLongDE = Int(TileX) & 0xFC //posición en x del tile inicial en el que empieza el sprite (en bytes)
+                    ValorLongDE = ValorLongDE + (ValorLongDE >> 1) //x + x/2 (ya que en cada byte hay 4 pixels y cada entrada en el buffer de tiles es de 6 bytes)
+                    //49d6
+                    PunteroBufferTiles = Int(TileY) //tile inicial en y en el que empieza el sprite (en pixels)
+                    PunteroBufferTiles = PunteroBufferTiles * 12 + ValorLongDE //apunta a la línea correspondiente en el buffer de tiles
+                    //TileY tiene valores múltiplos de 8, porque utiliza el pixel como unidad. cada tile son 8 píxeles,
+                    //por lo que el cambio de tile supone 12*8=96 bytes
+
+
+                    //indexa en el buffer de tiles (0x8b94 se corresponde a la posición X = -2, Y = -5 en el buffer de tiles)
+                    //que en pixels es: (X = -32, Y = -40), luego el primer pixel del buffer de tiles en coordenadas de sprite es el (32,40)
+                    //49e1
+                    PunteroBufferTiles = PunteroBufferTiles + 0x8B94
+
+
+                    //3095=PunteroBuffertiles
+                    PunteroBufferTilesAnterior_3095 = PunteroBufferTiles
+                    TablaSprites_2E17[PunteroSpriteIX + 0xE - 0x2E17] = nXsprite //ancho final del sprite (en bytes)
+                    TablaSprites_2E17[PunteroSpriteIX + 0xF - 0x2E17] = nYsprite //alto final del sprite (en pixels)
+                    AltoXanchoSprite = Int(nXsprite) * Int(nYsprite) //alto del sprite*ancho del sprite
+                    PunteroBufferSprites = PunteroBufferSpritesLibre
+                    TablaSprites_2E17[PunteroSpriteIX + 0x10 - 0x2E17] = LeerByteInt(Valor: PunteroBufferSprites, NumeroByte: 0) //dirección del buffer de sprites asignada a este sprite
+                    TablaSprites_2E17[PunteroSpriteIX + 0x11 - 0x2E17] = LeerByteInt(Valor: PunteroBufferSprites, NumeroByte: 1) //dirección del buffer de sprites asignada a este sprite
+                    PunteroBufferSpritesLibre = PunteroBufferSprites + AltoXanchoSprite //guarda la dirección libre del buffer de sprites
+                    if PunteroBufferSpritesLibre > 0x9CFE { break } //9CFE= límite del buffer de sprites. si no hay sitio para el sprite, salta pasa vaciar la lista de los procesados y procesa el resto
+                    //4a13
+                    //aquí llega si hay espacio para procesar el sprite
+                    SetBitArray(&TablaSprites_2E17, PunteroSpriteIX + 0 - 0x2E17, 6) //pone el bit 6 a 1. marca el sprite como procesado
+                    for Contador2 in PunteroBufferSprites..<PunteroBufferSpritesLibre  {
+                        BufferSprites_9500[Contador2 - 0x9500] = 0 //limpia la zona asignada del buffer de sprites
+                    }
+                    //4A1F
+                    ProfundidadMaxima_4DD9 = 0
+                    //4a2e
+                    for Contador2 in stride(from: NumeroSprites - 1, through: 0, by: -1) {
+                        //4a56
+                        PunteroSpriteIY = Punteros[Contador2] //dirección de la entrada del sprite actual
+                        if !LeerBitArray(TablaSprites_2E17, PunteroSpriteIY + 5 - 0x2E17, 7) { //si el sprite no va a desaparecer
+                            //4A5F
+                            //entrada:
+                            //l=PosicionOriginal
+                            //h=PosicionActual
+                            //e=LongitudOriginal
+                            //d=LongitudActual
+                            //en a=Longitud devuelve la longitud a pintar del sprite actual para la coordenada que se pasa
+                            //en h=Distancia1 devuelve la distancia desde el inicio del sprite actual al inicio del sprite original
+                            //en l=Distancia2 devuelve la distancia desde el inicio del sprite original al inicio del sprite actual
+                            //si devuelve true, indica que debe evitarse el proceso de esta combinación de sprites
+                            //comprueba si el sprite actual puede verse en la zona del sprite original
+                            if !ObtenerDistanciaSprites_4D54(PosicionOriginal: TileX, PosicionActual: TablaSprites_2E17[PunteroSpriteIY + 1 - 0x2E17], LongitudOriginal: nXsprite, LongitudActual: TablaSprites_2E17[PunteroSpriteIY + 5 - 0x2E17], Distancia1: &Distancia1X, Distancia2: &Distancia2X, Longitud: &LongitudX) {
+                                //4a70                   comprueba si el sprite actual puede verse en la zona del sprite original
+                                if !ObtenerDistanciaSprites_4D54(PosicionOriginal: TileY, PosicionActual: TablaSprites_2E17[PunteroSpriteIY + 2 - 0x2E17], LongitudOriginal: nYsprite, LongitudActual: TablaSprites_2E17[PunteroSpriteIY + 6 - 0x2E17], Distancia1: &Distancia1Y, Distancia2: &Distancia2Y, Longitud: &LongitudY) {
+                                    //4A9A
+                                    //obtiene la posición del sprite en coordenadas de cámara
+                                    ProfundidadMaxima = Bytes2Int(Byte0: TablaSprites_2E17[PunteroSpriteIY + 0x12 - 0x2E17], Byte1: TablaSprites_2E17[PunteroSpriteIY + 0x13 - 0x2E17]) //combina los dos bytes en un entero largo
+                                    //obtiene el límite superior de profundidad de la iteración anterior y lo coloca como límite inferior
+                                    PunteroBufferSpritesAnterior = PunteroBufferSprites
+                                    //GuardarArchivo "D:\datos\vbasic\Abadia\Abadia2\BufferSprites", BufferSprites_9500
+                                    //4AA0
+                                    CopiarTilesBufferSprites_4D9E(ProfundidadMaxima, ProfundidadMaxima_4DD9, false, PunteroBufferTiles, PunteroBufferSprites, nXsprite, nYsprite) //copia en el buffer de sprites los tiles que están detras del sprite
+                                    //GuardarArchivo "D:\datos\vbasic\Abadia\Abadia2\BufferSprites", BufferSprites_9500
+                                    ProfundidadMaxima_4DD9 = ProfundidadMaxima
+                                    PunteroBufferSprites = PunteroBufferSpritesAnterior
+                                    DibujarSprite_4AA3(PunteroSpriteIY, Distancia1Y, Distancia2Y, Distancia1X, Distancia2X, nXsprite, PunteroBufferSprites, LongitudY, LongitudX) //al llegar aquí pinta el sprite actual
+                                    //GuardarArchivo "D:\datos\vbasic\Abadia\Abadia2\BufferSprites", BufferSprites_9500
+                                }
+                            }
+                        }
+                    }
+                    //4A43
+                    //aquí llega si ya se han procesado todos los sprites de la pila (con respecto al sprite actual)
+                    //fcfc: se le pasa un valor de profundidad muy alto
+                    //obtiene el límite superior de profundidad de la iteración anterior y lo coloca como límite inferior
+                    PunteroBufferTiles = PunteroBufferTilesAnterior_3095
+                    //GuardarArchivo "D:\datos\vbasic\Abadia\Abadia2\BufferSprites", BufferSprites_9500
+                    //4A4B
+                    CopiarTilesBufferSprites_4D9E(0xFCFC, ProfundidadMaxima_4DD9, true, PunteroBufferTiles, PunteroBufferSprites, nXsprite, nYsprite) //dibuja en el buffer de sprites los tiles que están delante del sprite
+                    //GuardarArchivo "D:\datos\vbasic\Abadia\Abadia2\BufferSprites", BufferSprites_9500
+                }
+            }
+            //4BDF
+            //aquí llega una vez ha procesado todos los sprites que había que redibujar (o si no había más espacio en el buffer de sprites)
+            NCiclos = NCiclos + 1
+            PunteroSpriteIX = 0x2E17 //apunta al primer sprite
+            while true {
+                Valor = TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17]
+                if Valor == 0xFF { break } //cuando encuentra el último, sale
+                if Valor != 0xFE {
+                    if (Valor & 0x40) != 0 { //si  tiene puesto el bit 6 (sprite procesado)
+                        //4BF2
+                        //aquí llega si el sprite actual tiene puesto a 1 el bit 6 (el sprite ha sido procesado)
+                        CopiarSpritePantalla_4C1A(PunteroSpriteIX)
+                        TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17] = TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17] & 0x3F //limpia el bit 6 y 7 del byte 0
+                        if LeerBitArray(TablaSprites_2E17, PunteroSpriteIX + 5 - 0x2E17, 7) { //si el sprite va a desaparecer
+                            TablaSprites_2E17[PunteroSpriteIX + 5 - 0x2E17] = TablaSprites_2E17[PunteroSpriteIX + 5 - 0x2E17] & 0x7F //limpia el bit 7
+                            TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17] = 0xFE //marca el sprite como inactivo
+                        }
+                    }
+                }
+                PunteroSpriteIX = PunteroSpriteIX + 0x14 //pasa al siguiente sprite
+                //Application.DoEvents()
+            }
+            //Application.DoEvents()
+        }
+    }
+
+    public func CalcularDimensionesAmpliadasSprite_4D35( _ X:UInt8, _ Y:UInt8, _ nX:UInt8, _ nY:UInt8, _ nXsprite: inout UInt8, _ nYsprite: inout UInt8, _ TileX: inout UInt8, _ TileY: inout UInt8) {
+        //devuelve en TileX,TileY la posición inicial del tile en el que empieza el sprite (TileY = pos inicial Y en pixels, TileX = posición inicial X en bytes)
+        //devuelve en nXsprite,nYsprite las dimensiones del sprite ampliadas para abarcar todos los tiles en los que se va a dibujar el sprite
+        //en X,Y se le pasa la posición inicial (Y = pos Y en pixels, X = pos X en bytes)
+        //en nX,nY se le pasa las dimensiones del sprite (nY = alto en pixels, nX = ancho en bytes)
+        var b:UInt8
+        var c:UInt8
+        c = Y & 7 //pos Y dentro del tile actual (en pixels)
+        TileY = Y & 0xF8 //posición del tile actual en Y (en pixels)
+        b = X & 3 //pos X dentro del tile actual (en bytes)
+        TileX = X & 0xFC //posición del tile actual en X (en bytes)
+        nYsprite = (nY + c + 7) & 0xF8 //calcula el alto del objeto para que abarque todos los tiles en los que se va a dibujar
+        nXsprite = (nX + b + 3) & 0xFC //calcula el ancho del objeto para que abarque todos los tiles en los que se va a dibujar
+    }
+
+    public func CalcularDimensionesAmpliadasSprite_4CBF( _ X:UInt8, _ Y:UInt8, _ nX:UInt8, _ nY:UInt8, _ nXsprite: inout UInt8, _ nYsprite: inout UInt8, _ TileX: inout UInt8, _ TileY: inout UInt8) {
+        //comprueba las dimensiones mínimas del sprite (para borrar el sprite viejo) y actualiza 0x2dd5 y 0x2dd7
+        //en X,Y se le pasa la posición anterior (Y = pos Y en pixels, X = pos X en bytes)
+        //en nX,nY se le pasa las dimensiones anteriores del sprite (nY = alto en pixels, nX = ancho en bytes)
+        //l=X=anterior posición x del sprite (en bytes)
+        //h=Y=anterior posición y del sprite (en pixels)
+        //e=nX=anterior ancho del sprite (en bytes)
+        //d=nY=anterior alto del sprite (en pixels)
+        //2DD5=TileX=posición x del tile en el que empieza el sprite
+        //2DD6=TileY=posición y del tile en el que empieza el sprite
+        //2DD7=nXsprite=tamaño en x del sprite
+        //2DD8=nYsprite=tamaño en y del sprite
+        var nX:UInt8 = nX
+        var nY:UInt8 = nY
+        var Valor:UInt8
+        if TileX >= X { //si Xtile >= X2
+            //4cc5
+            Valor = Z80Add(TileX - X, nXsprite)
+            if Valor > nX { nX = Valor }//si el ancho ampliado es mayor que el mínimo, e = ancho ampliado + Xtile - Xspr (coge el mayor ancho del sprite)
+            //4cce
+            Valor = X & 3 //posición x dentro del tile actual
+            TileX = X & 0xFC //actualiza la posición inicial en x del tile en el que empieza el sprite
+            nXsprite = ((nX + Valor + 3) & 0xFC) //redondea el ancho al tile superior
+        } else {
+            //4CE3
+            //aquí llega si la posición del sprite en x > que el inicio de un tile en x
+            Valor = X - TileX //diferencia de posición en x del tile a x2
+            Valor = Z80Add(Valor, nX) //añade al ancho del sprite la diferencia en x entre el inicio del sprite y el del tile asociado al sprite
+            if nXsprite < Valor { //si el ancho ampliado del sprite < el ancho mínimo del sprite
+                nXsprite = ((Valor + 3) & 0xFC)  //amplia el ancho mínimo del sprite
+            }
+        }
+        //4cf5
+        //ahora hace lo mismo para y
+        if TileY >= Y { //si ytile >= Y2
+            //4cfb
+            Valor = TileY - Y + nYsprite
+            if Valor > nY { nY = Valor } //si el alto ampliado es mayor que el mínimo, d = alto ampliado + Ytile - Yspr (coge el mayor alto del sprite)
+            //4d04
+            Valor = Y & 7 //posición y dentro del tile actual
+            TileY = Y & 0xF8 //actualiza la posición inicial en y del tile en el que empieza el sprite
+            nYsprite = ((nY + Valor + 7) & 0xF8) //redondea el ancho del sprite
+            return
+        } else {
+            //4d18
+            Valor = Y - TileY //Y2 - Ytile - Y2
+            Valor = Valor + nY //suma al alto del sprite lo que sobresale del inicio del tile en y
+            if nYsprite >= Valor { return } //si el alto del sprite >= el alto mínimo, sale
+            nYsprite = ((Valor + 7) & 0xF8) //redondea el alto al tile superior y actualiza el alto del sprite
+            return
+        }
+    }
+
+    public func ObtenerDistanciaSprites_4D54(PosicionOriginal:UInt8, PosicionActual:UInt8, LongitudOriginal:UInt8, LongitudActual:UInt8, Distancia1: inout UInt8, Distancia2: inout UInt8, Longitud: inout UInt8) -> Bool {
+        //dado l y e, y h y d, que son las posiciones iniciales y longitudes de los sprites original y actual, comprueba si el sprite actual puede
+        //verse en la zona del sprite original. Si puede verse, lo recorta. En otro caso, salta a por otro sprite actual
+        //entrada:
+        //l=PosicionOriginal
+        //h=PosicionActual
+        //e=LongitudOriginal
+        //d=LongitudActual
+        //salida:
+        //en a=Longitud devuelve la longitud a pintar del sprite actual para la coordenada que se pasa
+        //en h=Distancia1 devuelve la distancia desde el inicio del sprite actual al inicio del sprite original
+        //en l=Distancia2 devuelve la distancia desde el inicio del sprite original al inicio del sprite actual
+        //si devuelve true, indica que debe evitarse el proceso de esta combinación de sprites
+        var ObtenerDistanciaSprites_4D54:Bool
+        ObtenerDistanciaSprites_4D54 = false
+        if PosicionOriginal == PosicionActual { //el sprite original empieza en el mismo punto que el sprite actual
+            //4d69
+            Distancia1 = 0
+            Distancia2 = 0
+            if LongitudOriginal < LongitudActual {
+                Longitud = LongitudOriginal
+            } else {
+                Longitud = LongitudActual
+            }
+        } else if PosicionOriginal < PosicionActual { //el sprite original empieza antes que el actual
+            //4d71
+            Distancia1 = 0
+            Distancia2 = PosicionActual - PosicionOriginal //distancia entre la posición inicial del sprite original y del actual
+            if Distancia2 > LongitudOriginal { //si la distancia entre el origen de los 2 sprites es >= que el ancho ampliado del sprite original
+                //4D81
+                ObtenerDistanciaSprites_4D54 = true
+            } else {
+                //4D79
+                Longitud = LongitudOriginal - Distancia2 //guarda la longitud de la parte visible del sprite actual en el sprite original
+                if Longitud > LongitudActual { Longitud = LongitudActual } //si esa longitud es > que la longitud del sprite actual, modifica la longitud a pintar del sprite actual
+            }
+        } else { //si llega aquí, el sprite actual empieza antes que el sprite original
+            //4d5a
+            if (PosicionOriginal - PosicionActual) >= LongitudActual { //si la distancia entre los sprites es >= que el ancho del sprite actual, el sprite actual no es visible
+                //4D81
+                ObtenerDistanciaSprites_4D54 = true
+            } else {
+                //4d5d
+                Distancia1 = PosicionOriginal - PosicionActual //distancia desde el inicio del sprite actual al inicio del sprite original
+                Distancia2 = 0
+                if (PosicionOriginal - PosicionActual + LongitudOriginal) >= LongitudActual { //si la distancia entre los sprites + la longitud del sprite original >=LongitudActual
+                    //4D66
+                    //como el sprite original no está completamente dentro del sprite actual, dibuja solo la parte del sprite
+                    //actual que se superpone con el sprite original
+                    Longitud = LongitudActual - Distancia1
+                } else {
+                    //4d64
+                    Longitud = LongitudOriginal
+                }
+            }
+        }
+        return ObtenerDistanciaSprites_4D54
+    }
+
+    public func DibujarSprite_4AA3( _ PunteroSpriteIY:Int, _ Distancia1Y:UInt8, _ Distancia2Y:UInt8, _ Distancia1X:UInt8, _ Distancia2X:UInt8, _ nXsprite:UInt8, _ PunteroBufferSprites:Int, _ LongitudY:UInt8, _ LongitudX:UInt8) {
+        //pinta el sprite actual
+        //Distancia1Y=h
+        //Distancia2Y=l
+        var Distancia1Y:UInt8=Distancia1Y
+        var nX:UInt8 //ancho del sprite actual
+        var PunteroDatosGraficosSpriteHL:Int
+        var PunteroDatosGraficosSpriteAnterior:Int
+        var PunteroBufferSpritesDE:Int
+        var PunteroBufferSpritesAnterior:Int
+        var ValorLong:Int
+        var Valor:UInt8
+        var DesplazAdsoX:UInt8
+        var Contador:Int=0
+        var Contador2:Int
+        var MascaraOr:Int
+        var MascaraAnd:Int
+        var Fila:Int
+        var PunteroPatronLuz:Int=0
+        var DesplazamientoDE:UInt8 //= 80 (desplazamiento de medio tile)
+        var PunteroBufferSpritesIX:Int
+        var ValorRelleno:Int //valor de la tabla 48E8 de rellenos de la luz
+        var HL:String
+        //4AA3
+        if Distancia1Y < 10 || (Distancia1Y >= 10 && LeerBitArray(TablaSprites_2E17, PunteroSpriteIY + 0xB - 0x2E17, 7)) { //si la distancia en y desde el inicio del sprite actual al inicio del sprite original < 10 o no se trata de un monje
+            //4AD5
+            //calcula la línea en la que empezar a dibujar el sprite actual (saltandose la distancia entre el inicio del sprite actual y el inicio del sprite original)
+            nX = TablaSprites_2E17[PunteroSpriteIY + 5 - 0x2E17] //obtiene el ancho del sprite actual
+            ValorLong = Int(Distancia1Y) //(distancia en y desde el inicio del sprite actual al incio del sprite original
+            ValorLong = ValorLong * Int(nX)
+            PunteroDatosGraficosSpriteHL = Bytes2Int(Byte0: TablaSprites_2E17[PunteroSpriteIY + 7 - 0x2E17], Byte1: TablaSprites_2E17[PunteroSpriteIY + 8 - 0x2E17]) //dirección de los datos gráficos del sprite
+            //dirección de los datos gráficos del sprite (saltando lo que no se superpone con el área del sprite original en y)
+            PunteroDatosGraficosSpriteHL = PunteroDatosGraficosSpriteHL + ValorLong
+            HL = String(format: "%02X", PunteroDatosGraficosSpriteHL)
+
+        } else {
+            //4AB5
+            //si llega aquí es porque la distancia en y desde el inicio del sprite actual al inicio del sprite original es >= 10, por lo que del sprite
+            //actual (que es un monje), ya se ha pasado la cabeza. Por ello, obtiene un puntero al traje del monje
+            ValorLong = Int(Distancia1Y) - 10
+            nX = TablaSprites_2E17[PunteroSpriteIY + 5 - 0x2E17] //obtiene el ancho del sprite actual
+            ValorLong = ValorLong * Int(nX)
+            Valor = TablaSprites_2E17[PunteroSpriteIY + 0xB - 0x2E17] //animación del traje del monje
+            PunteroDatosGraficosSpriteHL = Leer16(TablaPunterosTrajesMonjes_48C8, 2 * Int(Valor)) //cada entrada son 2 bytes
+            PunteroDatosGraficosSpriteHL = PunteroDatosGraficosSpriteHL + ValorLong
+        }
+        //4ae5
+        //dirección de los datos gráficos del sprite (saltando lo que no está en el área del sprite original en x y en y)
+        PunteroDatosGraficosSpriteHL = PunteroDatosGraficosSpriteHL + Int(Distancia1X) //suma la distancia en x desde el inicio del sprite actual al incio del sprite original
+        HL = String(format: "%02X", PunteroDatosGraficosSpriteHL)
+        //4AED
+        //distancia en y desde el inicio del sprite original al inicio del sprite actual * ancho ampliado del sprite original
+        ValorLong = Int(Distancia2Y) * Int(nXsprite)
+        //PunteroBufferSpritelibre=posición inicial del buffer de sprites para este sprite
+        //dirección del buffer de sprites para el sprite original (saltando lo que no puede sobreescribir el sprite actual en y)
+        PunteroBufferSpritesDE = PunteroBufferSprites + ValorLong
+        //dirección del buffer de sprites para el sprite original (saltando lo que no puede sobreescribir el sprite actual en x y en y)
+        PunteroBufferSpritesDE = PunteroBufferSpritesDE + Int(Distancia2X)
+        //4b05
+        if PunteroDatosGraficosSpriteHL != 0 { //si hl <> 0 (no es el sprite de la luz)
+            //4B0A
+            //c=Distancia1Y
+            //b'=LongitudY
+            //b=LongitudX
+            for Fila in 0..<LongitudY {
+                PunteroDatosGraficosSpriteAnterior = PunteroDatosGraficosSpriteHL
+                PunteroBufferSpritesAnterior = PunteroBufferSpritesDE
+                for Contador in 0..<LongitudX {
+                    //Valor = TablaGraficosObjetos_A300(PunteroDatosGraficosSpriteHL - 0xA300) 'lee un byte gráfico
+                    Valor = LeerDatoGrafico(PunteroDatosGraficosSpriteHL)
+                    if Valor != 0 { //si es 0, salta al siguiente pixel
+                        //4B18
+                        MascaraOr = Int(Valor)                //b7 b6 b5 b4 b3 b2 b1 b0
+                        ValorLong = rol8(Value: MascaraOr, Shift: 4) //b3 b2 b1 b0 b7 b6 b5 b4
+                        ValorLong = ValorLong | MascaraOr   //b7|b3 b6|b2 b5|b1 b4|b0 b7|b3 b6|b2 b5|b1 b4|b0
+                        if ValorLong != 0 { //si es 0, salta (???, no sería 0 antes tb???)
+                            //4B21
+                            MascaraAnd = (-ValorLong - 1) & 0xFF //invierte el byte inferior (los sprites usan el color 0 como transparente)
+                            Valor = BufferSprites_9500[PunteroBufferSpritesDE - 0x9500] //lee un byte del buffer de sprites
+                            Valor = Valor & Int2ByteSigno(MascaraAnd)
+                        }
+                        //4b27
+                        Valor = Valor | Int2ByteSigno(MascaraOr) //combina el byte leido
+                        BufferSprites_9500[PunteroBufferSpritesDE - 0x9500] = Valor //escribe el byte en buffer de sprites después de haberlo combinado
+                    }
+                    //4b2a
+                    PunteroDatosGraficosSpriteHL = PunteroDatosGraficosSpriteHL + 1 //avanza a la siguiente posición en x del gráfico
+                    PunteroBufferSpritesDE = PunteroBufferSpritesDE + 1 //avanza a la siguiente posición en x dentro del buffer de sprites
+                } //repite para el ancho
+                //4B2E
+                PunteroDatosGraficosSpriteHL = PunteroDatosGraficosSpriteAnterior
+                PunteroDatosGraficosSpriteHL = PunteroDatosGraficosSpriteHL + Int(nX) //pasa a la siguiente línea del sprite
+                PunteroBufferSpritesDE = PunteroBufferSpritesAnterior //obtiene el puntero al buffer de sprites
+                Distancia1Y = Distancia1Y + 1
+                if Distancia1Y == 10 && LeerBitArray(TablaSprites_2E17, PunteroSpriteIY + 0xB - 0x2E17, 7) == false {
+                    //4B41
+                    //si llega a 10, cambia la dirección de los datos gráficos de origen,
+                    //puesto que se pasa de dibujar la cabeza de un monje a dibujar su traje
+                    Valor = TablaSprites_2E17[PunteroSpriteIY + 0xB - 0x2E17] & 0x7F //animación del traje del monje
+                    PunteroDatosGraficosSpriteHL = 0x48C8 //apunta a la tabla de las posiciones de los trajes de los monjes
+                    PunteroDatosGraficosSpriteHL = PunteroDatosGraficosSpriteHL + 2 * Int(Valor)
+                    PunteroDatosGraficosSpriteHL = Leer16(TablaPunterosTrajesMonjes_48C8, PunteroDatosGraficosSpriteHL - 0x48C8)
+                    //modifica la dirección de los datos gráficos de origen, para que apunte a la animación del traje del monje
+                    PunteroDatosGraficosSpriteHL = PunteroDatosGraficosSpriteHL + Int(Distancia1X) //distancia en x desde el inicio del sprite actual al incio del sprite original
+                }
+                //4B53
+                PunteroBufferSpritesDE = PunteroBufferSpritesDE + Int(nXsprite) //pasa a la siguiente línea del buffer de sprites
+            } //repite para las líneas de alto
+        } else { //si hl == 0 (es el sprite de la luz)
+            //4B60
+            //aquí llega si el sprite tiene un puntero a datos gráficos = 0 (es el sprite de la luz)
+            //apunta a la tabla con el patrón de relleno de la luz
+            for Contador in 0...Int(SpriteLuzTipoRelleno_4B6B)  { //TipoRellenoLuz_4B6B=0x00ef o 0x009f
+                BufferSprites_9500[PunteroBufferSpritesDE + Contador - 0x9500] = 0xFF //rellena un tile o tile y medio de negro (la parte superior del sprite de la luz)
+            }
+            PunteroBufferSpritesIX = PunteroBufferSpritesDE + Contador //apunta a lo que hay después del buffer de tiles
+            DesplazamientoDE = 0x50 //de= 80 (desplazamiento de medio tile)
+            //4b79
+            for Contador in 1...15 {//15 veces rellena con bloques de 4x4
+                //4b7b
+                PunteroBufferSpritesAnterior = PunteroBufferSpritesIX
+                ValorRelleno = Leer16Inv(TablaPatronRellenoLuz_48E8, PunteroPatronLuz - 0x48E8) //lee un valor de la tabla
+                PunteroPatronLuz = PunteroPatronLuz + 2
+                //4B86
+                DesplazAdsoX = SpriteLuzAdsoX_4B89 //posición x del sprite de adso dentro del tile
+                if DesplazAdsoX != 0 {
+                    //4b8e
+                    for Contador2 in 0..<DesplazAdsoX {
+                        BufferSprites_9500[PunteroBufferSpritesIX + 0 - 0x9500] = 0xFF //relleno negro, primera línea
+                        BufferSprites_9500[PunteroBufferSpritesIX + 0x14 - 0x9500] = 0xFF //relleno negro, segunda línea
+                        BufferSprites_9500[PunteroBufferSpritesIX + 0x28 - 0x9500] = 0xFF //relleno negro, tercera línea
+                        BufferSprites_9500[PunteroBufferSpritesIX + 0x3C - 0x9500] = 0xFF //relleno negro, cuarta línea
+                        PunteroBufferSpritesIX = PunteroBufferSpritesIX + 1
+                    } //completa el relleno de la parte izquierda
+                }
+                //4b9e
+                if SpriteLuzFlip_4BA0 {
+                    ValorRelleno = ValorRelleno << 1 //0x00 o 0x29 (si los gráficos de adso están flipeados o no)
+                }
+                for Contador2 in 1...16 {//16 bits tiene el valor de la tabla 48E8
+                    if (ValorRelleno & 0x8000) == 0 { //si el bit más significativo es 0, rellena de negro el bloque de 4x4
+                        //4ba4
+                        BufferSprites_9500[PunteroBufferSpritesIX + 0 - 0x9500] = 0xFF //relleno negro
+                        BufferSprites_9500[PunteroBufferSpritesIX + 0x14 - 0x9500] = 0xFF //relleno negro
+                        BufferSprites_9500[PunteroBufferSpritesIX + 0x28 - 0x9500] = 0xFF //relleno negro
+                        BufferSprites_9500[PunteroBufferSpritesIX + 0x3C - 0x9500] = 0xFF //relleno negro
+                    }
+                    //4bb0
+                    ValorRelleno = ValorRelleno << 1
+                    PunteroBufferSpritesIX = PunteroBufferSpritesIX + 1
+                } //completa los 16 bits
+                //4BB4
+                DesplazAdsoX = SpriteLuzAdsoX_4BB5  //4 - (posición x del sprite de adso & 0x03)
+                for Contador2 in 1...DesplazAdsoX  {//completa la parte de los 16 pixels que sobra por la derecha según la ampliación de la posición x
+                    //4bb6
+                    BufferSprites_9500[PunteroBufferSpritesIX + 0 - 0x9500] = 0xFF //relleno negro
+                    BufferSprites_9500[PunteroBufferSpritesIX + 0x14 - 0x9500] = 0xFF //relleno negro
+                    BufferSprites_9500[PunteroBufferSpritesIX + 0x28 - 0x9500] = 0xFF //relleno negro
+                    BufferSprites_9500[PunteroBufferSpritesIX + 0x3C - 0x9500] = 0xFF //relleno negro
+                    PunteroBufferSpritesIX = PunteroBufferSpritesIX + 1
+                    //4BC4
+                } //completa la parte derecha
+                //4bc6
+                PunteroBufferSpritesIX = PunteroBufferSpritesAnterior
+                PunteroBufferSpritesIX = PunteroBufferSpritesIX + Int(DesplazamientoDE)
+                //4bcb
+            } //repite hasta completar los 15 bloques de 4 pixels de alto
+            //4BCD
+            for Contador in 0...Int(SpriteLuzTipoRelleno_4BD1)  {//0x00ef o 0x009f
+                BufferSprites_9500[PunteroBufferSpritesIX + Contador - 0x9500] = 0xFF //rellena un tile o tile y medio de negro (la parte inferior del sprite de la luz)
+            }
+        }
+        return
+    }
+
+    public func EsValidoPunteroBufferTiles( _ Puntero:Int) -> Bool {
+        //comprueba si un puntero al buffer de tiles está dentro de sus límites
+        if (Puntero - 0x8D80) >= 0 && (Puntero - 0x8D80) < BufferTiles_8D80.count {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    public func CopiarTilesBufferSprites_4D9E( _ ProfundidadMaxima:Int, _ ProfundidadMinima:Int, _ SpritesPilaProcesados:Bool, _ PunteroBufferTilesIX:Int, _ PunteroBufferSpritesDE:Int, _ nXsprite:UInt8, _ nYsprite:UInt8) {
+        //4dd9=ProfundidadMinima
+        //4afa=PunteroBufferSpritesDE
+        //bc=ProfundidadMaxima
+        //3095=ix=PunteroBufferTilesIX
+        //2dd7=nXsprite
+        //2dd8=nYsprite
+        //copia en el buffer de sprites los tiles que están entre la profundidad mínima y la máxima
+        //Exit Sub
+        var ProfundidadMaxima:Int = ProfundidadMaxima
+        var PunteroBufferSpritesDE:Int=PunteroBufferSpritesDE
+        var PunteroBufferTilesIX:Int=PunteroBufferTilesIX
+        var NtilesY:Int //número de tiles que ocupa el sprite en y
+        var NtilesX:Int //número de tiles que ocupa el sprite en x
+        var PunteroBufferTilesAnterior:Int
+        var PunteroBufferSpritesAnterior:Int
+        var PunteroBufferSpritesAnterior2:Int
+        var Contador:Int
+        var Contador2:Int
+        var ProcesarTileDirectamente_4DE4:Bool //true si salta a 4E11 (procesar directamente), false salta a 4DE6 (comprobaciones previas)
+        var Valor:UInt8
+        var ProfundidadX:UInt8
+        var ProfundidadY:UInt8
+        var ProfundidadMinimaX:UInt8
+        var ProfundidadMinimaY:UInt8
+        var ProfundidadMaximaX:UInt8
+        var ProfundidadMaximaY:UInt8
+        var ProcesarTile:Bool
+        var Contador3:Int
+        var PunteroBufferTilesAnterior3:Int
+        var BugOverflow:Bool //true si el puntero a la tabla de tiles está fuera
+
+
+        var H4dd9:String
+        var DE:String
+        var IX:String
+        H4dd9 = String(format: "%02X", ProfundidadMaxima)
+        DE = String(format: "%02X", PunteroBufferSpritesDE)
+        IX = String(format: "%02X", PunteroBufferTilesIX)
+
+
+
+        PunteroBufferTilesAnterior3 = PunteroBufferTilesIX
+        ProfundidadMaxima = ProfundidadMaxima + 257
+        ProfundidadMinimaX = LeerByteInt(Valor: ProfundidadMinima, NumeroByte: 0)
+        ProfundidadMinimaY = LeerByteInt(Valor: ProfundidadMinima, NumeroByte: 1)
+        ProfundidadMaximaX = LeerByteInt(Valor: ProfundidadMaxima, NumeroByte: 0)
+        ProfundidadMaximaY = LeerByteInt(Valor: ProfundidadMaxima, NumeroByte: 1)
+        //4DB8
+        NtilesY = Int(nYsprite) >> 3 //nysprite = nysprite/8 (número de tiles que ocupa el sprite en y)
+        NtilesX = Int(nXsprite) >> 2 //nxsprite = nxsprite/4 (número de tiles que ocupa el sprite en x)
+        //4dc2
+        for Contador3 in 1...NtilesY {
+            PunteroBufferTilesAnterior = PunteroBufferTilesIX
+            PunteroBufferSpritesAnterior = PunteroBufferSpritesDE
+            for Contador in 1...NtilesX {
+                //4DC9
+                ProcesarTileDirectamente_4DE4 = false
+                for Contador2 in 1...2 { //cada tile tiene 2 prioridades
+                    //4DD1
+                    IX = String(format: "%02X", PunteroBufferTilesIX)
+                    if EsValidoPunteroBufferTiles(PunteroBufferTilesIX) {
+                        BugOverflow = false
+                        Valor = BufferTiles_8D80[PunteroBufferTilesIX + 2 - 0x8D80] //lee el número de tile de la entrada actual del buffer de tiles
+                    } else { //corrección bug del programa original. en algunas pantallas parte de la cabeza de guillermo queda fuera
+                        BugOverflow = true
+                        Valor = LeerByteTablaCualquiera(PunteroBufferTilesIX + 2)
+                    }
+                    if Valor != 0 {
+                        //4DD7
+                        ProcesarTile = false
+                        if !BugOverflow {
+                            ProfundidadX = BufferTiles_8D80[PunteroBufferTilesIX + 0 - 0x8D80] //lee la profundidad en x del tile actual
+                        } else {
+                            ProfundidadX = LeerByteTablaCualquiera(PunteroBufferTilesIX + 0)
+                        }
+                        //si en esta llamada no se ha pintado en esta posición del buffer de tiles, comprueba si hay que pintar el
+                        //tile que hay en esta capa de profundidad. Si se ha pintado y el tile de esta capa se había pintado
+                        //en otra iteración anterior, lo combina sin comprobar la profundidad
+                        if (ProfundidadX & 0x80) == 0 || (((ProfundidadX & 0x80)) != 0 && !ProcesarTileDirectamente_4DE4) {
+                            //4de3
+                            //If Not ProcesarTileDirectamente_4DE4 Then
+                            //4de6
+                            if !BugOverflow {
+                                ProfundidadY = BufferTiles_8D80[PunteroBufferTilesIX + 1 - 0x8D80] //lee la profundidad en y del tile actual
+                            } else {
+                                ProfundidadY = LeerByteTablaCualquiera(PunteroBufferTilesIX + 1)
+                            }
+                            if (ProfundidadX >= ProfundidadMinimaX || ProfundidadY >= ProfundidadMinimaY) &&
+                        (ProfundidadX < ProfundidadMaximaX && ProfundidadY < ProfundidadMaximaY) && (ProfundidadX & 0x80) == 0 {
+                                ProcesarTile = true
+                                //4e00
+                                //aquí llega si el tile tiene mayor profundidad que el mínimo y menor profundidad que el sprite
+                                ProcesarTileDirectamente_4DE4 = true //modifica un salto para indicar que en esta llamada ha pintado algún tile para esta posición del buffer de tiles
+                                //4E07
+                                if EsDireccionBufferTiles_37A5(PunteroBufferTilesIX) { //si ix está dentro del buffer de tiles
+                                    if !BugOverflow {
+                                        SetBitArray(&BufferTiles_8D80, PunteroBufferTilesIX + 0 - 0x8D80, 7) //indica que se ha procesado este tile
+                                    }
+                                }
+
+                            } else {
+                                ProcesarTile = false
+                            }
+                            //Else
+                            //ProcesarTile = True
+                            //End If
+                        } else {
+                            ProcesarTile = true
+                        }
+                        //4e11
+                        if ProcesarTile {
+                            PunteroBufferSpritesAnterior2 = PunteroBufferSpritesDE
+
+                            DE = String(format: "%02X", PunteroBufferSpritesDE)
+                            IX = String(format: "%02X", PunteroBufferTilesIX)
+                            CombinarTileBufferSprites_4E49(PunteroBufferTilesIX, PunteroBufferSpritesDE, nXsprite)
+                            PunteroBufferSpritesDE = PunteroBufferSpritesAnterior2
+                        }
+                    }
+                    //4E1B
+                    //avanza al siguiente tile o a la siguiente prioridad
+                    if EsValidoPunteroBufferTiles(PunteroBufferTilesIX) {
+                        LimpiarBit7BufferTiles_4D85(SpritesPilaProcesados, PunteroBufferTilesIX) //ret (si no ha terminado de procesar los sprites de la pila) o limpia el bit 7 de (ix+0) del buffer de tiles (si es una posición válida del buffer)
+                    }
+                    PunteroBufferTilesIX = PunteroBufferTilesIX + 3 //pasa al tile de mayor prioridad del buffer de tiles
+                    //4e25
+                } //repite hasta que se hayan completado las prioridades de la entrada del buffer de tiles
+                //4e27
+                PunteroBufferSpritesDE = PunteroBufferSpritesDE + 4 //pasa a la posición del siguiente tile en x del buffer de sprites
+                //4e2d
+            } //repite mientras no se termine en x
+            //4e2f
+            PunteroBufferSpritesDE = PunteroBufferSpritesAnterior
+            PunteroBufferSpritesDE = PunteroBufferSpritesDE + 8 * Int(nXsprite) //pasa a la posición del siguiente tile en y del buffer de sprites (ancho del sprite*8)
+            PunteroBufferTilesIX = PunteroBufferTilesAnterior //recupera la posición del buffer de tiles
+            PunteroBufferTilesIX = PunteroBufferTilesIX + 0x60 //pasa a la siguiente línea del buffer de tiles
+            //4e45
+        } //repite hasta que se acaben los tiles en y
+        PunteroBufferTilesIX = PunteroBufferTilesAnterior3
+    }
+
+    public func LimpiarBit7BufferTiles_4D85( _ SpritesPilaProcesados:Bool, _ PunteroBufferTilesIX:Int) {
+        //vuelve si no ha terminado de procesar los sprites de la pila o limpia el bit 7 de (ix+0) del buffer de tiles (si es una posición válida del buffer)
+        if !SpritesPilaProcesados { return }
+        if EsDireccionBufferTiles_37A5(PunteroBufferTilesIX) {
+            ClearBitArray(&BufferTiles_8D80, PunteroBufferTilesIX + 0 - 0x8D80, 7) //limpia el bit mas significativo del buffer de tiles
+        }
+    }
+
+    public func EsDireccionBufferTiles_37A5( _ PunteroBufferTilesIX:Int) -> Bool {
+        //dada una dirección, devuelve true si es una dirección válida del buffer de tiles
+        if PunteroBufferTilesIX >= 0x8D80 {
+            return true //8d80=inicio del buffer de tiles
+        } else {
+            return false
+        }
+    }
+
+    public func CombinarTileBufferSprites_4E49( _ PunteroBufferTilesIX:Int, _ PunteroBufferSpritesDE:Int, _ nXsprite:UInt8) {
+        //aquí entra con PunteroBufferTilesIX apuntando a alguna entrada del buffer de tiles y PunteroBufferSpritesDE apuntando
+        //a alguna posición del buffer de sprites
+        //combina el tile de la entrada actual de ix en la posición actual del buffer de sprites
+        var PunteroBufferSpritesDE:Int=PunteroBufferSpritesDE
+        var NumeroTile:UInt8
+        var PunteroDatosTile:Int
+        var Contador:Int
+        var Contador2:Int
+        var PunteroTablasAndOr:Int
+        var MascaraAnd:UInt8
+        var MascaraOr:UInt8
+        var Valor:UInt8
+        var BugOverflow:Bool=false
+        if PunteroPerteneceTabla(PunteroBufferTilesIX, BufferTiles_8D80, 0x8D80) {
+            NumeroTile = BufferTiles_8D80[PunteroBufferTilesIX + 2 - 0x8D80] //número de tile de la entrada actual
+        } else {
+            NumeroTile = LeerByteTablaCualquiera(PunteroBufferTilesIX + 2)
+            BugOverflow = true
+        }
+        PunteroDatosTile = Int(NumeroTile) * 32 //cada tile ocupa 32 bytes
+        PunteroDatosTile = PunteroDatosTile + 0x6D00 //a partir de 0x6d00 están los gráficos de los tiles que forman las pantallas
+        if NumeroTile < 0xB { //si el gráfico es menor que el 0x0b (gráficos sin transparencia, caso más sencillo)
+            //4e92
+            //aquí llega si el número de tile era < 0x0b (son gráficos sin transparencia)
+            for Contador in 1...8 { //8 pixels de alto
+                for Contador2 in 1...4 { //4 bytes de ancho (16 pixels)
+                    BufferSprites_9500[PunteroBufferSpritesDE - 0x9500] = TilesAbadia_6D00[PunteroDatosTile - 0x6D00]
+                    PunteroBufferSpritesDE = PunteroBufferSpritesDE + 1
+                    PunteroDatosTile = PunteroDatosTile + 1
+                }
+                //4ea7
+                PunteroBufferSpritesDE = PunteroBufferSpritesDE + Int(nXsprite) - 4 //pasa a la siguiente línea del sprite
+                //4eae
+            }
+            //4eb0
+        } else {
+            //4e60
+            //si el gráfico es mayor o igual que 0x0b (gráficos con transparencia)
+            if !BugOverflow {
+                if LeerBitArray(BufferTiles_8D80, PunteroBufferTilesIX + 2 - 0x8D80, 7) == false { //comprueba que tabla usar según el número de tile que haya
+                    PunteroTablasAndOr = 0x9D00 //tablas 0 y 1
+                } else {
+                    PunteroTablasAndOr = 0x9F00 //tablas 2 y 3
+                }
+            } else {
+                if (NumeroTile & 0x80) == 0 { //comprueba que tabla usar según el número de tile que haya
+                    PunteroTablasAndOr = 0x9D00 //tablas 0 y 1
+                } else {
+                    PunteroTablasAndOr = 0x9F00 //tablas 2 y 3
+                }
+
+            }
+            for Contador in 1...8 { //8 pixels de alto
+                for Contador2 in 1...4 { //4 bytes de ancho (16 pixels)
+                    //4e75
+                    Valor = TilesAbadia_6D00[PunteroDatosTile - 0x6D00] //obtiene un byte del gráfico
+                    MascaraOr = TablasAndOr_9D00[PunteroTablasAndOr + Int(Valor) - 0x9D00] //obtiene el or
+                    MascaraAnd = TablasAndOr_9D00[PunteroTablasAndOr + Int(Valor) + 256 - 0x9D00] //obtiene el and
+                    Valor = BufferSprites_9500[PunteroBufferSpritesDE - 0x9500] //obtiene un valor del buffer de sprites
+                    Valor = (Valor & MascaraAnd) | MascaraOr //aplica el valor de las máscaras
+                    BufferSprites_9500[PunteroBufferSpritesDE - 0x9500] = Valor //graba el valor obtenido combinando el fondo con el sprite
+                    PunteroBufferSpritesDE = PunteroBufferSpritesDE + 1 //avanza a la siguiente posición del buffer
+                    PunteroDatosTile = PunteroDatosTile + 1 //avanza al siguiente byte del gráfico
+                    //4e83
+                }
+                //4e86
+                PunteroBufferSpritesDE = PunteroBufferSpritesDE + Int(nXsprite) - 4 //pasa a la siguiente línea del sprite
+            } //repite hasta que se complete el alto del tile
+            //4e91
+        }
+    }
+
+    public func CopiarSpritePantalla_4C1A( _ PunteroSpriteIX:Int) {
+        //vuelca el buffer del sprite a la pantalla
+        var Xnovisible:UInt8 //distancia en x de lo que no es visible
+        var Xsprite:UInt8 //posición en x del tile en el que empieza el sprite (en bytes)
+        var Ysprite:UInt8 //posición en y del tile en el que empieza el sprite
+        var nXsprite:UInt8 //ancho final del sprite (en bytes)
+        var nYsprite:UInt8 //alto final del sprite (en pixels)
+        var PunteroBufferSpritesHL:Int //dirección del buffer de sprites asignada a este sprite
+        var PunteroPantallaDE:Int //posición en pantalla donde copiar los bytes
+        var PunteroPantallaAnterior:Int
+        var Contador:Int
+        var Contador2:Int
+        var ValorPantalla:UInt8
+        //4C1A
+        Xnovisible = 0 //distancia en x de lo que no es visible
+        Ysprite = TablaSprites_2E17[PunteroSpriteIX + 0xD - 0x2E17] //posición en y del tile en el que empieza el sprite
+        nYsprite = TablaSprites_2E17[PunteroSpriteIX + 0xF - 0x2E17] //alto final del sprite (en pixels)
+        PunteroPantallaDE = 0
+        if Ysprite >= 200 { return } //si la coordenada y >= 200 (no es visible en pantalla), sale
+        //4C2D
+        if Ysprite <= 40 { //si la coordenada y <= 40 (no visible o visible en parte en pantalla)
+            if (40 - Ysprite) >= nYsprite { //si la distancia desde el punto en que comienza el sprite al primer punto visible >= la altura del sprite, sale (no visible)
+                return
+            }
+            //4C36
+            nXsprite = TablaSprites_2E17[PunteroSpriteIX + 0xE - 0x2E17]
+            PunteroPantallaDE = (40 - Int(Ysprite)) * Int(nXsprite) //avanza las líneas del sprite no visible
+            nYsprite = nYsprite - (40 - Ysprite) //modifica el alto del sprite por el recorte
+            Ysprite = 0 //el sprite empieza en y = 0
+        } else {
+            Ysprite = Ysprite - 40 //ajusta la coordenada y
+        }
+        //4C45
+        //dirección del buffer de sprites asignada a este sprit
+        PunteroBufferSpritesHL = Bytes2Int(Byte0: TablaSprites_2E17[PunteroSpriteIX + 0x10 - 0x2E17], Byte1: TablaSprites_2E17[PunteroSpriteIX + 0x11 - 0x2E17])
+        PunteroBufferSpritesHL = PunteroBufferSpritesHL + PunteroPantallaDE //salta los bytes no visibles en y
+        //4C4E
+        Xsprite = TablaSprites_2E17[PunteroSpriteIX + 0xC - 0x2E17] //posición en x del tile en el que empieza el sprite (en bytes)
+        nXsprite = TablaSprites_2E17[PunteroSpriteIX + 0xE - 0x2E17] //ancho final del sprite (en bytes)
+        if Xsprite >= 72 { return } //sale si la posición en x >= (32 + 256 pixels)
+        //4C58
+        if Xsprite < 8 { //si la coordenada x <= 32 (no visible o visible en parte en pantalla)
+            //4C5D
+            if (8 - Xsprite) >= nXsprite { //si la distancia desde el punto en que comienza el sprite al primer punto visible >= la anchura del sprite, sale (no visible)
+                return
+            }
+            //4C63
+            PunteroBufferSpritesHL = PunteroBufferSpritesHL + 8 - Int(Xsprite) //avanza los pixels recortados
+            Xnovisible = 8 - Xsprite
+            nXsprite = nXsprite - (8 - Xsprite) //modifica el ancho a pintar
+            Xsprite = 0 //el sprite empieza en x = 0
+        } else {
+            Xsprite = Xsprite - 8
+        }
+        //4c72
+        if (Xsprite + nXsprite) >= 64 {  //comprueba si el sprite es más ancho que la pantalla (64*4 = 256)
+            Xnovisible = nXsprite + Xsprite - 64
+            nXsprite = nXsprite - Xnovisible //pone un nuevo ancho para el sprite
+        }
+        //4C7F
+        if (Ysprite + nYsprite) >= 160 { //comprueba si el sprite es más alto que la pantalla (160)
+            //4C8A
+            nYsprite = nYsprite - (Ysprite + nYsprite - 160) //actualiza el alto a pintar
+        }
+        //4C8E
+        PunteroPantallaDE = ObtenerDesplazamientoPantalla_3C42(Xsprite, Ysprite) //dadas coordenadas X,Y, calcula el desplazamiento correspondiente en pantalla
+        //4C95
+        for Contador in stride(from: nYsprite, through: 1, by: -1)  {
+            //4C9A
+            PunteroPantallaAnterior = PunteroPantallaDE
+            for Contador2 in stride(from: nXsprite, through: 1, by: -1)  {
+                ValorPantalla = BufferSprites_9500[PunteroBufferSpritesHL - 0x9500]
+                PantallaCGA[PunteroPantallaDE - 0xC000] = ValorPantalla
+                cga!.PantallaCGA2PC(PunteroPantalla: PunteroPantallaDE - 0xC000, Color: ValorPantalla)
+                PunteroBufferSpritesHL = PunteroBufferSpritesHL + 1
+                PunteroPantallaDE = PunteroPantallaDE + 1
+            }
+            PunteroBufferSpritesHL = PunteroBufferSpritesHL + Int(Xnovisible)
+            PunteroPantallaDE = PunteroPantallaAnterior
+            //4CA7
+            //pasa a la siguiente línea de pantalla
+            PunteroPantallaDE = PunteroPantallaDE + 0x800 //pasa al siguiente banco
+            if (PunteroPantallaDE & 0x3800) == 0 { //banco inexistente
+                PunteroPantallaDE = PunteroPantallaDE - 0x800 //vuelve al banco anterior
+                PunteroPantallaDE = PunteroPantallaDE & 0xC7FF
+                PunteroPantallaDE = PunteroPantallaDE + 0x50 //cada línea ocupa 0x50 bytes
+            }
+            //4CBC
+        }
+    }
+
+    public func ObtenerDesplazamientoPantalla_3C42(X:UInt8, Y:UInt8) -> Int {
+        //; dados X,Y, calcula el desplazamiento correspondiente en pantalla
+        //al valor calculado se le suma 32 pixels a la derecha (puesto que el área de juego va desde x = 32 a x = 256 + 32 - 1
+        //l = coordenada X (en bytes)
+        var PunteroPantalla:Int
+        var ValorLong:Int
+        PunteroPantalla = Int(Y & 0xF8) //obtiene el valor para calcular el desplazamiento dentro del banco de VRAM
+        //dentro de cada banco, la línea a la que se quiera ir puede calcularse como (y & 0xf8)*10
+        //o lo que es lo mismo, (y >> 3)*0x50
+        PunteroPantalla = 10 * PunteroPantalla //PunteroPantalla = desplazamiento dentro del banco
+        ValorLong = Int(Y & 0x7) //3 bits menos significativos en y (para calcular al banco de VRAM al que va)
         ValorLong = ValorLong << 11 //ajusta los 3 bits
         PunteroPantalla = PunteroPantalla | ValorLong //completa el cálculo del banco
         PunteroPantalla = PunteroPantalla | 0xC000
@@ -4087,6 +6469,623 @@ public func ProcesarCanalSonido_114C( _ PunteroCanalIX:Int) {
         return PunteroPantalla
     }
 
+    public func ActualizarDatosPersonaje_291D( _ PunteroPersonajeHL:Int) {
+        //comprueba si el personaje puede moverse a donde quiere y actualiza su sprite y el buffer de alturas
+        //PunteroPersonajeHL apunta a la tabla del personaje a mover
+        //0x2BAE //guillermo
+        //0x2BB8 //adso
+        //0x2BC2 //malaquías
+        //0x2BCC //abad
+        //0x2BD6 //berengario
+        //0x2BE0 //severino
+        var PunteroSpriteIX:Int
+        var PunteroCaracteristicasPersonajeIY:Int
+        var PunteroRutinaComportamientoHL:Int
+        var PunteroRutinaFlipearGraficos:Int
+        var Valor:UInt8
+        PunteroSpriteIX = Leer16(TablaPunterosPersonajes_2BAE, PunteroPersonajeHL + 0 - 0x2BAE)
+        PunteroCaracteristicasPersonajeIY = Leer16(TablaPunterosPersonajes_2BAE, PunteroPersonajeHL + 2 - 0x2BAE)
+        PunteroRutinaComportamientoHL = Leer16(TablaPunterosPersonajes_2BAE, PunteroPersonajeHL + 4 - 0x2BAE)
+        PunteroRutinaFlipearGraficos = Leer16(TablaPunterosPersonajes_2BAE, PunteroPersonajeHL + 6 - 0x2BAE)
+        PunteroRutinaFlipPersonaje_2A59 = PunteroRutinaFlipearGraficos
+        PunteroTablaAnimacionesPersonaje_2A84 = Leer16(TablaPunterosPersonajes_2BAE, PunteroPersonajeHL + 8 - 0x2BAE)
+        DefinirDatosSpriteComoAntiguos_2AB0(PunteroSpriteIX) //pone la posición y dimensiones actuales del sprite como posición y dimensiones antiguas
+        //si la posición del sprite es central y la altura está bien, limpia las posiciones que ocupaba el sprite en el buffer de alturas
+        //292f
+        RellenarBufferAlturasPersonaje_28EF(PunteroCaracteristicasPersonajeIY, 0)
+        //2932
+        if MalaquiasAscendiendo_4384 {
+            MalaquiasAscendiendo_4384 = false
+            //2945
+            AvanzarAnimacionSprite_2A27(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+        } else {
+            //2948
+            //lee el contador de la animación
+            Valor = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 0 - 0x3036]
+            if (Valor & 1) != 0 {
+                //294d
+                IncrementarContadorAnimacionSprite_2A01(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+            } else {
+                //2950
+                switch PunteroRutinaComportamientoHL {
+                    case 0x288D: //guillermo
+                        EjecutarComportamientoGuillermo_288D(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+                    case 0x2C3A: //resto
+                        EjecutarComportamientoPersonaje_2C3A(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+                    default:
+                        break
+                }
+            }
+        }
+        //2940
+        //lee el valor a poner en el buffer de alturas para indicar que está el personaje
+        Valor = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 0xE - 0x3036]
+        //2943
+        //si la posición del sprite es central y la altura está bien, pone c en las posiciones que ocupa del buffer de alturas
+        RellenarBufferAlturasPersonaje_28EF(PunteroCaracteristicasPersonajeIY, Valor)
+    }
+
+    public func AvanzarAnimacionSprite_2A27( _ PunteroSpriteIX:Int, _ PunteroCaracteristicasPersonajeIY:Int) {
+        //avanza la animación del sprite y lo redibuja
+        var PunteroTablaAnimacionesHL:Int
+        var Yp:UInt8=0 //posición y en pantalla del sprite
+        //cambia la animación de los trajes de los monjes según la posición y el contador de animaciones y
+        //obtiene la dirección de los datos de la animación que hay que poner en hl
+        PunteroTablaAnimacionesHL = CambiarAnimacionTrajesMonjes_2A61(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+        MovimientoRealizado_2DC1 = true //indica que ha habido movimiento
+        if EsSpriteVisible_2AC9(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY, &Yp) == true {
+            //aquí se llega desde fuera si un sprite es visible, después de haber actualizado su posición.
+            //en PunteroTablaAnimacionesHL se apunta a la animación correspondiente para el sprite
+            //PunteroSpriteIX = dirección del sprite correspondiente
+            //PunteroCaracteristicasPersonajeIY = datos de posición del personaje correspondiente
+            //2a34
+            ActualizarDatosGraficosPersonaje_2A34(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY, PunteroTablaAnimacionesHL, Yp)
+        }
+    }
+
+    public func EsSpriteVisible_2AC9( _ PunteroSpriteIX:Int, _ PunteroCaracteristicasPersonajeIY:Int, _ Yp: inout UInt8) -> Bool {
+        var Visible:Bool
+        var X:UInt8=0
+        var Y:UInt8=0
+        var Z:UInt8=0
+        //comprueba si es visible y si lo es, actualiza su posición si fuese necesario.
+        //Si es visible no vuelve, sino que sale a la rutina que lo llamó
+        Visible = ProcesarObjeto_2ADD(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY, &X, &Y, &Z, &Yp)
+        if Visible {
+            return true
+        }
+        MarcarSpriteInactivo_2ACE(PunteroSpriteIX)
+        return false
+    }
+
+    public func MarcarSpriteInactivo_2ACE( _ PunteroSpriteIX:Int) {
+        //aquí llega si el sprite no es visible
+        if TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17] == 0xFE { //si el sprite no era visible, sale
+            return
+        } else {
+            TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17] = 0x80 //en otro caso, indica que hay que redibujar el sprite
+            SetBitArray(&TablaSprites_2E17, PunteroSpriteIX + 5 - 0x2E17, 7)  //indica que el sprite va a pasar a inactivo, y solo se quiere redibujar la zona que ocupaba
+        }
+    }
+
+    public func IncrementarContadorAnimacionSprite_2A01( _ PunteroSpriteIX:Int, _ PunteroCaracteristicasPersonajeIY:Int) {
+        //incrementa el contador de los bits 0 y 1 del byte 0, avanza la animación del sprite y lo redibuja
+        var Valor:UInt8
+        //lee el contador de la animación
+        Valor = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 0 - 0x3036]
+        Valor = Valor + 1
+        Valor = Valor & 3
+        //2a07
+        TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 0 - 0x3036] = Valor
+        //2A0A
+        AvanzarAnimacionSprite_2A27(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+    }
+
+    public func EjecutarComportamientoGuillermo_288D( _ PunteroSpriteIX:Int, _ PunteroCaracteristicasPersonajeIY:Int) {
+        //rutina del comportamiento de guillermo
+        //PunteroSpriteIX que apunta al sprite de guillermo
+        //PunteroCaracteristicasPersonajeIY apunta a los datos de posición de guillermo
+        var Valor:UInt8
+        var RetornoA:Int=0
+        var RetornoC:Int=0
+        var RetornoHL:Int=0
+        if EstadoGuillermo_288F != 0 {
+            //2893
+            if EstadoGuillermo_288F == 1 { return } //si EstadoGuillermo_288F era 1, sale
+            EstadoGuillermo_288F = EstadoGuillermo_288F - 1
+            if EstadoGuillermo_288F == 0x13 {
+                //289C
+                //aquí llega si el estado de guillermo es 0x13
+                if AjustePosicionYSpriteGuillermo_28B1 == 2 {
+                    //28a3
+                    //decrementa la posición en x de guillermo
+                    Valor = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 2 - 0x3036]
+                    Valor = Valor - 1
+                    TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 2 - 0x3036] = Valor
+                    //avanza la animación del sprite y lo redibuja
+                    AvanzarAnimacionSprite_2A27(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+                    return
+                }
+            }
+            //28a9
+            //si se modifica la y del sprite con 1, salta y marca el sprite como inactivo
+            if EstadoGuillermo_288F != 1 {
+                //28ad
+                //modifica la posición y del sprite
+                Valor = TablaSprites_2E17[PunteroSpriteIX + 2 - 0x2E17]
+                Valor = Z80Add(Valor, AjustePosicionYSpriteGuillermo_28B1)
+                TablaSprites_2E17[PunteroSpriteIX + 2 - 0x2E17] = Valor
+                Valor = TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17]
+                Valor = Valor & 0x3F
+                Valor = Valor | 0x80
+                TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17] = Valor //marca el sprite para dibujar
+                MovimientoRealizado_2DC1 = true //indica que ha habido movimiento
+            } else {
+                //28c5
+                //aquí llega si se modifica la y del sprite con 1 y el estado de guillermo es el 0x13
+                TablaSprites_2E17[PunteroSpriteIX + 0 - 0x2E17] = 0xFE //marca el sprite como inactivo
+            }
+        } else {
+            //28ca
+            //aquí llega si el estado de guillermo es 0, que es el estado normal
+            if TablaVariablesLogica_3C85[PersonajeSeguidoPorCamara_3C8F - 0x3C85] != 0 { return } //si la cámara no sigue a guillermo, sale
+            //28CF
+            if teclado!.TeclaPulsadaFlanco(EnumAreaTecla.TeclaIzquierda) {
+                //2a0c
+                ActualizarDatosPersonajeCursorIzquierdaDerecha_2A0C(true, PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+            }
+            //28d9
+            if teclado!.TeclaPulsadaFlanco(EnumAreaTecla.TeclaDerecha) { //comprueba si ha cambiado el estado de cursor derecha
+                //2a0c
+                ActualizarDatosPersonajeCursorIzquierdaDerecha_2A0C(false, PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+            } else {
+                //28e3
+                if teclado!.TeclaPulsadaNivel(EnumAreaTecla.TeclaArriba) == false { return }//si no se ha pulsado el cursor arriba, sale
+                //28E9
+                ObtenerAlturaDestinoPersonaje_27B8(0, 0xFF, PunteroCaracteristicasPersonajeIY, &RetornoA, &RetornoC, &RetornoHL)
+                //28EC
+                AvanzarPersonaje_2954(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY, RetornoA, RetornoC, RetornoHL)
+            }
+        }
+    }
+
+    public func ActualizarDatosPersonajeCursorIzquierdaDerecha_2A0C( _ IzquierdaC:Bool, _ PunteroSpriteIX:Int, _ PunteroCaracteristicasPersonajeIY:Int) {
+        //aquí llega si se ha pulsado cursor derecha o izquierda
+        var Valor:UInt8
+        TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 0 - 0x3036] = 0 //resetea el contador de la animación
+        //2A10
+        if LeerBitArray(TablaCaracteristicasPersonajes_3036, PunteroCaracteristicasPersonajeIY + 5 - 0x3036, 7) != false {
+            //2a16
+            //si el personaje ocupa 4 casillas en el buffer de alturas
+            Valor = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 5 - 0x3036]
+            Valor = Valor ^ 0x20
+            TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 5 - 0x3036] = Valor
+        }
+        //2a1e
+        Valor = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 1 - 0x3036] //lee la orientación
+        //cambia la orientación del personaje
+        if IzquierdaC {
+            Valor = UInt8((Int(Valor) + 1) & 0x3)
+        } else {
+            Valor = UInt8((Int(Valor) + 255) & 0x3)
+        }
+        //2A24
+        TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 1 - 0x3036] = Valor
+        //2A27
+        AvanzarAnimacionSprite_2A27(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+    }
+
+    public func ObtenerAlturaDestinoPersonaje_27B8( _ DiferenciaAlturaA:UInt8, _ AlturaC:UInt8, _ PunteroCaracteristicasPersonajeIY:Int, _ Salida1A: inout Int, _ Salida2C: inout Int, _ Salida3HL: inout Int) {
+        //comprueba la altura de las posiciones a las que va a moverse el personaje y las devuelve en Salida1A y Salida2C
+        //en Salida3HL devuelve el puntero en la tabla TablaAvancePersonaje con los incrementos necesarios en x e y para avanzar el personaje
+        //si el personaje no está en la pantalla actual, se devuelve lo mismo que se pasó en DiferenciaAlturaA (se supone que ya se ha calculado la diferencia de altura fuera)
+        //DiferenciaAlturaA se usará si el personaje no está en la pantalla actual
+        //en PunteroCaracteristicasPersonajeIY se pasan las características del personaje que se mueve hacia delante
+        //llamado al pulsar cursor arriba
+        var AlturaPersonaje:UInt8
+        var AlturaBasePlanta:UInt8
+        var AlturaRelativa:UInt8 //altura relativa dentro de la planta
+        //27b9
+        AlturaPersonaje = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036] //obtiene la altura del personaje
+        //27bc
+        AlturaBasePlanta = LeerAlturaBasePlanta_2473(AlturaPersonaje)
+        if AlturaBasePlanta != AlturaBasePlantaActual_2DBA { //si no coincide la planta en la que está el personaje con la que se está mostrando, sale
+            Salida1A = Int(DiferenciaAlturaA)
+            Salida2C = Int(AlturaC)
+            return
+        }
+        //27c6
+        AlturaRelativa = AlturaPersonaje - AlturaBasePlanta
+        //27CB
+        ObtenerAlturaDestinoPersonaje_27CB(AlturaRelativa, DiferenciaAlturaA, AlturaC, PunteroCaracteristicasPersonajeIY, &Salida1A, &Salida2C, &Salida3HL)
+    }
+
+    public func ObtenerAlturaDestinoPersonaje_27CB( _ DiferenciaAlturaA:UInt8, _ DiferenciaAlturaB:UInt8, _ AlturaC:UInt8, _ PunteroCaracteristicasPersonajeIY:Int, _ Salida1A: inout Int, _ Salida2C: inout Int, _ Salida3HL: inout Int) {
+        //comprueba la altura de las posiciones a las que va a moverse el personaje y las devuelve en a y c
+        //si el personaje no está visible, se devuelve lo mismo que se pasó en a
+        //en iy se pasan las características del personaje que se mueve hacia delante
+        //aquí llega con DiferenciaAlturaA = altura relativa dentro de la planta
+        var PosicionX:UInt8 //posición global del personaje
+        var PosicionY:UInt8 //posición global del personaje
+        var PunteroBufferAlturas:Int
+        var PunteroBufferAlturasAnterior:Int
+        var PunteroTablaAvancePersonaje:Int //puntero a la tabla de incrementos
+        var IncrementoBucleInterior:Int
+        var IncrementoBucleExterior:Int
+        var IncrementoInicial:Int
+        var ContadorExterior:Int
+        var ContadorInterior:Int
+
+        var PunteroBufferAuxiliar:Int
+        var ValorBufferAlturas:UInt8
+        var BufferAuxiliar:Bool=false //true: se usa el buffer secundario de 96F4
+
+        if PunteroBufferAlturas_2D8A != 0x01C0 { BufferAuxiliar = true }
+        //obtiene la posición global del personaje
+        PosicionY = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 3 - 0x3036]
+        PosicionX = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 2 - 0x3036]
+        if !DeterminarPosicionCentral_279B(&PosicionX, &PosicionY) { //PosicionX,PosicionY = posición ajustada a las 20x20 posiciones centrales
+            //27d8
+            Salida1A = Int(DiferenciaAlturaB)
+            Salida2C = Int(AlturaC)
+            return
+        }
+        //aquí llega si la posición es visible
+        //27db
+        PunteroBufferAlturas = 24 * Int(PosicionY) + Int(PosicionX)
+        //27EC
+        PunteroBufferAlturas = PunteroBufferAlturas + PunteroBufferAlturas_2D8A //indexa en el buffer de alturas
+        //27EE
+        PunteroTablaAvancePersonaje = ObtenerPunteroPosicionVecinaPersonaje_2783(PunteroCaracteristicasPersonajeIY)
+        //27F1
+        IncrementoBucleInterior = LeerDatoTablaAvancePersonaje(PunteroTablaAvancePersonaje, 16)
+        IncrementoBucleExterior = LeerDatoTablaAvancePersonaje(PunteroTablaAvancePersonaje + 2, 16)
+        IncrementoInicial = LeerDatoTablaAvancePersonaje(PunteroTablaAvancePersonaje + 4, 16)
+        Salida3HL = PunteroTablaAvancePersonaje + 6
+        //280A
+        PunteroBufferAlturas = PunteroBufferAlturas + IncrementoInicial //suma a la posición actual en el buffer de alturas el desplazamiento leido
+        //280B
+        PunteroBufferAuxiliar = 0x2DC5 //apunta a un buffer auxiliar
+        //280E
+        for ContadorExterior in 1...4 { //el bucle exterior realiza 4 iteraciones
+            //2811
+            PunteroBufferAlturasAnterior = PunteroBufferAlturas
+            //2812
+            for ContadorInterior in 1...4 { //el bucle interior realiza 4 iteraciones
+                //2815
+                if !BufferAuxiliar {
+                    ValorBufferAlturas = TablaBufferAlturas_01C0[PunteroBufferAlturas - 0x1C0]
+                } else {
+                    ValorBufferAlturas = TablaBufferAlturas_96F4[PunteroBufferAlturas - 0x96F4]
+                }
+                if ValorBufferAlturas < 0x10 { //comprueba si en esa posición hay algun personaje
+                    // 281E
+                    BufferAuxiliar_2DC5[PunteroBufferAuxiliar - 0x2DC5] = Int(ValorBufferAlturas) - Int(DiferenciaAlturaA)
+                } else {
+                    //281A
+                    BufferAuxiliar_2DC5[PunteroBufferAuxiliar - 0x2DC5] = Int(ValorBufferAlturas) & 0x30
+                }
+                //2821
+                PunteroBufferAuxiliar = PunteroBufferAuxiliar + 1
+                //2822
+                PunteroBufferAlturas = PunteroBufferAlturas + IncrementoBucleInterior
+            }
+            //282C
+            PunteroBufferAlturas = PunteroBufferAlturasAnterior + IncrementoBucleExterior
+        }
+        //2833
+        if LeerBitArray(TablaCaracteristicasPersonajes_3036, PunteroCaracteristicasPersonajeIY + 5 - 0x3036, 7) {  //si el personaje sólo ocupa 1 posición
+            //2839
+            //guarda en a y en c el contenido de las 2 posiciones hacia las que avanza el personaje
+            Salida2C = BufferAuxiliar_2DC5[0x2DC6 - 0x2DC5]
+            Salida1A = BufferAuxiliar_2DC5[0x2DCA - 0x2DC5]
+        } else { //si el personaje ocupa 4 posiciones en el buffer de alturas
+            //2841
+            //si en las 2 posiciones en las que se avanza no hay lo mismo, sale con valores iguales para a y c
+            Salida2C = BufferAuxiliar_2DC5[0x2DC6 - 0x2DC5]
+            Salida1A = BufferAuxiliar_2DC5[0x2DC7 - 0x2DC5]
+            if Salida1A != Salida2C {
+                Salida1A = 2 //indica que hay una diferencia entre las alturas > 1
+            }
+        }
+    }
+
+    public func ObtenerPunteroPosicionVecinaPersonaje_2783( _ PunteroCaracteristicasPersonajeIY:Int) -> Int {
+        //devuelve la dirección de la tabla para calcular la altura de las posiciones vecinas
+        //según el tamaño de la posición del personaje y la orientación
+        //iy=3072,a=0->284d
+        var ObtenerPunteroPosicionVecinaPersonaje_2783:Int
+        var OrientacionA:Int
+        //obtiene la orientación del personaje
+        //278f
+        OrientacionA = Int(TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 1 - 0x3036])
+        if LeerBitArray(TablaCaracteristicasPersonajes_3036, PunteroCaracteristicasPersonajeIY + 5 - 0x3036, 7) {
+            //2792
+            ObtenerPunteroPosicionVecinaPersonaje_2783 = 0x286D + 8 * OrientacionA
+        } else { //si el bit 7 no está puesto (si el personaje ocupa 4 tiles)
+            //apunta a la tabla si el personaje ocupa 4 tiles
+            //2792
+            ObtenerPunteroPosicionVecinaPersonaje_2783 = 0x284D + 8 * OrientacionA
+        }
+        return ObtenerPunteroPosicionVecinaPersonaje_2783
+    }
+
+    private func LeerDatoTablaAvancePersonaje( _ PunteroPosicionVecinaPersonajeHL:Int, _ NBits:Int) -> Int {
+        //busca en la tabla 284D ó 286D, dependiendo del valor de HL, un valor con signo de 8 ó 16 bits
+
+        //; tabla para el cálculo del avance de los personajes según la orientación (para personajes que ocupan 4 tiles)
+        //; bytes 0-1: desplazamiento en el bucle interior del buffer de tiles
+        //; bytes 2-3: desplazamiento en el bucle exterior del buffer de tiles
+        //; bytes 4-5: desplazamiento inicial en el buffer de alturas para el bucle
+        //: byte 6: valor a sumar a la posición x del personaje si avanza en este sentido
+        //: byte 7: valor a sumar a la posición y del personaje si avanza en este sentido
+        //284D:   0018 FFFF FFD1 01 00 -> +24 -1  -47 [+1 00]
+        //        0001 0018 FFCE 00 FF -> +1  +24 -50 [00 -1]
+        //        FFE8 0001 0016 FF 00 -> -24 +1  +22 [-1 00]
+        //        FFFF FFE8 0019 00 01 -> -1  -24 +25 [00 +1]
+
+        //; tabla para el cálculo del avance de los personajes según la orientación (para personajes que ocupan 1 tile)
+        //286D:   0018 FFFF FFEA 01 00 -> +24  -1 -22 [+1 00]
+        //        0001 0018 FFCF 00 FF -> +1  +24 -49 [00 -1]
+        //        FFE8 0001 0016 FF 00 -> -24  +1 +22 [-1 00]
+        //        FFFF FFE8 0031 00 01 -> -1  -24 +49 [00 +1]
+        var LeerDatoTablaAvancePersonaje:Int
+        LeerDatoTablaAvancePersonaje = 0
+        if PunteroPosicionVecinaPersonajeHL < 0x286D { //personaje ocupa 4 tiles
+            if NBits == 8 {
+                LeerDatoTablaAvancePersonaje = Leer8Signo(TablaAvancePersonaje4Tiles_284D, PunteroPosicionVecinaPersonajeHL - 0x284D)
+            } else if NBits == 16 {
+                LeerDatoTablaAvancePersonaje = Leer16Signo(TablaAvancePersonaje4Tiles_284D, PunteroPosicionVecinaPersonajeHL - 0x284D)
+            } else {
+                ErrorExtraño()
+            }
+        } else { //personaje ocupa 1 tile
+            if NBits == 8 {
+                LeerDatoTablaAvancePersonaje = Leer8Signo(TablaAvancePersonaje1Tile_286D, PunteroPosicionVecinaPersonajeHL - 0x286D)
+            } else if NBits == 16 {
+                LeerDatoTablaAvancePersonaje = Leer16Signo(TablaAvancePersonaje1Tile_286D, PunteroPosicionVecinaPersonajeHL - 0x286D)
+            } else {
+                ErrorExtraño()
+            }
+        }
+        return LeerDatoTablaAvancePersonaje
+    }
+
+    public func AvanzarPersonaje_2954( _ PunteroSpriteIX:Int, _ PunteroCaracteristicasPersonajeIY:Int, _ Altura1A:Int, _ Altura2C:Int, _ PunteroTablaAvancePersonajeHL:Int) {
+        //; rutina llamada para ver si el personaje avanza
+        //; en a y en c se pasa la diferencia de alturas a la posición a la que quiere avanzar
+        // en HL se pasa el puntero a la tabla de avence de personaje para actualizar la posición del personaje
+        var AlturaPersonajeE:UInt8
+        var TamañoOcupadoA:UInt8=0 //tamaño ocupado por el personaje en el buffer de alturas
+        ClearBitArray(&TablaCaracteristicasPersonajes_3036, PunteroCaracteristicasPersonajeIY + 5 - 0x3036, 4)  //pone a 0 el bit que indica si el personaje está bajando o subiendo
+        //295C
+        AlturaPersonajeE = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036] //altura del personaje
+        //295F
+        if !LeerBitArray(TablaCaracteristicasPersonajes_3036, PunteroCaracteristicasPersonajeIY + 5 - 0x3036, 7) { // si el personaje ocupa 4 posiciones
+            //29b7
+            //aquí salta si el personaje ocupa 4 posiciones. Llega con:
+            //Altura1A = diferencia de altura con la posicion 1 más cercana al personaje según la orientación
+            //Altura2C = diferencia de altura con la posicion 2 más cercana al personaje según la orientación
+            if Altura1A == 1 || Altura1A == -1 {
+                if Altura1A == 1 { //si se va hacia arriba
+                    //29c3
+                    //aquí llega si se sube
+                    TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036] = Z80Inc(TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036]) //incrementa la altura del personaje
+                    TamañoOcupadoA = 0x80 //cambia el tamaño ocupado en el buffer de alturas de 4 a 1
+                } else if Altura1A == -1 { //si se va hacia abajo
+                    //29ca
+                    TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036] = Z80Dec(TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036]) //decrementa la altura del personaje)
+                    TamañoOcupadoA = 0x90 //cambia el tamaño ocupado en el buffer de alturas de 4 a 1 e indica que está bajando
+                }
+                //29cf
+                TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 5 - 0x3036] = TamañoOcupadoA
+                //29d3
+                //actualiza la posición en x y en y del personaje según la orientación hacia la que avanza
+                AvanzarPersonaje_29E4(PunteroCaracteristicasPersonajeIY, PunteroTablaAvancePersonajeHL)
+                if ObtenerOrientacion_29AE(PunteroCaracteristicasPersonajeIY) != 0 { //devuelve 0 si la orientación del personaje es 0 o 3, en otro caso devuelve 1
+                    //actualiza la posición en x y en y del personaje según la orientación hacia la que avanza
+                    AvanzarPersonaje_29E4(PunteroCaracteristicasPersonajeIY, PunteroTablaAvancePersonajeHL)
+                }
+                //29dd
+                MovimientoRealizado_2DC1 = true //indica que ha habido movimiento
+                //29E2
+                //incrementa el contador de los bits 0 y 1 del byte 0, avanza la animación del sprite y lo redibuja
+                IncrementarContadorAnimacionSprite_2A01(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+                return
+                //29bf
+            } else if Altura1A != 0 { //en otro caso, sale si quiere subir o bajar más de una unidad
+                //29c0
+                return
+            } else {
+                //29C1
+                //si no cambia de altura, actualiza la posición según hacia donde se avance, incrementa el contador de los bits 0 y 1 del byte 0, avanza la animación del sprite y lo redibuja
+                AvanzarPersonaje_29F4(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY, Altura1A, Altura2C, PunteroTablaAvancePersonajeHL)
+            }
+            return
+        } else {
+            //2961
+            // aquí llega si el personaje ocupa una sola posición
+            //  Altura1A = diferencia de altura con la posición más cercana al personaje según la orientación
+            //  Altura2C = diferencia de altura con la posición del personaje + 2 (según la orientación que tenga)
+            if Altura2C == 0x10 { return } //si en la posición del personaje + 2 (según la orientación que tenga) hay un personaje, sale
+            if Altura2C == 0x20 { return } //si se quiere avanzar a una posición donde hay un personaje, sale
+            //2969
+            if !LeerBitArray(TablaCaracteristicasPersonajes_3036, PunteroCaracteristicasPersonajeIY + 5 - 0x3036, 5) { //si el personaje no está girado en el sentido de subir o bajar en el desnivel
+                //297D
+                // aquí salta si el bit 5 es 0. Llega con:
+                //  Altura1A = diferencia de altura con la posición más cercana al personaje según la orientación
+                //  Altura2C = diferencia de altura con la posición del personaje + 2 (según la orientación que tenga)
+                TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036] = Z80Inc(TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036]) //incrementa la altura del personaje
+                if Altura1A != 1 { //si no se está subiendo una unidad
+                    //2984
+                    TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036] = Z80Dec(TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036]) //deshace el incremento
+                    if Altura1A != -1 { return } //si no se está bajando una unidad, sale
+                    //298a
+                    SetBitArray(&TablaCaracteristicasPersonajes_3036, PunteroCaracteristicasPersonajeIY + 5 - 0x3036, 4) //indica que está bajando
+                    //298e
+                    TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036] = Z80Dec(TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 4 - 0x3036]) //decrementa la altura del personaje
+                }
+                //2991
+                if Altura1A != Altura2C { //compara la altura de la posición más cercana al personaje con la siguiente
+                    //2992
+                    //si las alturas no son iguales, avanza la posición
+                    AvanzarPersonaje_29F4(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY, Altura1A, Altura2C, PunteroTablaAvancePersonajeHL)
+                } else {
+                    //2994
+                    //aquí llega si avanza y las 2 posiciones siguientes tienen la misma altura
+                    //tan solo deja activo el bit 4, por lo que el personaje pasa de ocupar una posición en el buffer de alturas a ocupar 4
+                    TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 5 - 0x3036] = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 5 - 0x3036] & 0x10
+                    //299C
+                    //actualiza la posición en x y en y del personaje según la orientación hacia la que avanza
+                    AvanzarPersonaje_29E4(PunteroCaracteristicasPersonajeIY, PunteroTablaAvancePersonajeHL)
+                    if ObtenerOrientacion_29AE(PunteroCaracteristicasPersonajeIY) == 0 { //devuelve 0 si la orientación del personaje es 0 o 3, en otro caso devuelve 1
+                        //actualiza la posición en x y en y del personaje según la orientación hacia la que avanza
+                        AvanzarPersonaje_29E4(PunteroCaracteristicasPersonajeIY, PunteroTablaAvancePersonajeHL)
+                    }
+                    MovimientoRealizado_2DC1 = true //indica que ha habido movimiento
+                    //incrementa el contador de los bits 0 y 1 del byte 0, avanza la animación del sprite y lo redibuja
+                    IncrementarContadorAnimacionSprite_2A01(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+                }
+            } else {
+                //2970
+                var Orientacion:Int
+                var Valor:Int
+                Orientacion = Int(ObtenerOrientacion_29AE(PunteroCaracteristicasPersonajeIY)) //devuelve 0 si la orientación del personaje es 0 o 3, en otro caso devuelve 1
+                //2974
+                //cuando va hacia la derecha o hacia abajo, al convertir la posición en 4, solo hay 1 de diferencia
+                //en cambio, si se va a los otros sentidos al convertir la posición a 4 hay 2 de dif
+                Valor = Altura1A
+                //2975
+                if Orientacion != 0 {
+                    //2977
+                    Valor = Altura2C
+                }
+                //2978
+                if Valor != 0 { return } //si no está a ras de suelo, sale?
+                //297a
+                //aunque en realidad se llama a 29FE, la primera parte no hace nada, así que es lo mismo llamar a 29F4
+                AvanzarPersonaje_29F4(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY, Altura1A, Altura2C, PunteroTablaAvancePersonajeHL)
+            }
+        }
+    }
+
+    public func AvanzarPersonaje_29F4( _ PunteroSpriteIX:Int, _ PunteroCaracteristicasPersonajeIY:Int, _ Altura1A:Int, _ Altura2C:Int, _ PunteroTablaAvancePersonajeHL:Int) {
+        //; actualiza la posición según hacia donde se avance, incrementa el contador de los bits 0 y 1 del byte 0, avanza la animación del sprite y lo redibuja
+        //; aquí salta si las alturas de las 2 posiciones no son iguales. Llega con:
+        //;  Altura1A = diferencia de altura con la posición más cercana al personaje según la orientación
+        //;  Altura2C = diferencia de altura con la posición del personaje + 2 (según la orientación que tenga)
+        //   PunteroTablaAvancePersonajeHL=puntero a la tabla de avance del personaje
+        var DiferenciaAlturaA:Int
+        DiferenciaAlturaA = Altura1A - Altura2C + 1
+        //29F8
+        AvanzarPersonaje_29E4(PunteroCaracteristicasPersonajeIY, PunteroTablaAvancePersonajeHL)
+        //modFunciones.GuardarArchivo "Perso0", TablaCaracteristicasPersonajes_3036
+        //2a01
+        IncrementarContadorAnimacionSprite_2A01(PunteroSpriteIX, PunteroCaracteristicasPersonajeIY)
+    }
+
+    public func AvanzarPersonaje_29E4( _ PunteroCaracteristicasPersonajeIY:Int, _ PunteroTablaAvancePersonajeHL:Int) {
+        //actualiza la posición en x y en y del personaje según la orientación hacia la que avanza
+        var AvanceX:Int
+        var AvanceY:Int
+        AvanceX = LeerDatoTablaAvancePersonaje(PunteroTablaAvancePersonajeHL, 8)
+        //29e5
+        if AvanceX > 0 {
+            TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 2 - 0x3036] = Z80Add(TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 2 - 0x3036], UInt8(AvanceX))
+        } else {
+            TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 2 - 0x3036] = Z80Sub(TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 2 - 0x3036], UInt8(-AvanceX))
+        }
+        //29eb
+        AvanceY = LeerDatoTablaAvancePersonaje(PunteroTablaAvancePersonajeHL + 1, 8)
+        //29EC
+        if AvanceY > 0 {
+            TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 3 - 0x3036] = Z80Add(TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 3 - 0x3036], UInt8(AvanceY))
+        } else {
+            TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 3 - 0x3036] = Z80Sub(TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 3 - 0x3036], UInt8(-AvanceY))
+        }
+
+    }
+
+    public func ObtenerOrientacion_29AE( _ PunteroCaracteristicasPersonajeIY:Int) -> UInt8 {
+        //devuelve 0 si la orientación del personaje es 0 o 3, en otro caso devuelve 1
+        var ObtenerOrientacion_29AE:UInt8
+        var Valor:UInt8
+        Valor = TablaCaracteristicasPersonajes_3036[PunteroCaracteristicasPersonajeIY + 1 - 0x3036] //lee la orientación del personaje
+        //29b1
+        Valor = Valor & 0x3
+        if Valor == 0 {
+            ObtenerOrientacion_29AE = 0
+        } else {
+            //29B4
+            ObtenerOrientacion_29AE = Valor ^ 0x3
+        }
+        return ObtenerOrientacion_29AE
+    }
+
+    public func ModificarCaracteristicasSpriteLuz_26A3() {
+        //modifica las características del sprite de la luz si puede ser usada por adso
+        var PosicionX:Int //posición x del sprite de la luz
+        var PosicionY:Int //posición y del sprite de la luz
+        TablaSprites_2E17[0x2FCF - 0x2E17] = 0xFE //desactiva el sprite de la luz
+        if !HabitacionOscura_156C { return } //si la habitación está iluminada, sale
+        //26ad
+        //aqui llega si es una habitación oscura
+        if !depuracion.LuzEnGuillermo {
+            if TablaSprites_2E17[0x2E2B - 0x2E17] == 0xFE { DibujarSprites_267B() } //si el sprite de adso no es visible, evita que se redibujen los sprites y sale //###depuracion
+        } else {
+            if TablaSprites_2E17[0x2E17 - 0x2E17] == 0xFE { DibujarSprites_267B() } //si el sprite de guillermo no es visible, evita que se redibujen los sprites y sale //###depuracion
+        }
+        //26B4
+        if !depuracion.LuzEnGuillermo {
+            PosicionX = Int(TablaSprites_2E17[0x2E2C - 0x2E17]) //posición x del sprite de adso //###depuración
+        } else {
+            PosicionX = Int(TablaSprites_2E17[0x2E17 + 1 - 0x2E17]) //posición x del sprite de guillermo //###depuración
+        }
+        SpriteLuzAdsoX_4B89 = UInt8(PosicionX & 0x3) //posición x del sprite de adso dentro del tile
+        //26BD
+        SpriteLuzAdsoX_4BB5 = 4 - SpriteLuzAdsoX_4B89 //4 - (posición x del sprite de adso & 0x03)
+        //26C4
+        TablaSprites_2E17[0x2FCF + 0x12 - 0x2E17] = 0xFE //le da la máxima profundidad al sprite
+        TablaSprites_2E17[0x2FCF + 0x13 - 0x2E17] = 0xFE //le da la máxima profundidad al sprite
+        //26d1
+        PosicionX = (PosicionX & 0xFC) - 8
+        if PosicionX < 0 { PosicionX = 0 }
+        TablaSprites_2E17[0x2FCF + 1 - 0x2E17] = Int2ByteSigno(PosicionX) //fija la posición x del sprite
+        TablaSprites_2E17[0x2FCF + 3 - 0x2E17] = Int2ByteSigno(PosicionX) //fija la posición anterior x del sprite
+        //26de
+        if !depuracion.LuzEnGuillermo {
+            PosicionY = Int(TablaSprites_2E17[0x2E2D - 0x2E17]) //obtiene la posición y del sprite de adso //###depuración
+        } else {
+            PosicionY = Int(TablaSprites_2E17[0x2E17 + 2 - 0x2E17]) //obtiene la posición y del sprite de guillermo //###depuración
+        }
+        if (PosicionY & 0x7) >= 4 { //si el desplazamiento dentro del tile en y >=4...
+            SpriteLuzTipoRelleno_4B6B = 0xEF //bytes a rellenar (tile y medio)
+            SpriteLuzTipoRelleno_4BD1 = 0x9F //bytes a rellenar (tile)
+        } else { //si es <4, intercambia los rellenos
+            SpriteLuzTipoRelleno_4B6B = 0x9F //bytes a rellenar (tile)
+            SpriteLuzTipoRelleno_4BD1 = 0xEF //bytes a rellenar (tile y medio)
+        }
+        //26F6
+        PosicionY = (PosicionY & 0xF8) - 0x18 //ajusta la posición y del sprite de adso al tile más cercano y la traslada
+        if PosicionY < 0 { PosicionY = 0 }
+        //26FE
+        TablaSprites_2E17[0x2FCF + 2 - 0x2E17] = Int2ByteSigno(PosicionY) //modifica la posición y del sprite
+        TablaSprites_2E17[0x2FCF + 4 - 0x2E17] = Int2ByteSigno(PosicionY) //modifica la posición anterior y del sprite
+        //2704
+        if TablaCaracteristicasPersonajes_3036[0x304B - 0x3036] != 0 { //si los gráficos estan flipeados
+            SpriteLuzFlip_4BA0 = true
+        } else {
+            SpriteLuzFlip_4BA0 = false
+        }
+    }
     
+
+    
+    
+    
+   
+   
+
+   
 }
 

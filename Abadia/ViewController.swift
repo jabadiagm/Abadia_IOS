@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     var contador2:UInt32=0
     var fps2:UInt8=0
     
-    private let joystickRadius: Double = 60
+    private let joystickRadius: Double = 100
 
     
     var bitmapMarco:Bitmap=Bitmap(width: 141, height: 640, color: .black)
@@ -244,10 +244,10 @@ class ViewController: UIViewController {
             let tecla = pixeles2Area(coordenadas2Pixeles(touch.location(in: view)))
             teclado.KeyDown(tecla)
         }
-        abadia.CambioPantalla_2DB8 = true
-        abadia.PunteroPantallaActual_156A = abadia.BuscarHabitacionProvisional(NumeroPantalla: abadia.NumeroHabitacion)
-        abadia.HabitacionOscura_156C = false
-        abadia.NumeroHabitacion+=1
+        //abadia.CambioPantalla_2DB8 = true
+        //abadia.PunteroPantallaActual_156A = abadia.BuscarHabitacionProvisional(NumeroPantalla: abadia.NumeroHabitacion)
+        //abadia.HabitacionOscura_156C = false
+        //abadia.NumeroHabitacion+=1
         return
         if waveOut.Reproduciendo {
             waveOut.Parar()
@@ -292,6 +292,25 @@ class ViewController: UIViewController {
                 return .AreaTextosIzquierda
             } else {
                 return .AreaEscenario
+            }
+        } else if posicion.y > 172 {
+            if posicion.x<0 {
+                if posicion.x < -96 {
+                    return .TeclaArriba
+                } else if posicion.x < -63 {
+                    return .TeclaAbajo
+                } else {
+                    return .AreaEscenario
+                }
+                
+            } else {
+                if posicion.x > 96 {
+                    return .TeclaDerecha
+                } else if posicion.x > 63 {
+                    return .TeclaIzquierda
+                } else {
+                    return .AreaEscenario
+                }
             }
         } else {
             return .AreaEscenario
@@ -438,23 +457,24 @@ class ViewController: UIViewController {
         if !reloj.Active {
             reloj.Start()
         }
-        abadia.Tick()
-        //coloca el bitmap del modo gráfico actual
-        if Pantalla!.Modo==0 {
-            cgaImageView.image=UIImage(bitmap: cga.bitmapModo0)
-        } else {
-            cgaImageView.image=UIImage(bitmap: cga.bitmapModo1)
-        }
+        procesarJoystick()
         
         if (contador%2)==1 {
+            abadia.Tick()
+            //coloca el bitmap del modo gráfico actual
+            if Pantalla!.Modo==0 {
+                cgaImageView.image=UIImage(bitmap: cga.bitmapModo0)
+            } else {
+                cgaImageView.image=UIImage(bitmap: cga.bitmapModo1)
+            }
 
         }
-        if reloj.EllapsedMilliseconds() > 1000 {
+        if reloj.EllapsedMilliseconds() > 100 {
             reloj.Start()
             //print(inputVector)
             let teclas=joystick2Teclas()
             if teclas.count > 0 { print (teclas) }
-            procesarJoystick()
+            
         }
        
         contador+=1

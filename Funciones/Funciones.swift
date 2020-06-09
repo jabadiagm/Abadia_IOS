@@ -187,7 +187,7 @@ public func getDocumentsDirectory() -> URL {
     return paths[0]
 }
 
-public func Int2ByteSigno(Valor:Int)  -> UInt8 {
+public func Int2ByteSigno( _ Valor:Int)  -> UInt8 {
     //pasa un entero largo de 32 bits a un byte. si el valor está fuera de límites, da un error
     //un byte sólo puede contener enteros entre 0 y 255
     if Valor < -128 || Valor > 255 {
@@ -229,7 +229,7 @@ public func LeerByteInt(Valor:Int, NumeroByte:UInt8) -> UInt8 {
         default:
             ErrorExtraño()
     }
-    return Int2ByteSigno(Valor: Resultado)
+    return Int2ByteSigno(Resultado)
 }
 
 public func Bytes2Int(Byte0:UInt8, Byte1:UInt8) -> Int {
@@ -353,7 +353,7 @@ public func CompararArchivosRuta(RutaArchivo1:URL, RutaArchivo2:URL, Log: inout 
     return CompararArchivosRuta
 }
 
-public func PunteroPerteneceTabla(Puntero:Int, Tabla:[UInt8], Origen:Int) -> Bool {
+public func PunteroPerteneceTabla( _ Puntero:Int, _ Tabla:[UInt8], _ Origen:Int) -> Bool {
     //devuelve true si el puntero apunta a una posición de la tabla indicada
     if (Puntero - Origen) >= 0 && (Puntero - Origen) < Tabla.count {
         return true

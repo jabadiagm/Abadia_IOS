@@ -57,7 +57,7 @@ class Depuracion {
     }
 
     init() {
-        Luz = EnumTipoLuz.EnumTipoLuz_Normal
+        Luz = EnumTipoLuz.EnumTipoLuz_ON
         LuzEnGuillermo = false
         Lampara = false
         PersonajesAdso = true
@@ -67,13 +67,13 @@ class Depuracion {
         PersonajesSeverino = true
         DeshabilitarCalculoDimensionesAmpliadas = false
         QuitarRetardos = false
-        SaltarPergamino = false
-        SaltarPresentacion = false
+        SaltarPergamino = true
+        SaltarPresentacion = true
         PararAdsoCTRL = true
         SaltarMomentoDiaEnter = true
         BugDejarObjetoPresente = true
         PuertasAbiertas = false
         CamaraManual = false
-        QuitarSonido = false
+        QuitarSonido = true
     }
 }
