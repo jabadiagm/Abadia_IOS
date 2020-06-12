@@ -10,7 +10,8 @@ import Foundation
 import AVFoundation
 
 class WaveOut {
-    public static var WAVE_FREQ:Int=6000 //frecuencia de muestreo
+    //public static var WAVE_FREQ:Int=10000 //frecuencia de muestreo
+    public var WAVE_FREQ:Int //frecuencia de muestreo
     private let WAVE_BUFFER_SIZE:Int = 2000
     private var AudioEngine:AVAudioEngine
     private var Player:AVAudioPlayerNode
@@ -24,6 +25,7 @@ class WaveOut {
     public var UltimoError:String = ""
     private var Abierto:Bool=false
     public var Reproduciendo:Bool=false
+    public var IniciandoReproduccion:Bool=false
     private var Sonido:Reproducible?
     private var Cancelar:Bool=false
     private var Thread1:Thread?
@@ -31,12 +33,10 @@ class WaveOut {
     private var Estado:UInt8=0
     private var BufferDepleted:Bool=false
     
-    private var chivato:Int=0
-    
-    init (Sonido:Reproducible) {
+    init (Sonido:Reproducible, WAVE_FREQ:Int) {
         //audio source
         self.Sonido=Sonido
-        
+        self.WAVE_FREQ = WAVE_FREQ
         //set audio objects
         WaveBuffer=DoubleBuffer(BufferSize: WAVE_BUFFER_SIZE)
         AudioEngine=AVAudioEngine()
@@ -47,7 +47,7 @@ class WaveOut {
         AudioEngine.attach(Player)
         
         //un canal
-        let AudioFormat=AVAudioFormat(standardFormatWithSampleRate: Double(WaveOut.WAVE_FREQ), channels: 1)
+        let AudioFormat=AVAudioFormat(standardFormatWithSampleRate: Double(WAVE_FREQ), channels: 1)
         AudioEngine.connect(Player, to: Mixer, format: AudioFormat)
 
         //buffers
@@ -56,7 +56,7 @@ class WaveOut {
         Buffer2 = AVAudioPCMBuffer(pcmFormat: AudioFormat!, frameCapacity: UInt32(WAVE_BUFFER_SIZE))!
         Buffer2.frameLength = UInt32(WAVE_BUFFER_SIZE)
 
-        BytesPorTic = Float(WaveOut.WAVE_FREQ) / Float(1000000) //bytes por us
+        BytesPorTic = Float(WAVE_FREQ) / Float(1000000) //bytes por us
 
     }
     
@@ -64,7 +64,7 @@ class WaveOut {
         
         
         AudioEngine.attach(Player)
-        let AudioFormat=AVAudioFormat(standardFormatWithSampleRate: Double(WaveOut.WAVE_FREQ), channels: 1)
+        let AudioFormat=AVAudioFormat(standardFormatWithSampleRate: Double(WAVE_FREQ), channels: 1)
         AudioEngine.connect(Player, to: Mixer, format: AudioFormat)
         AudioEngine.prepare()
     }
@@ -74,6 +74,7 @@ class WaveOut {
     }
     
     public func Reproducir() {
+        IniciandoReproduccion = true
         if !AudioEngine.isRunning {
             Abrir()
         }
@@ -131,10 +132,11 @@ class WaveOut {
             static var contador:UInt32=0
         }
         estatico.contador+=1
-        print(estatico.contador)
+        //print(estatico.contador)
         */
         
-        if BufferDepleted {
+        if BufferDepleted  { //&& estatico.contador > 100 {
+            //estatico.contador = 0
             Player.pause()
             if TareaActiva {
                 Cancelar = true
@@ -152,8 +154,14 @@ class WaveOut {
     @objc func Tarea() {
         var Contador:Int=0
         var NumeroBytes:Int
-        if Abierto==false { return }
-        if !AudioEngine.isRunning { return }
+        if Abierto==false {
+            IniciandoReproduccion = false
+            return
+        }
+        if !AudioEngine.isRunning {
+            IniciandoReproduccion = false
+            return
+        }
         
         TareaActiva = true
         WaveBuffer.Clear()
@@ -178,6 +186,7 @@ class WaveOut {
         Player.scheduleBuffer(Buffer2, at: nil, completionHandler: handler)
         Player.play()
         Reproduciendo = true
+        IniciandoReproduccion = false
         Reloj.Start()
         usleep(1000)
         WaveBuffer.Clear()
@@ -212,35 +221,26 @@ class WaveOut {
                 }
                 if Estado==0 {
                     for i in 0..<Int(Buffer1.frameLength) {
-                        chivato=1
                         Buffer1.floatChannelData?.pointee[i] = WaveBuffer.Buffer[i]
-                        chivato=2
                     }
-                    chivato=3
                     Player.scheduleBuffer(Buffer1, at: nil, completionHandler: handler)
-                    chivato=4
                     Estado=1
                 } else {
                     for i in 0..<Int(Buffer2.frameLength) {
-                        chivato=5
                         Buffer2.floatChannelData?.pointee[i] = WaveBuffer.Buffer[i]
-                        chivato=6
                     }
-                    chivato=7
                     Player.scheduleBuffer(Buffer2, at: nil, completionHandler: handler)
-                    chivato=8
                     Estado=0
                 }
                 WaveBuffer.Shift()
+                if WaveBuffer.Error { Cancelar = true }
                 BufferDepleted=false
             }
 
             if Cancelar || !AudioEngine.isRunning {
-                chivato=9
                 if AudioEngine.isRunning {
                     Player.pause()
                 }
-                chivato=10
                 break
             }
             usleep(1000)

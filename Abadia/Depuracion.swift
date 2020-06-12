@@ -35,6 +35,8 @@ class Depuracion {
     public var CamaraPersonaje:UInt8=0 //número de personaje al que sigue la cámara, si CamaraManual=true
     //                               0 = Guillermo, 1 = Adso, 2 = Malaquías, 3 = Abad, 4 = Berengario, 5 = Severino
     public var QuitarSonido:Bool
+    public var PergaminoNoDesaparece:Bool //true para que no desaparezca el tercer día si no lo tiene guillermo
+    public var PaseoGuillermo:Bool //true para que guillermo ande solo
     
     public func Check() {
         Luz = EnumTipoLuz.EnumTipoLuz_ON
@@ -53,11 +55,13 @@ class Depuracion {
         SaltarMomentoDiaEnter = true
         BugDejarObjetoPresente = false
         PuertasAbiertas = false
+        PergaminoNoDesaparece = false
+        PaseoGuillermo = false
         QuitarSonido = true
     }
 
     init() {
-        Luz = EnumTipoLuz.EnumTipoLuz_ON
+        Luz = EnumTipoLuz.EnumTipoLuz_Normal
         LuzEnGuillermo = false
         Lampara = false
         PersonajesAdso = true
@@ -67,13 +71,15 @@ class Depuracion {
         PersonajesSeverino = true
         DeshabilitarCalculoDimensionesAmpliadas = false
         QuitarRetardos = false
-        SaltarPergamino = true
-        SaltarPresentacion = true
-        PararAdsoCTRL = true
+        SaltarPergamino = false
+        SaltarPresentacion = false
+        PararAdsoCTRL = false
         SaltarMomentoDiaEnter = true
         BugDejarObjetoPresente = true
         PuertasAbiertas = false
         CamaraManual = false
-        QuitarSonido = true
+        PergaminoNoDesaparece = false
+        PaseoGuillermo = false
+        QuitarSonido = false
     }
 }

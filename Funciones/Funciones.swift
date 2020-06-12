@@ -389,6 +389,13 @@ public func SetBit( _ Data: inout UInt8, _ NBit:Int) {
     Data = Data | Estatico.Weights[NBit]
 }
 
+public func SetBit( _ Data: inout Int, _ NBit:Int) {
+    struct Estatico {
+        static let Weights:[Int] = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768]
+    }
+    Data = Data | Estatico.Weights[NBit]
+}
+
 public func ClearBit( _ Data: inout UInt8, _ NBit:Int) {
     struct Estatico {
         static let Weights:[UInt8] = [0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xBF, 0x7F]

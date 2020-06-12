@@ -189,7 +189,7 @@ class CGA {
         Y = Cociente * 8 + Resto
         X = ((PunteroPantalla & 0x7FF) - Cociente * 0x50) * 4 //posición del pixel más a la izquierda
         //en modo 1, se desplaza para encajar en 256 píxeles
-        if modo == 1 {
+        if modo == 1 || modo == 2 {
             X = X - 32
         }
         //If X = 0 Then Stop

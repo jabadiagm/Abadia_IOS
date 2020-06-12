@@ -16,9 +16,12 @@ class ViewController: UIViewController {
     
     let teclado=Teclado()
     let senoidal:Senoidal=Senoidal()
-    let ay8910=AY8912(FMuestreo: WaveOut.WAVE_FREQ)
+    //let ay8910=AY8912(FMuestreo: WaveOut.WAVE_FREQ)
+    var ay8910:AY8912?
     //lazy var waveOut=WaveOut(Sonido: senoidal)
-    lazy var waveOut=WaveOut(Sonido: ay8910)
+    //lazy var waveOut=WaveOut(Sonido: ay8910)
+    var waveOut:WaveOut?
+    lazy var procesadorEntrada = ProcesadorEntrada(view: view, teclado: teclado, abadia: abadia)
     let abadia=Abadia()
 
     let reloj:StopWatch=StopWatch()
@@ -26,18 +29,29 @@ class ViewController: UIViewController {
     var contador:UInt32=0
     var contador2:UInt32=0
     var fps2:UInt8=0
+    //var reiniciandoSonido:Bool = false
+    //var sonidoActivo: Bool = false
+    var estadoVigilanteSonido:Int = 0   //0: inactivo
+                                        //1: vigilando
+                                        //2: esperando a reiniciar
+                                        //3: reiniciando
+                                        //4: esperando después de reiniciar
+    var contadorVigilanteSonido:Int = 0
     
     private let joystickRadius: Double = 100
 
     
-    var bitmapMarco:Bitmap=Bitmap(width: 141, height: 640, color: .black)
+    var bitmapMarcoI:Bitmap=Bitmap(width: 167, height: 750, color: .black)
+    var bitmapMarcoD:Bitmap=Bitmap(width: 141, height: 640, color: .black)
     
     private let cgaImageView = UIImageView()
     private let marco1ImageView = UIImageView()
     private let marco2ImageView = UIImageView()
     
-    private let panGesture = UIPanGestureRecognizer()
-    private let tapGesture = UITapGestureRecognizer()
+    //private let panGesture = UIPanGestureRecognizer()
+    //private let tapGesture = UITapGestureRecognizer()
+    private let swipeLeft = UISwipeGestureRecognizer()
+    private let swipeRight = UISwipeGestureRecognizer()
     
     struct TipoPantalla {
         var Ancho:Int //ancho todal de la pantalla, en píxeles
@@ -63,6 +77,21 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        var WAVE_FREQ:Int
+        
+        if view.frame.size.height == 480 && UIScreen.main.scale == 2 { //iphone 4s
+            WAVE_FREQ = 6000
+        } else if UIScreen.main.scale == 3 { //iphone x, 11
+            WAVE_FREQ = 20000
+        } else { //rest of iphones and ipads
+            WAVE_FREQ = 10000
+        }
+        
+        
+        ay8910=AY8912(FMuestreo: WAVE_FREQ)
+        waveOut=WaveOut(Sonido: ay8910!, WAVE_FREQ: WAVE_FREQ)
+        
+        
         //evita el apagado de pantalla
         UIApplication.shared.isIdleTimerDisabled = true
         //fija la orientación
@@ -75,34 +104,46 @@ class ViewController: UIViewController {
         //calcula las medidas de las vistas y las coloca
         definirModo(modo: 0)
         //suministra a la abadía los objetos necesarios
-        abadia.Init(cga: cga, viewController: self, ay8910: ay8910, teclado: teclado)
+        abadia.Init(cga: cga, viewController: self, ay8910: ay8910!, teclado: teclado)
 
         //sincroniza el bucle principal del juego con el refresco de pantalla
         let displayLink = CADisplayLink(target: self, selector: #selector(Tick))
         displayLink.add(to: .current, forMode: .common)
         
         //gestores de eventos
-        view.addGestureRecognizer(panGesture)
-        panGesture.delegate = self
+        //view.addGestureRecognizer(panGesture)
+        //panGesture.delegate = self
 
         //view.addGestureRecognizer(tapGesture)
         //tapGesture.addTarget(self, action: #selector(procesadorToques))
         //tapGesture.delegate = self
         
+        view.isMultipleTouchEnabled = true
+        view.addGestureRecognizer(swipeLeft)
+        swipeLeft.addTarget(procesadorEntrada, action: #selector(procesadorEntrada.izquierdaDerecha(_:)))
+        swipeLeft.direction = .down
+        view.addGestureRecognizer(swipeRight)
+        swipeRight.addTarget(procesadorEntrada, action: #selector(procesadorEntrada.izquierdaDerecha(_:)))
+        swipeRight.direction = .up
+        //view.isUserInteractionEnabled = true
+        //swipeLeft.delegate = self
+        
+        
         //inicializa el sonido
-        senoidal.DefinirSenoidal(Ampli: 0.5, Interv: 1/Float(WaveOut.WAVE_FREQ), Frec: 1000)
+        senoidal.DefinirSenoidal(Ampli: 0.5, Interv: 1/Float(waveOut!.WAVE_FREQ), Frec: 1000)
         //waveOut.Init(Sonido: ay8910)
         //comienza a reproducir el sonido
-        waveOut.Abrir()
+        waveOut!.Abrir()
         
         
-        let seconds = 2.0//Time To Delay
-        let when = DispatchTime.now() + seconds
+        //let seconds = 2.0//Time To Delay
+        //let when = DispatchTime.now() + seconds
         
         
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            self.waveOut.Reproducir()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
+            self.waveOut!.Reproducir()
         }
+        
         
         /*
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4.0) {
@@ -174,8 +215,9 @@ class ViewController: UIViewController {
     }
     
     
+    
     @objc func appMovedToBackground() {
-        waveOut.Parar()
+        waveOut!.Parar()
         print ("Parado Background")
         //waveOut.Cerrar()
         
@@ -184,48 +226,32 @@ class ViewController: UIViewController {
     @objc func appMovedToForeground() {
         //waveOut.Reconectar()
         //waveOut.Abrir()
+        
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
-            self.waveOut.Reproducir()
+            self.waveOut!.Reproducir()
             print("Foreground Reproduciendo")
         }
-        
     }
     
     @objc func audioRouteChangeListener() {
         print("Auriculares")
         //waveOut.Parar()
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
-            self.waveOut.Reproducir()
-            print("Reproduciendo")
+            self.waveOut!.Reproducir()
+            print("Reproduciendo audioRouteChange")
         }
 
     }
     
     @objc func audioConfigurationChangeListener() {
         
-        /*
-        print("AVAudioEngineChange")
-        sleep(1)
-        waveOut.Pausar()
-        print("Pausado")
-        sleep(1)
-        waveOut.Parar()
-        print("Parado")
-        
-
-
-        sleep(1)
-        
-        waveOut.Reconectar()
-        print("Reconectar")
-        waveOut.Abrir()
-        //waveOut.Reproducir()
-         */
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
-            self.waveOut.Reproducir()
-            print("Reproduciendo")
+            self.waveOut!.Reproducir()
+            print("Reproduciendo audioConfigurationChange")
         }
-        
+
     }
 
     //oculta la barra superior del teléfono
@@ -239,9 +265,14 @@ class ViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //procesadorEntrada.actualizarTeclado(touches: touches)
+        //abadia.DibujarEspiral_3F6B()
+        
         print("touch begin")
+        procesadorEntrada.touchesBegan(touches: touches)
         for touch in touches {
-            let tecla = pixeles2Area(coordenadas2Pixeles(touch.location(in: view)))
+            let tecla = procesadorEntrada.pixeles2Area(coordenadas2Pixeles(touch.location(in: view)))
+            print (tecla)
             teclado.KeyDown(tecla)
         }
         //abadia.CambioPantalla_2DB8 = true
@@ -249,24 +280,34 @@ class ViewController: UIViewController {
         //abadia.HabitacionOscura_156C = false
         //abadia.NumeroHabitacion+=1
         return
-        if waveOut.Reproduciendo {
-            waveOut.Parar()
+        if waveOut!.Reproduciendo {
+            waveOut!.Parar()
             print("Touch: Parado")
         } else {
             print("Touch: Reproduciendo")
-            waveOut.Reproducir()
+            waveOut!.Reproducir()
         }
     }
     
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        teclado.ToquesTerminados()
+        //procesadorEntrada.actualizarTeclado(touches: touches)
+        //teclado.ToquesTerminados()
         print("touch cancel")
+        procesadorEntrada.touchesEnded(touches: touches)
+        for touch in touches {
+            let tecla = procesadorEntrada.pixeles2Area(coordenadas2Pixeles(touch.location(in: view)))
+            print (tecla)
+            teclado.KeyDown(tecla)
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //procesadorEntrada.actualizarTeclado(touches: touches)
+        print("touch end")
+        procesadorEntrada.touchesEnded(touches: touches)
         for touch in touches {
-            let tecla = pixeles2Area(coordenadas2Pixeles(touch.location(in: view)))
+            let tecla = procesadorEntrada.pixeles2Area(coordenadas2Pixeles(touch.location(in: view)))
             print (tecla)
             teclado.KeyUp(tecla)
         }
@@ -282,41 +323,10 @@ class ViewController: UIViewController {
         return CGPoint(x: pixelX, y: pixelY)
     }
     
-    func pixeles2Area ( _ posicion: CGPoint) -> EnumAreaTecla {
-        if posicion.x > 118  && posicion.y < 20 {
-            return .AreaDepuracion
-        } else if posicion.y >= 160 && posicion.y <= 172{
-            if posicion.x > 0 && posicion.x < 32 {
-                return .AreaTextosDerecha
-            } else if posicion.x < 0 && -posicion.x < 32 {
-                return .AreaTextosIzquierda
-            } else {
-                return .AreaEscenario
-            }
-        } else if posicion.y > 172 {
-            if posicion.x<0 {
-                if posicion.x < -96 {
-                    return .TeclaArriba
-                } else if posicion.x < -63 {
-                    return .TeclaAbajo
-                } else {
-                    return .AreaEscenario
-                }
-                
-            } else {
-                if posicion.x > 96 {
-                    return .TeclaDerecha
-                } else if posicion.x > 63 {
-                    return .TeclaIzquierda
-                } else {
-                    return .AreaEscenario
-                }
-            }
-        } else {
-            return .AreaEscenario
-        }
-    }
+
+
     
+    /*
     private var inputVector: Vector {
         switch panGesture.state {
         case .began, .changed:
@@ -331,8 +341,9 @@ class ViewController: UIViewController {
         default:
             return Vector(x: 0, y: 0)
         }
-    }
+    }*/
     
+    /*
     func joystick2Teclas() -> [EnumAreaTecla] {
         let limite: Double = 0.3
         var resultado:[EnumAreaTecla]=[]
@@ -349,8 +360,9 @@ class ViewController: UIViewController {
             resultado.append(EnumAreaTecla.TeclaAbajo)
         }
         return resultado
-    }
+    }*/
     
+    /*
     func procesarJoystick() {
         struct Estatico {
             static var anterior: [Bool]=[false, false, false, false]
@@ -373,7 +385,7 @@ class ViewController: UIViewController {
               }
         }
         Estatico.anterior = actual
-    }
+    } */
     
     func definirModo(modo: UInt8) {
         //define las medidas importantes y coloca los elementos gráficos
@@ -391,6 +403,8 @@ class ViewController: UIViewController {
         //
         //para Apple, el teléfono está en vertical, por lo que heigh es el valor largo
         //la pantalla está compuesta por un UIPictureView que ocupa todo el espacio
+        var marcoI:UIImage
+        var marcoD:UIImage
         self.view.backgroundColor = .black
         cga.definirModo(modo: modo)
         //define las medidas principales de la pantalla
@@ -433,17 +447,35 @@ class ViewController: UIViewController {
         if Pantalla!.DibujarMarcos == true {
             //cga en el centro, con proporción a 256x192, y marcos laterales
             marco2ImageView.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(Pantalla!.Alto)/CGFloat(Pantalla!.PixelsPorPunto), height: CGFloat(Pantalla!.AnchoLateral) / CGFloat(Pantalla!.PixelsPorPunto))
-            marco2ImageView.backgroundColor = .black
+            if modo == 1 {
+                marco1ImageView.backgroundColor = .init(red: 0.5, green: 0, blue: 0, alpha: 1)
+                marco2ImageView.backgroundColor = .init(red: 0.5, green: 0, blue: 0, alpha: 1)
+            } else {
+                marco1ImageView.backgroundColor = .black
+                marco2ImageView.backgroundColor = .black
+            }
+            marco1ImageView.isHidden=false
             marco2ImageView.isHidden=false
             marco1ImageView.frame = CGRect(x: 0, y: CGFloat(Pantalla!.AnchoLateral) / CGFloat(Pantalla!.PixelsPorPunto)+CGFloat(Pantalla!.AnchoCGA) / CGFloat(Pantalla!.PixelsPorPunto), width: CGFloat(Pantalla!.Alto)/CGFloat(Pantalla!.PixelsPorPunto), height: CGFloat(Pantalla!.AnchoLateral) / CGFloat(Pantalla!.PixelsPorPunto))
-            marco1ImageView.backgroundColor = .black
-            marco1ImageView.isHidden=false
-            //coloca la imagen del marco
-            let marco=UIImage(imageLiteralResourceName: "Marco.png")
-            bitmapMarco=Bitmap(image: marco)!
-            marco1ImageView.image=UIImage(bitmap: bitmapMarco)
-            marco2ImageView.image=UIImage(bitmap: bitmapMarco)
-            //cgaImageView.image=UIImage(bitmap: cga.bitmapModo1)
+            if modo == 2 {
+                //coloca la imagen del marco
+                if Pantalla!.MarcoGrande {
+                    marcoI=UIImage(imageLiteralResourceName: "Marco_I_468x1125.png")
+                    marcoD=UIImage(imageLiteralResourceName: "Marco_D_468x1125.png")
+                } else {
+                    marcoI=UIImage(imageLiteralResourceName: "Marco_I_167x750.png")
+                    marcoD=UIImage(imageLiteralResourceName: "Marco_D_167x750.png")
+                }
+                bitmapMarcoI=Bitmap(image: marcoI)!
+                bitmapMarcoD=Bitmap(image: marcoD)!
+                marco1ImageView.image=UIImage(bitmap: bitmapMarcoI)
+                marco2ImageView.image=UIImage(bitmap: bitmapMarcoD)
+                //cgaImageView.image=UIImage(bitmap: cga.bitmapModo1)
+                
+            } else {
+                marco1ImageView.image=nil
+                marco2ImageView.image=nil
+            }
         } else {
             //cga en el centro, con proporción a 320x200 y sin marcos
             marco1ImageView.isHidden=true
@@ -457,7 +489,7 @@ class ViewController: UIViewController {
         if !reloj.Active {
             reloj.Start()
         }
-        procesarJoystick()
+        //procesarJoystick()
         
         if (contador%2)==1 {
             abadia.Tick()
@@ -467,13 +499,33 @@ class ViewController: UIViewController {
             } else {
                 cgaImageView.image=UIImage(bitmap: cga.bitmapModo1)
             }
+            
+            if !abadia.depuracion.QuitarSonido {
+                VigilarSonido()
+            }
+            
+            /*
+            //comprueba que el sonido se esté reproduciendo
+            if !abadia.depuracion.QuitarSonido && sonidoActivo {
+                if !waveOut!.Reproduciendo && !waveOut!.IniciandoReproduccion && !reiniciandoSonido {
+                    reiniciandoSonido = true
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
+                        self.waveOut!.Reproducir()
+                        print("Reiniciando Sonido")
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4.0) {
+                        self.reiniciandoSonido = false
+                    }
+
+                }
+            }*/
 
         }
         if reloj.EllapsedMilliseconds() > 100 {
             reloj.Start()
             //print(inputVector)
-            let teclas=joystick2Teclas()
-            if teclas.count > 0 { print (teclas) }
+            //let teclas=joystick2Teclas()
+            //if teclas.count > 0 { print (teclas) }
             
         }
        
@@ -486,9 +538,45 @@ class ViewController: UIViewController {
             contador=0
         }
     }
+    
+    func VigilarSonido () {
+        switch estadoVigilanteSonido {
+            case 0:
+                contadorVigilanteSonido = 0
+                estadoVigilanteSonido = 1
+            case 1:
+                if !waveOut!.Reproduciendo && !waveOut!.IniciandoReproduccion {
+                    print("estadoVigilanteSonido = 2")
+                    estadoVigilanteSonido = 2
+                }
+            case 2:
+                if waveOut!.Reproduciendo || waveOut!.IniciandoReproduccion {
+                    print("estadoVigilanteSonido = 0")
+                    estadoVigilanteSonido = 0
+                } else {
+                    contadorVigilanteSonido = contadorVigilanteSonido + 1
+                    if contadorVigilanteSonido > 150 {
+                        estadoVigilanteSonido = 3
+                    }
+                }
+            case 3:
+                self.waveOut!.Reproducir()
+                print("Reiniciando Sonido")
+                contadorVigilanteSonido = 0
+                estadoVigilanteSonido = 4
+            case 4:
+                contadorVigilanteSonido = contadorVigilanteSonido + 1
+                if contadorVigilanteSonido > 150 {
+                    estadoVigilanteSonido = 0
+                }
+            default:
+                break
+        }
+    }
  
   
 }
+
 
 extension ViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(

@@ -29,10 +29,11 @@ public enum EnumAreaTecla:Int {
     case AreaTextosIzquierda = 17
     case AreaTextosDerecha = 18
     case AreaDepuracion = 19
+    case AreaObjetos = 20
 }
 
 class Teclado {
-    let NumeroTeclas:Int = 20
+    let NumeroTeclas:Int = 21
     lazy var TeclasNivel=[Bool](repeating: false, count: NumeroTeclas) //interesa su estado
     lazy var TeclasFlanco=[Bool](repeating: false, count: NumeroTeclas) //interesa su pulsación
     

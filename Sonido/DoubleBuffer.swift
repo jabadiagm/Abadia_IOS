@@ -13,11 +13,14 @@ class DoubleBuffer {
     public var Pointer:Int
     private var BufferSize:Int
     public var IsFull:Bool
+    public var Error:Bool
+    
     init (BufferSize:Int) {
         self.BufferSize = BufferSize
         Buffer=[Float](repeating:0, count: 2 * BufferSize)
         Pointer=0
         IsFull=false
+        Error = false
     }
     
     func Append(Value:Float) {
@@ -51,6 +54,7 @@ class DoubleBuffer {
         Pointer = Pointer - BufferSize
         if Pointer<0 {
             Pointer=0
+            Error = true
             print("666")
         }
         IsFull = false

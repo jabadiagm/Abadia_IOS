@@ -14,7 +14,7 @@ import Foundation
 class AY8912 : Reproducible {
     
     public let MAX_OUTPUT:Int = 63
-    public let AY_STEP:Int = 32768
+    public let AY_STEP:Int = 32768 //32768
     public let MAXVOL:Int = 0x1F
 
     // AY register ID's
@@ -37,6 +37,8 @@ class AY8912 : Reproducible {
 
     //AY-3-3912 con la frecuencia de un Amstrad
     public let PSG_FREQ:Double = 1000000
+    
+    private var bloqueoPSG:Bool = false
 
     struct AYPSG {
         static var sampleRate:Int=0
@@ -158,7 +160,8 @@ class AY8912 : Reproducible {
     
     func AYWriteReg(r:Int, v:Int) {
         var old:Int
-
+        //while bloqueoPSG {}
+        //if bloqueoPSG { print("Colisión PSG")}
         AYPSG.Regs[r] = v
 
         // A note about the period of tones, noise and envelope: for speed reasons,
@@ -376,92 +379,100 @@ class AY8912 : Reproducible {
                 AY_NextEvent = AY_Left
             }
 
-            if (AY_OutNoise & 0x8) == 0x8 {
-                if (AYPSG.OutputA == 1) { VolA = VolA + AYPSG.CountA }
-                AYPSG.CountA = AYPSG.CountA - AY_NextEvent
-                // PeriodA is the half period of the square wave. Here, in each
-                // loop I add PeriodA twice, so that at the end of the loop the
-                // square wave is in the same status (0 or 1) it was at the start.
-                // vola is also incremented by PeriodA, since the wave has been 1
-                // exactly half of the time, regardless of the initial position.
-                // If we exit the loop in the middle, OutputA has to be inverted
-                // and vola incremented only if the exit status of the square
-                // wave is 1.
+            if (AYPSG.Regs[AY_ENABLE] & 0x1) == 0x0 {
+                if (AY_OutNoise & 0x8) == 0x8 {
+                    if (AYPSG.OutputA == 1) { VolA = VolA + AYPSG.CountA }
+                    AYPSG.CountA = AYPSG.CountA - AY_NextEvent
+                    // PeriodA is the half period of the square wave. Here, in each
+                    // loop I add PeriodA twice, so that at the end of the loop the
+                    // square wave is in the same status (0 or 1) it was at the start.
+                    // vola is also incremented by PeriodA, since the wave has been 1
+                    // exactly half of the time, regardless of the initial position.
+                    // If we exit the loop in the middle, OutputA has to be inverted
+                    // and vola incremented only if the exit status of the square
+                    // wave is 1.
 
-                while (AYPSG.CountA <= 0) {
-                    AYPSG.CountA = AYPSG.CountA + AYPSG.PeriodA
-                    if (AYPSG.CountA > 0) {
-                        if (AYPSG.Regs[AY_ENABLE] & 1) == 0 { AYPSG.OutputA = AYPSG.OutputA ^ 1 }
-                        if (AYPSG.OutputA != 0) { VolA = VolA + AYPSG.PeriodA }
-                        break
+                    while (AYPSG.CountA <= 0) {
+                        AYPSG.CountA = AYPSG.CountA + AYPSG.PeriodA
+                        if (AYPSG.CountA > 0) {
+                            if (AYPSG.Regs[AY_ENABLE] & 1) == 0 { AYPSG.OutputA = AYPSG.OutputA ^ 1 }
+                            if (AYPSG.OutputA != 0) { VolA = VolA + AYPSG.PeriodA }
+                            break
+                        }
+                        AYPSG.CountA = AYPSG.CountA + AYPSG.PeriodA
+                        VolA = VolA + AYPSG.PeriodA
                     }
-                    AYPSG.CountA = AYPSG.CountA + AYPSG.PeriodA
-                    VolA = VolA + AYPSG.PeriodA
+                    if (AYPSG.OutputA == 1) { VolA = VolA - AYPSG.CountA }
+                } else {
+                    AYPSG.CountA = AYPSG.CountA - AY_NextEvent
+                    while (AYPSG.CountA <= 0) {
+                        AYPSG.CountA = AYPSG.CountA + AYPSG.PeriodA
+                        if (AYPSG.CountA > 0) {
+                            AYPSG.OutputA = AYPSG.OutputA ^ 1
+                            break
+                        }
+                        AYPSG.CountA = AYPSG.CountA + AYPSG.PeriodA
+                    }
                 }
-                if (AYPSG.OutputA == 1) { VolA = VolA - AYPSG.CountA }
-            } else {
-                AYPSG.CountA = AYPSG.CountA - AY_NextEvent
-                while (AYPSG.CountA <= 0) {
-                    AYPSG.CountA = AYPSG.CountA + AYPSG.PeriodA
-                    if (AYPSG.CountA > 0) {
-                        AYPSG.OutputA = AYPSG.OutputA ^ 1
-                        break
+            }
+            
+            if (AYPSG.Regs[AY_ENABLE] & 0x2) == 0x0 {
+                if (AY_OutNoise & 0x10) == 0x10 {
+                    if (AYPSG.OutputB == 1) { VolB = VolB + AYPSG.CountB }
+                    AYPSG.CountB = AYPSG.CountB - AY_NextEvent
+                    while (AYPSG.CountB <= 0) {
+                        AYPSG.CountB = AYPSG.CountB + AYPSG.PeriodB
+                        if (AYPSG.CountB > 0) {
+                            if (AYPSG.Regs[AY_ENABLE] & 2) == 0 { AYPSG.OutputB = AYPSG.OutputB ^ 1 }
+                            if (AYPSG.OutputB != 0) { VolB = VolB + AYPSG.PeriodB }
+                            break
+                        }
+                        AYPSG.CountB = AYPSG.CountB + AYPSG.PeriodB
+                        VolB = VolB + AYPSG.PeriodB
                     }
-                    AYPSG.CountA = AYPSG.CountA + AYPSG.PeriodA
+                    if (AYPSG.OutputB == 1) { VolB = VolB - AYPSG.CountB }
+                } else {
+                    AYPSG.CountB = AYPSG.CountB - AY_NextEvent
+                    while (AYPSG.CountB <= 0) {
+                        AYPSG.CountB = AYPSG.CountB + AYPSG.PeriodB
+                        if (AYPSG.CountB > 0) {
+                            AYPSG.OutputB = AYPSG.OutputB ^ 1
+                            break
+                        }
+                        AYPSG.CountB = AYPSG.CountB + AYPSG.PeriodB
+                    }
                 }
             }
 
-            if (AY_OutNoise & 0x10) == 0x10 {
-                if (AYPSG.OutputB == 1) { VolB = VolB + AYPSG.CountB }
-                AYPSG.CountB = AYPSG.CountB - AY_NextEvent
-                while (AYPSG.CountB <= 0) {
-                    AYPSG.CountB = AYPSG.CountB + AYPSG.PeriodB
-                    if (AYPSG.CountB > 0) {
-                        if (AYPSG.Regs[AY_ENABLE] & 2) == 0 { AYPSG.OutputB = AYPSG.OutputB ^ 1 }
-                        if (AYPSG.OutputB != 0) { VolB = VolB + AYPSG.PeriodB }
-                        break
+            if (AYPSG.Regs[AY_ENABLE] & 0x4) == 0x0 {
+                if (AY_OutNoise & 0x20) == 0x20 {
+                    if (AYPSG.OutputC == 1) { VolC = VolC + AYPSG.CountC }
+                    AYPSG.CountC = AYPSG.CountC - AY_NextEvent
+                    while (AYPSG.CountC <= 0) {
+                        AYPSG.CountC = AYPSG.CountC + AYPSG.PeriodC
+                        if (AYPSG.CountC > 0) {
+                            if (AYPSG.Regs[AY_ENABLE] & 4) == 0 { AYPSG.OutputC = AYPSG.OutputC ^ 1 }
+                            if (AYPSG.OutputC != 0) { VolC = VolC + AYPSG.PeriodC }
+                            break
+                        }
+                        AYPSG.CountC = AYPSG.CountC + AYPSG.PeriodC
+                        VolC = VolC + AYPSG.PeriodC
                     }
-                    AYPSG.CountB = AYPSG.CountB + AYPSG.PeriodB
-                    VolB = VolB + AYPSG.PeriodB
-                }
-                if (AYPSG.OutputB == 1) { VolB = VolB - AYPSG.CountB }
-            } else {
-                AYPSG.CountB = AYPSG.CountB - AY_NextEvent
-                while (AYPSG.CountB <= 0) {
-                    AYPSG.CountB = AYPSG.CountB + AYPSG.PeriodB
-                    if (AYPSG.CountB > 0) {
-                        AYPSG.OutputB = AYPSG.OutputB ^ 1
-                        break
+                    if (AYPSG.OutputC == 1) { VolC = VolC - AYPSG.CountC }
+                } else {
+                    AYPSG.CountC = AYPSG.CountC - AY_NextEvent
+                    while (AYPSG.CountC <= 0) {
+                        AYPSG.CountC = AYPSG.CountC + AYPSG.PeriodC
+                        if (AYPSG.CountC > 0) {
+                            AYPSG.OutputC = AYPSG.OutputC ^ 1
+                            break
+                        }
+                        AYPSG.CountC = AYPSG.CountC + AYPSG.PeriodC
                     }
-                    AYPSG.CountB = AYPSG.CountB + AYPSG.PeriodB
                 }
             }
 
-            if (AY_OutNoise & 0x20) == 0x20 {
-                if (AYPSG.OutputC == 1) { VolC = VolC + AYPSG.CountC }
-                AYPSG.CountC = AYPSG.CountC - AY_NextEvent
-                while (AYPSG.CountC <= 0) {
-                    AYPSG.CountC = AYPSG.CountC + AYPSG.PeriodC
-                    if (AYPSG.CountC > 0) {
-                        if (AYPSG.Regs[AY_ENABLE] & 4) == 0 { AYPSG.OutputC = AYPSG.OutputC ^ 1 }
-                        if (AYPSG.OutputC != 0) { VolC = VolC + AYPSG.PeriodC }
-                        break
-                    }
-                    AYPSG.CountC = AYPSG.CountC + AYPSG.PeriodC
-                    VolC = VolC + AYPSG.PeriodC
-                }
-                if (AYPSG.OutputC == 1) { VolC = VolC - AYPSG.CountC }
-            } else {
-                AYPSG.CountC = AYPSG.CountC - AY_NextEvent
-                while (AYPSG.CountC <= 0) {
-                    AYPSG.CountC = AYPSG.CountC + AYPSG.PeriodC
-                    if (AYPSG.CountC > 0) {
-                        AYPSG.OutputC = AYPSG.OutputC ^ 1
-                        break
-                    }
-                    AYPSG.CountC = AYPSG.CountC + AYPSG.PeriodC
-                }
-            }
+
 
             AYPSG.CountN = AYPSG.CountN - AY_NextEvent
             if (AYPSG.CountN <= 0) {
@@ -510,6 +521,10 @@ class AY8912 : Reproducible {
                 if (AYPSG.EnvelopeC != 0) { AYPSG.VolC = AYPSG.VolE }
             }
         }
+        
+        if (AYPSG.Regs[AY_ENABLE] & 0x1) == 0x1 { VolA = 0 }
+        if (AYPSG.Regs[AY_ENABLE] & 0x2) == 0x2 { VolB = 0 }
+        if (AYPSG.Regs[AY_ENABLE] & 0x4) == 0x4 { VolC = 0 }
 
         lOut1 = (VolA * AYPSG.VolA) / 65535
         lOut2 = (VolB * AYPSG.VolB) / 65535
@@ -519,16 +534,19 @@ class AY8912 : Reproducible {
         return RenderByte
     }
     func GetPSGWave() -> UInt8 {
-        struct Estatico {
+        /*struct Estatico {
             static var WCount:Int=0
-        }
+        } */
         var PSG:Int
-        Estatico.WCount = Estatico.WCount + 1
+        /*Estatico.WCount = Estatico.WCount + 1
         if Estatico.WCount == 800 {
             AY8912Update_8()
             Estatico.WCount = 0
-        }
+        } */
+        bloqueoPSG = true
         PSG = RenderByte()
+        bloqueoPSG = false
+
         if PSG > 255 { PSG = 255 }
         if PSG < 0 { PSG = 0 }
         return UInt8(PSG)

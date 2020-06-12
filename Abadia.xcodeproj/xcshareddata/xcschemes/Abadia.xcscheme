@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AE3233CA1F8972EA0068BA8F"
-               BuildableName = "Abadia.app"
+               BuildableName = "La Abadi&#x301;a del Crimen.app"
                BlueprintName = "Abadia"
                ReferencedContainer = "container:Abadia.xcodeproj">
             </BuildableReference>
@@ -31,9 +31,9 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      buildConfiguration = "Release"
+      selectedDebuggerIdentifier = ""
+      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AE3233CA1F8972EA0068BA8F"
-            BuildableName = "Abadia.app"
+            BuildableName = "La Abadi&#x301;a del Crimen.app"
             BlueprintName = "Abadia"
             ReferencedContainer = "container:Abadia.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AE3233CA1F8972EA0068BA8F"
-            BuildableName = "Abadia.app"
+            BuildableName = "La Abadi&#x301;a del Crimen.app"
             BlueprintName = "Abadia"
             ReferencedContainer = "container:Abadia.xcodeproj">
          </BuildableReference>
